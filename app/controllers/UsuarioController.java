@@ -11,7 +11,6 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import javax.persistence.PersistenceException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -55,6 +54,7 @@ public class UsuarioController extends Controller
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 System.out.println("LLEGO AL CATCH");
                 result.put("status","ERROR");
                 result.put("message","Usuario ya existe con ese email!");
@@ -122,8 +122,10 @@ public class UsuarioController extends Controller
             JsonNode json = request().body().asJson();
             Usuario user = mapper.readValue(json.toString(), Usuario.class);
             Usuario old = JPA.em().find(Usuario.class,Integer.valueOf(json.get("id").asText()));
-            user.setPassword(old.getPassword());
-            if(!user.equals(old)){
+            if(!user.equals(old))
+            {
+                user.setPassword(old.getPassword());
+                user.setAmigos(old.getAmigos());
                 JPA.em().merge(user);
                 result.put("status","OK");
                 result.put("message","Usuario actualizado!");
@@ -144,7 +146,7 @@ public class UsuarioController extends Controller
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Result getUser(Integer id)
     {
         ObjectNode result = Json.newObject();
@@ -152,12 +154,39 @@ public class UsuarioController extends Controller
         return ok(toJson(user));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Result getUsers()
     {
         ObjectNode result = Json.newObject();
         List<Usuario> persons = JPA.em().createQuery("select p from Usuario p", Usuario.class).getResultList();
         return ok(toJson(persons));
+    }
+
+    @Transactional(readOnly = true)
+    public Result getFriends(Integer id)
+    {
+        ObjectNode result = Json.newObject();
+        Usuario user = JPA.em().find(Usuario.class, id);
+        List<Usuario> amigos = user.getAmigos();
+        return ok(toJson(amigos));
+    }
+
+    @Transactional
+    public Result addFriend()
+    {
+        ObjectNode result = Json.newObject();
+        JsonNode json = request().body().asJson();
+        Integer id = Integer.valueOf(json.get("id").asText());
+        Integer id_friend = Integer.valueOf(json.get("id_friend").asText());
+        Usuario user = JPA.em().find(Usuario.class, id);
+        Usuario userFriend = JPA.em().find(Usuario.class, id_friend);
+        //user.setParent(user);
+        user.getAmigos().add(userFriend);
+        JPA.em().merge(user);
+        JPA.em().merge(userFriend);
+        result.put("status","OK");
+        result.put("message","Amigo agregado");
+        return ok(toJson(result));
     }
 
     public static String generateHash(String input)
