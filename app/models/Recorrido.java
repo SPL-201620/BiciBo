@@ -34,6 +34,22 @@ public class Recorrido
 
     public Date fecha_recorrido;
 
+    public int distancia;
+
+    public int tiempoEstimado;
+
+    public int getCaloriasQuemadas() {
+        return caloriasQuemadas;
+    }
+
+    public void setCaloriasQuemadas(int caloriasQuemadas) {
+        this.caloriasQuemadas = caloriasQuemadas;
+    }
+
+    public int caloriasQuemadas;
+
+    public String infoClima;
+
     public Integer getId() {
         return id;
     }
