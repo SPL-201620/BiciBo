@@ -22,6 +22,8 @@ public class Recorrido
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
+    public Integer id_usuario;
+
     public boolean realizado = true;
 
     public long origen;
@@ -104,5 +106,37 @@ public class Recorrido
 
     public void setFecha_recorrido(Date fecha_recorrido) {
         this.fecha_recorrido = fecha_recorrido;
+    }
+
+    public Integer getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Integer id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    public int getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
+
+    public int getTiempoEstimado() {
+        return tiempoEstimado;
+    }
+
+    public void setTiempoEstimado(int tiempoEstimado) {
+        this.tiempoEstimado = tiempoEstimado;
+    }
+
+    public String getInfoClima() {
+        return infoClima;
+    }
+
+    public void setInfoClima(String infoClima) {
+        this.infoClima = infoClima;
     }
 }

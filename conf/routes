@@ -22,6 +22,7 @@ GET     /recorridos                 controllers.RecorridoController.getRecorrido
 GET     /recorrido/:id              controllers.RecorridoController.getRecorrido(id: Integer)
 POST    /recorrido/add              controllers.RecorridoController.createRecorrido()
 PUT     /recorrido/update           controllers.RecorridoController.updateRecorrido()
+GET     /recorridosUser/:id         controllers.RecorridoController.getRecorridosUsuario(id: Integer)
 
 
 # Map static resources from the /public folder to the /assets URL path

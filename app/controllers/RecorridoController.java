@@ -35,6 +35,7 @@ public class RecorridoController extends Controller
         try
         {
             int id = json.get("id").asInt();
+            recorrido.setId_usuario(id);
 
             Boolean realizado = json.get("realizado").asBoolean();
             recorrido.setRealizado(realizado);
@@ -109,6 +110,12 @@ public class RecorridoController extends Controller
             try
             {
                 int id = json.get("id").asInt();
+
+                if(json.get("id_usuario")!=null)
+                {
+                    int id_usuario = json.get("id_usuario").asInt();
+                    recorrido.setId_usuario(id_usuario);
+                }
 
                 if(json.get("realizado")!=null)
                 {
@@ -186,8 +193,8 @@ public class RecorridoController extends Controller
             Recorrido old = JPA.em().find(Recorrido.class,Integer.valueOf(json.get("id").asText()));
             if(!recorrido.equals(old))
             {
-                old.setRealizado(recorrido.getRealizado());
-                System.out.println("ola");
+                old.setRealizado(recorrido.isRealizado());
+                old.setId_usuario(recorrido.getId_usuario());
                 old.setOrigen(recorrido.getOrigen());
                 old.setHora_salida(recorrido.getHora_salida());
                 old.setHora_llegada(recorrido.getHora_llegada());
@@ -196,7 +203,6 @@ public class RecorridoController extends Controller
                 old.setTiempoEstimado(recorrido.getTiempoEstimado());
                 old.setCaloriasQuemadas(recorrido.getCaloriasQuemadas());
                 old.setInfoClima(recorrido.getInfoClima());
-                System.out.println("ola2");
                 JPA.em().merge(recorrido);
                 result.put("status","OK");
                 result.put("message","Recorrido actualizado");
@@ -223,6 +229,14 @@ public class RecorridoController extends Controller
         ObjectNode result = Json.newObject();
         Recorrido recorrido = JPA.em().find(Recorrido.class,Integer.valueOf(id));
         return ok(toJson(recorrido));
+    }
+
+    @Transactional(readOnly = true)
+    public Result getRecorridosUsuario(Integer id)
+    {
+        ObjectNode result = Json.newObject();
+        List<Recorrido> viajes = JPA.em().createQuery("select p from Recorrido p where id_usuario = "+id, Recorrido.class).getResultList();
+        return ok(toJson(viajes));
     }
 
     @Transactional(readOnly = true)
