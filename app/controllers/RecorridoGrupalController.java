@@ -3,7 +3,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.Recorrido;
+import models.RecorridoGrupal;
+import models.Usuario;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -22,48 +23,48 @@ import static play.libs.Json.toJson;
 /**
  * Created by santi on 5/10/2016.
  */
-public class RecorridoController extends Controller
+public class RecorridoGrupalController extends Controller
 {
     public static final String SALT = "my-salt-text";
 
     @Transactional(readOnly = true)
-    public Result getRecorridos()
+    public Result getRecorridosGrupales()
     {
         ObjectNode result = Json.newObject();
-        List<Recorrido> viajes = JPA.em().createQuery("select p from Recorrido p", Recorrido.class).getResultList();
+        List<RecorridoGrupal> viajes = JPA.em().createQuery("select p from RecorridoGrupal as p", RecorridoGrupal.class).getResultList();
         return ok(toJson(viajes));
     }
 
     @Transactional(readOnly = true)
-    public Result getRecorridosUsuario(Integer id)
+    public Result getRecorridosGrupalesUsuario(Integer id)
     {
         ObjectNode result = Json.newObject();
-        List<Recorrido> viajes = JPA.em().createQuery("select p from Recorrido p where id_usuario = "+id, Recorrido.class).getResultList();
+        List viajes = JPA.em().createQuery("select p, case when s.id is null then 0 else 1 end as registrado from RecorridoGrupal as p right join p.suscritos as s where s.id = "+id).getResultList();
         return ok(toJson(viajes));
     }
 
     @Transactional(readOnly = true)
-    public Result getRecorrido(Integer id)
+    public Result getRecorridoGrupal(Integer id, Integer id2)
     {
         ObjectNode result = Json.newObject();
-        Recorrido recorrido = JPA.em().find(Recorrido.class,Integer.valueOf(id));
-        return ok(toJson(recorrido));
+        List viajes = JPA.em().createQuery("select p, case when s.id is null then 0 else 1 end as registrado from RecorridoGrupal as p left join p.suscritos as s where p.id = "+id+" and s.id = "+id2).getResultList();
+        return ok(toJson(viajes));
     }
 
     @Transactional
     @BodyParser.Of(BodyParser.Json.class)
-    public Result createRecorrido()
+    public Result createRecorridoGrupal()
     {
         ObjectNode result = Json.newObject();
         JsonNode json = request().body().asJson();
-        Recorrido recorrido = new Recorrido();
+        RecorridoGrupal recorrido = new RecorridoGrupal();
         try
         {
             int id = json.get("id").asInt();
             recorrido.setId_usuario(id);
 
-            Boolean realizado = json.get("realizado").asBoolean();
-            recorrido.setRealizado(realizado);
+            String nombre_organizador = json.get("nombre_organizador").asText();
+            recorrido.setNombre_organizador(nombre_organizador);
 
             Long origen = json.get("origen").asLong();
             recorrido.setOrigen(origen);
@@ -74,6 +75,7 @@ public class RecorridoController extends Controller
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             try
             {
+                System.out.println(json.get("hora_salida").asText());
                 Date hora_salida = formatter.parse(json.get("hora_salida").asText().replaceAll("Z$", "+0000"));
                 recorrido.setHora_salida(hora_salida);
 
@@ -98,6 +100,9 @@ public class RecorridoController extends Controller
 
             String infoClima = json.get("infoClima").asText();
             recorrido.setInfoClima(infoClima);
+
+            String esFrecuente = json.get("esFrecuente").asText();
+            recorrido.setEsFrecuente(esFrecuente);
         }
         catch(Exception e)
         {
@@ -110,29 +115,29 @@ public class RecorridoController extends Controller
         {
             JPA.em().flush();
             result.put("status","OK");
-            result.put("message","Recorrido agregado");
+            result.put("message","Recorrido Grupal agregado");
             return ok(toJson(result));
         }
         catch (Exception e)
         {
             e.printStackTrace();
             result.put("status","ERROR");
-            result.put("message","Error agregando el recorrido");
+            result.put("message","Error agregando el recorrido grupal");
             return badRequest(toJson(result));
         }
     }
 
     @Transactional
     @BodyParser.Of(BodyParser.Json.class)
-    public Result updateRecorrido()
+    public Result updateRecorridoGrupal()
     {
         ObjectNode result = Json.newObject();
         try
         {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = request().body().asJson();
-            Recorrido recorrido = new Recorrido();
-            Recorrido old = JPA.em().find(Recorrido.class,Integer.valueOf(json.get("id").asText()));
+            RecorridoGrupal recorrido = new RecorridoGrupal();
+            RecorridoGrupal old = JPA.em().find(RecorridoGrupal.class,Integer.valueOf(json.get("id").asText()));
             try
             {
                 int id = json.get("id").asInt();
@@ -143,11 +148,11 @@ public class RecorridoController extends Controller
                     recorrido.setId_usuario(id_usuario);
                     old.setId_usuario(recorrido.getId_usuario());
                 }
-                if(json.get("realizado")!=null)
+                if(json.get("nombre_organizador")!=null)
                 {
-                    Boolean realizado = json.get("realizado").asBoolean();
-                    recorrido.setRealizado(realizado);
-                    old.setRealizado(recorrido.isRealizado());
+                    String nombre_organizador = json.get("nombre_organizador").asText();
+                    recorrido.setNombre_organizador(nombre_organizador);
+                    old.setNombre_organizador(recorrido.getNombre_organizador());
                 }
                 if(json.get("origen")!=null)
                 {
@@ -210,6 +215,12 @@ public class RecorridoController extends Controller
                     String infoClima = json.get("infoClima").asText();
                     recorrido.setInfoClima(infoClima);
                     old.setInfoClima(recorrido.getInfoClima());
+                }
+                if(json.get("esFrecuente")!=null)
+                {
+                    String esFrecuente = json.get("esFrecuente").asText();
+                    recorrido.setEsFrecuente(esFrecuente);
+                    old.setEsFrecuente(recorrido.getEsFrecuente());
                 }
             }
             catch(Exception e)

@@ -9,8 +9,10 @@
 # An example controller showing how to write asynchronous code
 #GET     /message                    controllers.AsyncController.message
 
+#Estudiantes
 POST    /students/add               controllers.StudentController.addStudent()
 GET     /students/all               controllers.StudentController.listStudents()
+#Usuarios
 POST    /user/add                   controllers.UsuarioController.createUser()
 POST    /login                      controllers.UsuarioController.loginUser()
 PUT     /user/update                controllers.UsuarioController.updateUser()
@@ -18,11 +20,18 @@ GET     /user/:id                   controllers.UsuarioController.getUser(id: In
 GET     /users                      controllers.UsuarioController.getUsers()
 GET     /user/:id/friends           controllers.UsuarioController.getFriends(id: Integer)
 POST    /friends/add                controllers.UsuarioController.addFriend()
+#Recorridos
 GET     /recorridos                 controllers.RecorridoController.getRecorridos()
+GET     /recorridosUser/:id         controllers.RecorridoController.getRecorridosUsuario(id: Integer)
 GET     /recorrido/:id              controllers.RecorridoController.getRecorrido(id: Integer)
 POST    /recorrido/add              controllers.RecorridoController.createRecorrido()
 PUT     /recorrido/update           controllers.RecorridoController.updateRecorrido()
-GET     /recorridosUser/:id         controllers.RecorridoController.getRecorridosUsuario(id: Integer)
+#RecorridosGrupales
+GET     /recorridosGrupal           controllers.RecorridoGrupalController.getRecorridosGrupales()
+GET     /recorridosGrupalUser/:id   controllers.RecorridoGrupalController.getRecorridosGrupalesUsuario(id: Integer)
+GET     /recorridoGrupal/:id/:id2   controllers.RecorridoGrupalController.getRecorridoGrupal(id: Integer, id2: Integer)
+POST    /recorridoGrupal/add        controllers.RecorridoGrupalController.createRecorridoGrupal()
+PUT     /recorridoGrupal/update     controllers.RecorridoGrupalController.updateRecorridoGrupal()
 
 
 # Map static resources from the /public folder to the /assets URL path
