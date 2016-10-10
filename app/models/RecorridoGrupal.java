@@ -12,7 +12,7 @@ import java.util.Date;
 
 
 /**
- * Created by santi on 3/10/2016.
+ * Created by Junior on 3/10/2016.
  */
 @Entity
 @DynamicUpdate(value=true)

@@ -20,7 +20,7 @@ import java.text.*;
 import static play.libs.Json.toJson;
 
 /**
- * Created by santi on 5/10/2016.
+ * Created by Junior on 5/10/2016.
  */
 public class RecorridoController extends Controller
 {

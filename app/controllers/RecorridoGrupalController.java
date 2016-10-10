@@ -23,7 +23,7 @@ import java.text.*;
 import static play.libs.Json.toJson;
 
 /**
- * Created by santi on 5/10/2016.
+ * Created by Junior on 5/10/2016.
  */
 public class RecorridoGrupalController extends Controller
 {
@@ -257,33 +257,26 @@ public class RecorridoGrupalController extends Controller
     @BodyParser.Of(BodyParser.Json.class)
     public Result insertToRecorridoGrupal()
     {
-        System.out.println("ola");
         ObjectNode result = Json.newObject();
         JsonNode json = request().body().asJson();
 
         int id = json.get("id").asInt();
         int id_recorrido = json.get("id_recorrido").asInt();
-        System.out.println("ola0");
+        RecorridoGrupal recorrido = JPA.em().find(RecorridoGrupal.class,id_recorrido);
         try
         {
-            ///String hql = "insert into recorridogrupal_usuario (RecorridoGrupal_id, suscritos_id)"
-            //        + " SELECT "+id_recorrido+" as RecorridoGrupal_id,"+id+" as suscritos_id";
-            String hql = "insert into recorridogrupal_usuario (RecorridoGrupal_id, suscritos_id)"
-                    + " SELECT "+id_recorrido+" as RecorridoGrupal_id,"+id+" as suscritos_id";
-            //String hql = "Update RecorridoGrupal set suscritos = (Select p from Usuario p where id = "+id+") where id = "+id_recorrido;
-            //System.out.println("ola1");
-            //List<RecorridoGrupal> viaje = JPA.em().createQuery("select p from RecorridoGrupal as p where id = "+id_recorrido, RecorridoGrupal.class).getResultList();
-            List viaje2 = JPA.em().createQuery("select suscritos from RecorridoGrupal as p where p.id = "+id_recorrido).getResultList();
+            List suscritos = JPA.em().createQuery("select suscritos from RecorridoGrupal as p where p.id = "+id_recorrido).getResultList();
             Usuario user = JPA.em().find(Usuario.class,Integer.valueOf(id));
-            //viaje2.add(user);
+            suscritos.add(user);
 
-            //String hql = "Update RecorridoGrupal set suscritos = "+viaje2+" where id = "+id_recorrido;
+            recorrido.setSuscritos((List<Usuario>)suscritos);
 
-            System.out.println(toJson(viaje2));
-            //List<Usuario> us = viaje.getSuscritos();
-            Query query = JPA.em().createQuery(hql);
-            System.out.println("ola2");
-            //int rowsAffected = query.executeUpdate();
+            JPA.em().persist(recorrido);
+
+            JPA.em().flush();
+            result.put("status","OK");
+            result.put("message","Recorrido Grupal agregado");
+            return ok(toJson(result));
         }
         catch (Exception e)
         {
@@ -292,8 +285,5 @@ public class RecorridoGrupalController extends Controller
             result.put("message","Ha ocurrido un error inscribiendo al usuario");
             return ok(toJson(result));
         }
-        result.put("status","OK");
-        result.put("message","Ha sido agregado al recorrido grupal");
-        return ok(toJson(result));
     }
 }
