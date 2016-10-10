@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.RecorridoGrupal;
 import models.Usuario;
+import models.Usuario;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -42,7 +43,8 @@ public class RecorridoGrupalController extends Controller
     public Result getRecorridosGrupalesUsuario(Integer id)
     {
         ObjectNode result = Json.newObject();
-        List viajes = JPA.em().createQuery("select p, case when s.id is null then 0 else 1 end as registrado from RecorridoGrupal as p right join p.suscritos as s where s.id = "+id).getResultList();
+        List viajes = JPA.em().createQuery("select p, case when s.id ="+id+" then 1 else 0 end as registrado " +
+                "from RecorridoGrupal as p left join p.suscritos as s ").getResultList();
         return ok(toJson(viajes));
     }
 
@@ -50,7 +52,8 @@ public class RecorridoGrupalController extends Controller
     public Result getRecorridoGrupal(Integer id, Integer id2)
     {
         ObjectNode result = Json.newObject();
-        List viajes = JPA.em().createQuery("select p, case when s.id is null then 0 else 1 end as registrado from RecorridoGrupal as p left join p.suscritos as s where p.id = "+id+" and s.id = "+id2).getResultList();
+        List viajes = JPA.em().createQuery("select p, case when s.id ="+id+" then 1 else 0 end as registrado " +
+                "from RecorridoGrupal as p left join p.suscritos as s where p.id = "+id2).getResultList();
         return ok(toJson(viajes));
     }
 
@@ -265,11 +268,22 @@ public class RecorridoGrupalController extends Controller
         {
             ///String hql = "insert into recorridogrupal_usuario (RecorridoGrupal_id, suscritos_id)"
             //        + " SELECT "+id_recorrido+" as RecorridoGrupal_id,"+id+" as suscritos_id";
-            String hql = "Update RecorridoGrupal set suscritos = (Select p from Usuario p where id = "+id+") where id = "+id_recorrido;
-            System.out.println("ola1");
+            String hql = "insert into recorridogrupal_usuario (RecorridoGrupal_id, suscritos_id)"
+                    + " SELECT "+id_recorrido+" as RecorridoGrupal_id,"+id+" as suscritos_id";
+            //String hql = "Update RecorridoGrupal set suscritos = (Select p from Usuario p where id = "+id+") where id = "+id_recorrido;
+            //System.out.println("ola1");
+            //List<RecorridoGrupal> viaje = JPA.em().createQuery("select p from RecorridoGrupal as p where id = "+id_recorrido, RecorridoGrupal.class).getResultList();
+            List viaje2 = JPA.em().createQuery("select suscritos from RecorridoGrupal as p where p.id = "+id_recorrido).getResultList();
+            Usuario user = JPA.em().find(Usuario.class,Integer.valueOf(id));
+            //viaje2.add(user);
+
+            //String hql = "Update RecorridoGrupal set suscritos = "+viaje2+" where id = "+id_recorrido;
+
+            System.out.println(toJson(viaje2));
+            //List<Usuario> us = viaje.getSuscritos();
             Query query = JPA.em().createQuery(hql);
             System.out.println("ola2");
-            int rowsAffected = query.executeUpdate();
+            //int rowsAffected = query.executeUpdate();
         }
         catch (Exception e)
         {
