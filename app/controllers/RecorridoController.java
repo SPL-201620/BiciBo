@@ -26,6 +26,8 @@ public class RecorridoController extends Controller
 {
     public static final String SALT = "my-salt-text";
 
+    public SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Transactional(readOnly = true)
     public Result getRecorridos()
     {
@@ -70,17 +72,15 @@ public class RecorridoController extends Controller
 
             Long destino = json.get("destino").asLong();
             recorrido.setDestino(destino);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             try
             {
-                Date hora_salida = formatter.parse(json.get("hora_salida").asText().replaceAll("Z$", "+0000"));
+                Date hora_salida = formatter.parse(json.get("hora_salida").asText());
                 recorrido.setHora_salida(hora_salida);
 
-                Date hora_llegada = formatter.parse(json.get("hora_llegada").asText().replaceAll("Z$", "+0000"));
+                Date hora_llegada = formatter.parse(json.get("hora_llegada").asText());
                 recorrido.setHora_llegada(hora_llegada);
 
-                Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText().replaceAll("Z$", "+0000"));
+                Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText());
                 recorrido.setFecha_recorrido(fecha_recorrido);
             }
             catch (ParseException e)
@@ -161,24 +161,23 @@ public class RecorridoController extends Controller
                     recorrido.setDestino(destino);
                     old.setDestino(recorrido.getDestino());
                 }
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
                 try
                 {
                     if(json.get("hora_salida")!=null)
                     {
-                        Date hora_salida = formatter.parse(json.get("hora_salida").asText().replaceAll("Z$", "+0000"));
+                        Date hora_salida = formatter.parse(json.get("hora_salida").asText());
                         recorrido.setHora_salida(hora_salida);
                         old.setHora_salida(recorrido.getHora_salida());
                     }
                     if(json.get("hora_llegada")!=null)
                     {
-                        Date hora_llegada = formatter.parse(json.get("hora_llegada").asText().replaceAll("Z$", "+0000"));
+                        Date hora_llegada = formatter.parse(json.get("hora_llegada").asText());
                         recorrido.setHora_llegada(hora_llegada);
                         old.setHora_llegada(recorrido.getHora_llegada());
                     }
                     if(json.get("fecha_recorrido")!=null)
                     {
-                        Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText().replaceAll("Z$", "+0000"));
+                        Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText());
                         recorrido.setFecha_recorrido(fecha_recorrido);
                         old.setFecha_recorrido(recorrido.getFecha_recorrido());
                     }

@@ -16,6 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Date;
+import javax.persistence.*;
 import java.text.*;
 
 import static play.libs.Json.toJson;
@@ -26,6 +27,8 @@ import static play.libs.Json.toJson;
 public class RecorridoGrupalController extends Controller
 {
     public static final String SALT = "my-salt-text";
+
+    public SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Transactional(readOnly = true)
     public Result getRecorridosGrupales()
@@ -71,18 +74,15 @@ public class RecorridoGrupalController extends Controller
 
             Long destino = json.get("destino").asLong();
             recorrido.setDestino(destino);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             try
             {
-                System.out.println(json.get("hora_salida").asText());
-                Date hora_salida = formatter.parse(json.get("hora_salida").asText().replaceAll("Z$", "+0000"));
+                Date hora_salida = formatter.parse(json.get("hora_salida").asText());
                 recorrido.setHora_salida(hora_salida);
 
-                Date hora_llegada = formatter.parse(json.get("hora_llegada").asText().replaceAll("Z$", "+0000"));
+                Date hora_llegada = formatter.parse(json.get("hora_llegada").asText());
                 recorrido.setHora_llegada(hora_llegada);
 
-                Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText().replaceAll("Z$", "+0000"));
+                Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText());
                 recorrido.setFecha_recorrido(fecha_recorrido);
             }
             catch (ParseException e)
@@ -166,24 +166,23 @@ public class RecorridoGrupalController extends Controller
                     recorrido.setDestino(destino);
                     old.setDestino(recorrido.getDestino());
                 }
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
                 try
                 {
                     if(json.get("hora_salida")!=null)
                     {
-                        Date hora_salida = formatter.parse(json.get("hora_salida").asText().replaceAll("Z$", "+0000"));
+                        Date hora_salida = formatter.parse(json.get("hora_salida").asText());
                         recorrido.setHora_salida(hora_salida);
                         old.setHora_salida(recorrido.getHora_salida());
                     }
                     if(json.get("hora_llegada")!=null)
                     {
-                        Date hora_llegada = formatter.parse(json.get("hora_llegada").asText().replaceAll("Z$", "+0000"));
+                        Date hora_llegada = formatter.parse(json.get("hora_llegada").asText());
                         recorrido.setHora_llegada(hora_llegada);
                         old.setHora_llegada(recorrido.getHora_llegada());
                     }
                     if(json.get("fecha_recorrido")!=null)
                     {
-                        Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText().replaceAll("Z$", "+0000"));
+                        Date fecha_recorrido = formatter.parse(json.get("fecha_recorrido").asText());
                         recorrido.setFecha_recorrido(fecha_recorrido);
                         old.setFecha_recorrido(recorrido.getFecha_recorrido());
                     }
@@ -249,5 +248,38 @@ public class RecorridoGrupalController extends Controller
             result.put("message", "Ocurrio un error al actualizar el recorrido!");
             return badRequest(toJson(result));
         }
+    }
+
+    @Transactional
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result insertToRecorridoGrupal()
+    {
+        System.out.println("ola");
+        ObjectNode result = Json.newObject();
+        JsonNode json = request().body().asJson();
+
+        int id = json.get("id").asInt();
+        int id_recorrido = json.get("id_recorrido").asInt();
+        System.out.println("ola0");
+        try
+        {
+            ///String hql = "insert into recorridogrupal_usuario (RecorridoGrupal_id, suscritos_id)"
+            //        + " SELECT "+id_recorrido+" as RecorridoGrupal_id,"+id+" as suscritos_id";
+            String hql = "Update RecorridoGrupal set suscritos = (Select p from Usuario p where id = "+id+") where id = "+id_recorrido;
+            System.out.println("ola1");
+            Query query = JPA.em().createQuery(hql);
+            System.out.println("ola2");
+            int rowsAffected = query.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            result.put("status","ERROR");
+            result.put("message","Ha ocurrido un error inscribiendo al usuario");
+            return ok(toJson(result));
+        }
+        result.put("status","OK");
+        result.put("message","Ha sido agregado al recorrido grupal");
+        return ok(toJson(result));
     }
 }

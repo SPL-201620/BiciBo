@@ -46,7 +46,7 @@ public class RecorridoGrupal
 
     public String esFrecuente;
 
-    @OneToMany
+    @ManyToMany
     List<Usuario> suscritos;
 
     public Integer getId() {
