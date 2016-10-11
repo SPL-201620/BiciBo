@@ -34,6 +34,9 @@ POST    /recorridoGrupal/add        controllers.RecorridoGrupalController.create
 PUT     /recorridoGrupal/update     controllers.RecorridoGrupalController.updateRecorridoGrupal()
 POST    /recorridoGrupal/insert     controllers.RecorridoGrupalController.insertToRecorridoGrupal()
 
+GET     /contact/:address/:message  controllers.UsuarioController.contact(address: String, message: String)
+#GET     /contact                    controllers.UsuarioController.contact()
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

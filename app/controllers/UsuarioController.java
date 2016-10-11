@@ -213,4 +213,15 @@ public class UsuarioController extends Controller
 
         return hash.toString();
     }
+
+    @Transactional
+    public Result contact(String address, String message)
+    {
+        Mails mail = new Mails();
+        mail.message(address, message);
+        render();
+        result.put("status","OK");
+        result.put("message","correo enviado");
+        return ok(toJson(result));
+    }
 }
