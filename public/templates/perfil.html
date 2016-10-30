@@ -1,0 +1,223 @@
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();getInfoUsuario();listarAmigos();listarRegistrados();listarRecorridos();" >
+<div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class="active"><a href="#/perfil">Perfil<span class="sr-only">(current)</span></a></li>
+        <li><a href="#/individual">Desplazamientos individuales</a></li>
+        <li><a href="#/grupo">Desplazamientos grupales</a></li>
+      </ul>
+</div>
+    
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h1 class="page-header">Perfil</h1>
+      
+	  <div class="text-danger" style="padding-bottom:5px;">{{ msgError }}</div>
+	  <br />
+      <div id="tablaInfoUsuario" class="table-responsive">
+      <div class="text-right" style=" padding-bottom:5px;"><button type="button" class="btn btn-warning" onclick="$('#tablaInfoUsuario').hide();$('#formEditarUsuario').show();">Editar</button></div>
+      <table class="table table-bordered" ng-show="infoUsuario.email!=''">
+		<tbody>
+		<tr>
+		<td width="25%" rowspan="3">
+		<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 200px; width: 200px"/> </td>
+		<td width="75%"><strong>{{ infoUsuario.nombre }}</strong></td>
+		</tr>
+		<tr>
+		<td colspan="2">{{ infoUsuario.email }}</td>
+		</tr>
+		<tr>
+		<td colspan="2">{{ infoUsuario.edad }} años</td>
+		</tr>
+		<tr style="border:0;">
+			<td colspan="2">
+				<div class="text-center">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalNuevoAmigo">Agregar amigos</button>
+					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalAmigos">Lista amigos</button>
+					<a href="#/individual" class="btn btn-info">Rutas realizadas</a>
+					<button type="button" class="btn btn-info hide" data-toggle="modal" data-target="#myModalRecorridos">Rutas realizadas</button>
+				
+					</div>
+			</td>
+		</tr>		
+		</tbody>
+		</table>
+      </div>
+          
+      <form id="formEditarUsuario" method="post" enctype="multipart/form-data" name="formEditarUsuario" class="form-horizontal" style="display:none;">      
+      
+	  <div class="form-group">
+	    <label for="nombre" class="col-sm-2 control-label">Nombre</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
+	      ng-model="infoUsuario.nombre">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="email" class="col-sm-2 control-label">Email</label>
+	    <div class="col-sm-10">
+	      <input type="email" class="form-control" id="emai" name="email" placeholder="Email"
+	      ng-model="infoUsuario.email">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="fotoPerfil" class="col-sm-2 control-label">Foto</label>
+	    <div class="col-sm-10">
+	      <input type="file" class="form-control" id="fotoPerfil" name="fotoPerfil">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="edad" class="col-sm-2 control-label">Edad</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="edad" name="edad" placeholder="Edad"
+	      ng-model="infoUsuario.edad">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10 text-center">
+	      <button type="submit" class="btn btn-primary" ng-click="actualizarUsuario()">Actualizar</button>
+	      <button type="submit" class="btn btn-primary" ng-click="noActualizar()">Cancelar</button>
+	    </div>
+	  </div>
+	</form>
+	  
+		
+	  
+	
+</div>
+<!-- 
+<google-map center="map.center" 
+    			zoom="map.zoom" 
+    			draggable="true" 
+    			options="map.options" 
+    			control="map.control">
+		<marker coords="marker.coords" options="marker.options" idkey="marker.id" ></marker>        
+    </google-map>
+ -->
+</div>
+
+<!-- Modal Lista de amigos-->
+	  <div class="modal fade" id="myModalAmigos" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Lista de Amigos</h4>
+	        </div>
+	        <div class="modal-body">
+	        	<div id="tablaAmigos">
+		          	<table class="table table-bordered" ng-repeat="record in listaAmigos">
+			  	
+							<tr>
+								<td width="10%">
+								<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 50px; width: 50px"/> </td>
+								<td width="70%" style="vertical-align: middle">
+								<strong>{{ record.nombre }}</strong>
+								<br />
+								{{ record.email }}
+								</td>
+								<td width="20%"><a href="javascript:;" onclick="enviarCorreo();">enviar mensaje</a></td>
+								</tr>
+						
+					</table>
+	        	</div>
+				<div id="areaCoreo"></div>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+	  
+<!-- Modal nuevos amigos-->
+	  <div class="modal fade" id="myModalNuevoAmigo" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Agregar amigos</h4>
+	        </div>
+	        <div class="modal-body">
+	        	<div class="input-group">
+	        		<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+	        		<input type="text" class="form-control" placeholder="Buscar amigo" ng-model="buscar">	        		
+	        	</div>
+	          	<table class="table table-bordered" ng-repeat="record in listaRegistrados | filter:buscar">
+		  	
+						<tr>
+							<td width="10%">
+							<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 50px; width: 50px"/> </td>
+							<td width="85%">
+								<strong>{{ record.nombre }}</strong>
+							</td>
+							<td width="5%"><a href="#" ng-click="agregarAmigo(record.id);">agregar</a></td>
+							</tr>
+					
+				</table>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+
+<!-- Modal Lista de recorridos-->
+	  <div class="modal fade" id="myModalRecorridos" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Lista de Rutas</h4>
+	        </div>
+	        <div class="modal-body">
+	        	<div class="input-group">
+	        		<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+	        		<input type="text" class="form-control" placeholder="Buscar ruta" ng-model="buscar2">	        		
+	        	</div>
+	          	<table class="table table-bordered" ng-repeat="record in listaRecorridos | filter:buscar2">
+		  	
+						<tr>
+							<td width="10%">{{ record.id }}</td>
+							<td width="90%" style="vertical-align: middle">
+								<div class="row">
+								  <div class="col-xs-6"><strong>Origen:</strong> {{ record.origen }}</div>
+								  <div class="col-xs-6"><strong>Destino:</strong> {{ record.destino }}</div>
+								</div>
+								<div class="row">
+								  <div class="col-xs-6"><strong>Hora Salida:</strong> {{ record.horaSalida | date:'h:mma' }}</div>
+								  <div class="col-xs-6"><strong>Hora Llegada:</strong> {{ record.horaLlegada | date:'h:mma'  }}</div>
+								</div>								
+								<div class="row">
+								  <div class="col-xs-6"><strong>Fecha del Recorrido:</strong> {{ record.fechaRecorrido | date }}</div>
+								  <div class="col-xs-6"><strong>Realizado:</strong> {{ record.realizado }}</div>
+								</div>							
+								<div class="row">
+								  <div class="col-xs-6"><strong>Distancia Recorrida:</strong> {{ record.distancia }}</div>
+								  <div class="col-xs-6"><strong>Tiempo Estimado:</strong> {{ record.tiempoEstimado }}</div>
+								</div>						
+								<div class="row">
+								  <div class="col-xs-6"><strong>Calorias quemadas:</strong> {{ record.caloriasQuemadas }}</div>
+								  <div class="col-xs-6"><strong>Info del Clima:</strong> {{ record.infoClima }}</div>
+								</div>
+							</td>
+							</tr>
+					
+				</table>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+
+          
