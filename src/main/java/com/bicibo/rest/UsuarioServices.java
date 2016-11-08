@@ -495,6 +495,10 @@ public class UsuarioServices
             	mens.setUsuarioOrigen(usuarioOrigen);
             	mens.setUsuarioDestino(usuarioDestino);
             	mens.setMensaje(mensaje);
+            	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+         	    //get current date time with Date()
+         	    Date date = new Date();
+            	mens.setFechaHora(dateFormat.format(date))
                 try
                 {
                     em.getTransaction().begin();
@@ -523,6 +527,39 @@ public class UsuarioServices
                 }
             }
             
+        }
+        else
+        {
+            Map<String, String> entity = Maps.newHashMap();
+            entity.put("status", "ERROR");
+            entity.put("message", "Usuario no esta loggeado");
+            response = Response.status(Response.Status.BAD_REQUEST)
+                    .entity(entity)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            return response;
+        }
+    }
+    
+    @POST
+    @Path("/sitiosAlquiler")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response listarSitiosAlquiler(String json, @Context HttpServletRequest req)
+    {
+        Response response = null;
+        HttpSession session= req.getSession(true);
+        Object user = session.getAttribute("username");
+
+        if(user != null)
+        {
+        	EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+            List<SitioAlquiler> sitios = (List<SitioAlquiler>) em.createQuery("select p from SitiosAlquiler p").getResultList();
+            response = Response.status(Response.Status.OK)
+                    .entity(sitios)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            return  response;            
         }
         else
         {
