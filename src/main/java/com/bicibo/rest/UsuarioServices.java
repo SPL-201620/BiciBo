@@ -498,7 +498,7 @@ public class UsuarioServices
                 try
                 {
                     em.getTransaction().begin();
-                    em.persist(usuario);
+                    em.persist(mens);
                     em.getTransaction().commit();
                     em.close();
                     Map<String, String> entity = Maps.newHashMap();
