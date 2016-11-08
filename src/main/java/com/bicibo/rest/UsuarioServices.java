@@ -90,35 +90,7 @@ public class UsuarioServices
             }
         }
     }
-
-    @GET
-    @Path("/user/{id}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
-    public Response infoUsuario(@PathParam("id") String id, @Context HttpServletRequest req)
-    {
-        HttpSession session= req.getSession(true);
-        Response response = null;
-        Object user = session.getAttribute("username");
-        if(user != null)
-        {
-            String email = user.toString();
-            EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
-            Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.email = :value1")
-                    .setParameter("value1", email).getSingleResult();
-            response = Response.status(Response.Status.OK)
-                    .entity(usuario)
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-            return response;
-        }
-        else
-        {
-            response = Response.status(Response.Status.BAD_REQUEST).build();
-            return response;
-        }
-    }
-
+    
     @POST
     @Path("/login")
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -230,8 +202,36 @@ public class UsuarioServices
         }
     }
 
-    @PUT
+    @GET
     @Path("/user/{id}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response infoUsuario(@PathParam("id") String id, @Context HttpServletRequest req)
+    {
+        HttpSession session= req.getSession(true);
+        Response response = null;
+        Object user = session.getAttribute("username");
+        if(user != null)
+        {
+            String email = user.toString();
+            EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+            Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.email = :value1")
+                    .setParameter("value1", email).getSingleResult();
+            response = Response.status(Response.Status.OK)
+                    .entity(usuario)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            return response;
+        }
+        else
+        {
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            return response;
+        }
+    }
+
+    @PUT
+    @Path("/user/{id}")//porque le llega id si ese va en el request?
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response updateUser(@PathParam("id") String iD, String json, @Context HttpServletRequest req)
@@ -331,7 +331,7 @@ public class UsuarioServices
     }
 
     @GET
-    @Path("/users")
+    @Path("/users")//aqui deberia recibir un id para listar unicamente los que no son amigos
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response listRegisterdUsers(String json, @Context HttpServletRequest req)
@@ -374,7 +374,7 @@ public class UsuarioServices
     }
 
     @GET
-    @Path("/friends")
+    @Path("/friends")//le deberia llegar el id del usuario auttenticado apra listar solo los amigos
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response friends(String json, @Context HttpServletRequest req)
@@ -409,7 +409,7 @@ public class UsuarioServices
     }
 
     @POST
-    @Path("/friends/add")
+    @Path("/friend")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response addFriend(String json, @Context HttpServletRequest req)
