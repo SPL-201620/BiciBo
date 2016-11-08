@@ -331,7 +331,7 @@ public class UsuarioServices
     }
 
     @GET
-    @Path("/users")//aqui deberia recibir un id para listar unicamente los que no son amigos
+    @Path("/users")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response listRegisterdUsers(String json, @Context HttpServletRequest req)
@@ -374,7 +374,7 @@ public class UsuarioServices
     }
 
     @GET
-    @Path("/friends")//le deberia llegar el id del usuario auttenticado apra listar solo los amigos
+    @Path("/friends")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response friends(String json, @Context HttpServletRequest req)
@@ -427,6 +427,76 @@ public class UsuarioServices
             Integer id_friend = jsonObject.get("id_friend").getAsInt();
             Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.email = :value1")
                     .setParameter("value1", user.toString()).getSingleResult();
+            Usuario userFriend = em.find(Usuario.class, id_friend);
+            //user.setParent(user);
+            usuario.getAmigos().add(userFriend);
+            em.merge(user);
+            em.merge(userFriend);
+            Map<String, String> entity = Maps.newHashMap();
+            entity.put("status", "OK");
+            entity.put("message", "Amigo agregado");
+            response = Response.status(Response.Status.OK)
+                    .entity(entity)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            return  response;
+        }
+        else
+        {
+            Map<String, String> entity = Maps.newHashMap();
+            entity.put("status", "ERROR");
+            entity.put("message", "Usuario no esta loggeado");
+            response = Response.status(Response.Status.BAD_REQUEST)
+                    .entity(entity)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            return response;
+        }
+    }
+    
+    @POST
+    @Path("/mensajes")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response enviarMensaje(String json, @Context HttpServletRequest req)
+    {
+        Response response = null;
+        HttpSession session= req.getSession(true);
+        Object user = session.getAttribute("username");
+
+        if(user != null)
+        {
+            JsonElement jsonElement = new JsonParser().parse(json);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+            Integer id_usuario_origen = jsonObject.get("id_usuario_origen").getAsInt();
+            Usuario usuarioOrigen = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.id = :id1")
+                    .setParameter("id1", id_usuario_origen).getSingleResult();
+            String mensaje = (String) jsonObject.get("mensaje");
+            Integer id_usuario_destino = jsonObject.get("id_usuario_destino").getAsInt();
+            Usuario usuarioDestino = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.id = :id2")
+                    .setParameter("id2", id_usuario_destino).getSingleResult();
+            Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u where u.email = :value1")
+                    .setParameter("value1", user.toString()).getSingleResult();
+            if (usuario.getId() != id_usuario_origen && usuario.getId() != id_usuario_destino)
+            {
+            	Map<String, String> entity = Maps.newHashMap();
+                entity.put("status", "ERROR");
+                entity.put("message", "Mensaje no permitido para el usuario");
+                response = Response.status(Response.Status.BAD_REQUEST)
+                        .entity(entity)
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+                return response;
+            }
+            else
+            {
+            	Mensaje mens = new Mensaje();
+            	mens.setUsuarioOrigen(usuarioOrigen);
+            	mens.setUsuarioDestino(usuarioDestino);
+            	mens.setMensaje(mensaje);
+            	
+            }
             Usuario userFriend = em.find(Usuario.class, id_friend);
             //user.setParent(user);
             usuario.getAmigos().add(userFriend);
