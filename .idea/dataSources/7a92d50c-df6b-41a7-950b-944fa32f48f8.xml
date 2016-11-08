@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="MySQL - bicibo@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="bicibo">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="abet"/>
+    <schema id="3" name="dbseca"/>
+    <schema id="4" name="information_schema"/>
+    <schema id="5" name="mysql"/>
+    <schema id="6" name="performance_schema"/>
+    <schema id="7" name="sakila"/>
+    <schema id="8" name="sys"/>
+    <schema id="9" name="world"/>
+  </database-model>
+</dataSource>
