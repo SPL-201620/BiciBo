@@ -15,8 +15,12 @@ public class Mensaje
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(unique = true)
+    
+    @OneToMany
     private Usuario usuarioOrigen;
+    @OneToMany
     private Usuario usuarioDestino;
+    
     private String mensaje;
     private String fechaHora;
     
@@ -34,19 +38,19 @@ public class Mensaje
     }
 
     public Usuario getUsuarioOrigen() {
-        return email;
+        return usuarioOrigen;
     }
 
     public void setUsuarioOrigen(Usuario usuarioOrigen) {
-        this.usuarioOrigen = email;
+        this.usuarioOrigen = usuarioOrigen;
     }
 
     public Usuario getUsuarioDestino() {
-        return password;
+        return usuarioDestino;
     }
 
     public void setUsuarioDestino(Usuario usuarioDestino) {
-        this.usuarioDestino = password;
+        this.usuarioDestino = usuarioDestino;
     }
 
     public String getMensaje() {
