@@ -495,21 +495,34 @@ public class UsuarioServices
             	mens.setUsuarioOrigen(usuarioOrigen);
             	mens.setUsuarioDestino(usuarioDestino);
             	mens.setMensaje(mensaje);
-            	
+                try
+                {
+                    em.getTransaction().begin();
+                    em.persist(usuario);
+                    em.getTransaction().commit();
+                    em.close();
+                    Map<String, String> entity = Maps.newHashMap();
+                    entity.put("status", "OK");
+                    entity.put("message", "Mensaje agregado");
+                    response = Response.status(Response.Status.OK)
+                            .entity(entity)
+                            .type(MediaType.APPLICATION_JSON)
+                            .build();
+                    return  response;
+                }
+                catch(Exception e)
+                {
+                    Map<String, String> entity = Maps.newHashMap();
+                    entity.put("status", "ERROR");
+                    entity.put("message", "Error al guardar el mensaje");
+                    response = Response.status(Response.Status.BAD_REQUEST)
+                            .entity(entity)
+                            .type(MediaType.APPLICATION_JSON)
+                            .build();
+                    return  response;
+                }
             }
-            Usuario userFriend = em.find(Usuario.class, id_friend);
-            //user.setParent(user);
-            usuario.getAmigos().add(userFriend);
-            em.merge(user);
-            em.merge(userFriend);
-            Map<String, String> entity = Maps.newHashMap();
-            entity.put("status", "OK");
-            entity.put("message", "Amigo agregado");
-            response = Response.status(Response.Status.OK)
-                    .entity(entity)
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-            return  response;
+            
         }
         else
         {
