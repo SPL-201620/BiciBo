@@ -1,0 +1,3 @@
+co\edu\uniandes\bicibo\service\UserService.class
+co\edu\uniandes\bicibo\rest\UserRestService.class
+co\edu\uniandes\bicibo\domain\User.class
