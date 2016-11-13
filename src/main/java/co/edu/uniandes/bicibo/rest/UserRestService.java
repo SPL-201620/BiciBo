@@ -1,7 +1,9 @@
 package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.User;
+import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.UserService;
+import co.edu.uniandes.bicibo.service.UsuarioService;
 
 import java.util.Date;
 
@@ -41,13 +43,15 @@ public class UserRestService {
         UserService userService = new UserService();
         return userService.Logout();
     }
+	
 	@Path("/user/add")
 	@POST
     @Produces(MediaType.APPLICATION_JSON)
-    public User Registrar() {
-        UserService userService = new UserService();
-        return userService.Registrar();
+    public Usuario Registrar() {
+        UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.Registrar();
     }
+	
 	@Path("/user/{id}")
 	@GET
     @Produces(MediaType.APPLICATION_JSON)

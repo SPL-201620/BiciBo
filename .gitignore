@@ -1,5 +1,5 @@
 target/*
-/target/
 
 *.MF
 target/m2e-wtp/web-resources/META-INF/maven/co.edu.uniandes.bicibo.rest/bicibo/pom.properties
+target/bicibo-0.0.1-SNAPSHOT.war
