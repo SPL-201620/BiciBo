@@ -140,4 +140,26 @@ public class UsuarioService {
     	JSONObject obj = new JSONObject();
     	return obj;
     }
+    
+    public JSONObject ListarAmigos (String id)
+    {
+    	JSONObject obj = new JSONObject();
+    	try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
+            
+            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            
+            
+            entitymanager.close();
+            emfactory.close();
+        }
+    	catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar cargar los amigos del usuario. <br>"+e.getMessage());
+        }    	
+    	return obj;
+    }
 }

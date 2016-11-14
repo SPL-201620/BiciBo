@@ -65,6 +65,30 @@
 	          return;
 	        }
 			else{
+				/*var wsGMapDistancia = $.get("http://maps.googleapis.com/maps/api/distancematrix/json", { origins: origen, destinations:  destino} );
+				wsGMapDistancia.done(function( data ) {
+					var distancia = data.rows[0].elements[0].distance.text;
+					var tiempoEstimado = data.rows[0].elements[0].duration.text;
+					$("#distancia").val(distancia);
+					$("#tiempoEstimado").val(tiempoEstimado);
+			  	});*/
+			  	
+			  	
+			  	$.ajax({
+			  	   url: "http://maps.googleapis.com/maps/api/distancematrix/json?origins="+origen+"&destinations="+destino,
+			  	   crossDomain : true,
+			  	   xhrFields: {
+			  	      withCredentials: true
+			  	   }
+			  	}).done(function( data ) {
+			  		alert('dd:'+data)
+				  		var distancia = data.rows[0].elements[0].distance.text;
+						var tiempoEstimado = data.rows[0].elements[0].duration.text;
+						$("#distancia").val(distancia);
+						$("#tiempoEstimado").val(tiempoEstimado);
+			  	   });
+			  	
+				
 				var posting = $.post( "templates/mostrarMapa.html", { ori: origen, des:  destino} );
 			  	posting.done(function( data ) {
 			    	$( "#areaMapa" ).empty().append( data );
@@ -134,7 +158,7 @@
           <form id="formLogin" class="navbar-form navbar-right" style="display:none">
 		  <div class="form-group">
 		    <label for="email">Usuario:</label>
-		    <input type="email" class="form-control" id="email" ng-model="usuario.email">
+		    <input type="text" class="form-control" id="username" ng-model="usuario.username">
 		  </div>
 		  <div class="form-group">
 		    <label for="pwd">Clave:</label>
@@ -145,7 +169,8 @@
 		  </div>
 		  <button type="submit" class="btn btn-info" ng-click="iniciarSesion()">Ingresar</button>
 		  
-		  <button type="submit" class="btn btn-success" ng-click="registrarUsuario()">Registrar</button>
+		  <button type="submit" class="btn btn-success hide" ng-click="registrarUsuario()">Registrar</button>
+		  <a href="#/registrar" class="btn btn-success" onclick="$('#formLogin').hide()">Registrar</a>
 		</form>
         </div>
       </div>

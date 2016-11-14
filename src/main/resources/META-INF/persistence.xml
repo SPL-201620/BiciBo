@@ -8,7 +8,6 @@
    <persistence-unit name="Eclipselink_JPA_Bicibo" transaction-type="RESOURCE_LOCAL">
    	  <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
       <!-- Listado de entidades que manejará la unidad de persistencia. -->
-      <class>co.edu.uniandes.bicibo.domain.Employee</class>
       <class>co.edu.uniandes.bicibo.domain.Usuario</class>
       <class>co.edu.uniandes.bicibo.domain.Recorrido</class>
       <class>co.edu.uniandes.bicibo.domain.RecorridoGrupal</class>
