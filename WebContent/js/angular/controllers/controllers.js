@@ -153,13 +153,13 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //$scope.iniciarSesion = {};
     
     $scope.iniciarSesion = function() {
-    	var email_usu = $scope.usuario.email;
+    	var username_usu = $scope.usuario.username;
     	var clave_usu = $scope.usuario.clave;
-    	if(!email_usu || !clave_usu){
+    	if(!username_usu || !clave_usu){
     		alert("Usuario y Clave son requeridos.");
     		return;
     	}else{
-        	UserSesion.iniciar.sesion({email: email_usu, clave: clave_usu}, function (response) {
+        	UserSesion.iniciar.sesion({username: username_usu, clave: clave_usu}, function (response) {
         		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
         		if(response.status == "OK"){
             		inicioSesion.resolve(response);

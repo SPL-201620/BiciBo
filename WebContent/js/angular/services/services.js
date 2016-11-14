@@ -21,7 +21,7 @@ var url_servicio_rest = '/bicibo/rest';
 services.factory('UserSesion', function ($resource) {
     var metodo = {
 		iniciar: $resource('/bicibo/rest/login', {}, {
-			sesion:{method:'POST', params:{email: '@email', clave: '@clave'}}
+			sesion:{method:'POST', params:{username: '@username', clave: '@clave'}}
 		}),
 		registrar: $resource(url_servicio_rest + '/user/add', {}, {
 			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', clave: '@clave', fotoPerfil: '@fotoPerfil'}}

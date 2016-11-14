@@ -35,10 +35,10 @@ public class UserRestService {
 	*/
 	@POST
 	@Path("/login")
-    public JSONObject Login(@QueryParam("email") String email,
+    public JSONObject Login(@QueryParam("username") String username,
     		@QueryParam("clave") String clave) {
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Login(email, clave);
+        return usuarioService.Login(username, clave);
     }
 	@Path("/logout")
 	@POST
