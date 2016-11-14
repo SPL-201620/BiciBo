@@ -65,8 +65,8 @@ services.factory('FriendFactory', function ($resource) {
 
 services.factory('RouteFactory', function ($resource) {
     var metodo = {
-    	rutas: $resource(url_servicio_rest + '/recorridosUser', {}, {
-			show:{method:'GET', params:{}, isArray: true}
+    	rutas: $resource(url_servicio_rest + '/recorridosUser/:id', {id: '@id'}, {
+			show:{method:'GET'}
 		}),
 		ruta1: $resource(url_servicio_rest + '/recorrido/add', {}, {
 			crear:{method:'POST', params: {id: '@id',
