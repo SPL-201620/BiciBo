@@ -8,20 +8,21 @@ import javax.persistence.Query;
 import org.json.simple.JSONObject;
 import javax.persistence.PersistenceContext;
 
+import co.edu.uniandes.bicibo.domain.User;
 import co.edu.uniandes.bicibo.domain.Usuario;
 import java.util.*;
 
 public class UsuarioService {
+	@PersistenceContext
+	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+	@PersistenceContext
+	EntityManager entitymanager = emfactory.createEntityManager();
 	
-    public JSONObject Registrar(String nombre, String email, String username, String clave, String fotoPerfil) {
+	public JSONObject Registrar(String nombre, String email, String username, String clave, String fotoPerfil) {
        
         JSONObject obj = new JSONObject();
         try{
-        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-
-            EntityManager entityManager;
-        	entityManager = emfactory.createEntityManager( );
-        	entityManager.getTransaction( ).begin( );
+        	entitymanager.getTransaction( ).begin( );
 
             Usuario user = new Usuario( ); 
             user.setNombre(nombre);
@@ -30,10 +31,10 @@ public class UsuarioService {
             user.setPassword(clave);
             user.setRutaFoto(fotoPerfil);
             
-            entityManager.persist( user );
-            entityManager.getTransaction( ).commit( );
+            entitymanager.persist( user );
+            entitymanager.getTransaction( ).commit( );
 
-            entityManager.close( );
+            entitymanager.close( );
             emfactory.close( );
             obj.put("status", "OK");
             obj.put("message", "Usuario Creado");
@@ -46,14 +47,9 @@ public class UsuarioService {
     }
     
     public JSONObject Login(String username, String clave) {
-        
         JSONObject obj = new JSONObject();
         try{
-        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-            EntityManager entitymanager = emfactory.createEntityManager();
             Usuario usuario = new Usuario();
-           // Usuario usuario = entitymanager.find( Usuario.class 1651 );
-            //System.out.println("Nombre ID = " + usuario.getNombre());
          // Creamos un query con JPQL y lo ejecutamos directamente.
             Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
             query.setParameter(1, username); 
@@ -63,11 +59,11 @@ public class UsuarioService {
             System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
             
             Object result = query.getSingleResult();
-            usuario = (Usuario) result;
             if(result == null){
             	obj.put("status", "ERROR");
                 obj.put("message", "Usuario o Clave incorrecta.");
             }else{
+                usuario = (Usuario) result;
 	            obj.put("id", usuario.getId().toString());
 	            obj.put("username", usuario.getUsername().toString());
 	            obj.put("status", "OK");
@@ -79,6 +75,21 @@ public class UsuarioService {
         }
     	
         return obj;
+    }
+    
+    public Usuario InfoUsuairo(int id) {
+    	 Usuario usuario = new Usuario();
+         // Creamos un query con JPQL y lo ejecutamos directamente.
+    	 Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.id = ?1");
+         query.setParameter(1, id);
+         Object result = query.getSingleResult();
+         if(result == null){
+        	 usuario = null;
+         }else{
+             usuario = (Usuario) result;
+         }
+         
+         return usuario;
     }
 
 }

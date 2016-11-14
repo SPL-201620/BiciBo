@@ -46,7 +46,9 @@ public class UserRestService {
         UserService userService = new UserService();
         return userService.Logout();
     }
-	
+	/*
+	 * Servicio para el modulo de registro de usuarios
+	 * */
 	@POST
 	@Path("/user")
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
@@ -58,12 +60,14 @@ public class UserRestService {
         UsuarioService usuarioService = new UsuarioService();
         return usuarioService.Registrar(nombre, email, username, clave, fotoPerfil);
     }
-	
-	@Path("/user/{id}")
+	/*
+	 * Servicio para consultar la info de un usuario.
+	 * */
 	@GET
-    public User InfoUsuairo(@PathParam("id") String id) {
-        UserService userService = new UserService();
-        return userService.InfoUsuairo(id);
+	@Path("/user/{id}")
+    public Usuario InfoUsuairo(@PathParam("id") String id) {
+        UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.InfoUsuairo(Integer.parseInt(id));
     }
 	@Path("/user/{id}")
 	@PUT
