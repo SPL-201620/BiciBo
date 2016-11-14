@@ -151,6 +151,14 @@ public class UsuarioService {
             
             Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
             
+            List<Usuario> amigos = usuario.getAmigos();
+            String mensaje = "[";
+            for(Usuario e:amigos) 
+            {
+            	mensaje = mensaje + "{ \"id\" : " + e.getId() + 
+            						", \"nombre\" : " + e.getNombre();
+                System.out.println("Employee NAME :"+e);
+            }
             
             entitymanager.close();
             emfactory.close();
