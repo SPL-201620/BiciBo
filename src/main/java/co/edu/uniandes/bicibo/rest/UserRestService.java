@@ -85,6 +85,7 @@ public class UserRestService
 	@Path("/friends/{id}")
 	@GET
     public User ListarAmigos(@PathParam("id") String id) {
+		//pruebas
         UserService userService = new UserService();
         return userService.ListarAmigos(id);
     }
