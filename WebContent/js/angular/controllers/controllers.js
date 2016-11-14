@@ -234,9 +234,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //USUARIO
       $scope.infoUsuario = {
               nombre: '',
-              email: '',
-              rutaFoto: '',
-              edad: ''
+              mail: '',
+              password: '',
+              username: '',
+              edad: '',
+              rutaFoto: ''              
       };
     
     //INFO USUARIO ESPECIFICO
