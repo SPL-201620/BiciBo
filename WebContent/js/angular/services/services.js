@@ -37,14 +37,17 @@ services.factory('UserSesion', function ($resource) {
 //Servicios USUARIO
 services.factory('UserFactory', function ($resource) {
     var metodo = {
-		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, {
+		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, 
+		{
 			show:{method:'GET'},
 		}),
-		user: $resource(url_servicio_rest+'/user',{},{
+		user: $resource(url_servicio_rest+'/user',{},
+		{
 			update: { method: 'PUT', params: {id: '@id', username: '@username',  email: '@email', password: '@password',  edad: '@edad', nombre: '@nombre', rutaFoto: '@rutaFoto'} }
 		}),
-		usuarios: $resource(url_servicio_rest + '/users', {}, {
-			mostrar:{method:'GET', params:{}, isArray: true}
+		usuarios: $resource(url_servicio_rest + '/users/:id', {id: '@id'}, 
+		{
+			mostrar:{method:'GET'}
 		})
     };
     return metodo;
