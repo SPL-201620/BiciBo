@@ -243,17 +243,18 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       };
     
     //INFO USUARIO ESPECIFICO
-    $scope.getInfoUsuario = function(){
-		console.log("infoUsuario")
+    $scope.getInfoUsuario = function()
+    {
     	var cookieUsr = $cookieStore.get('usuario');
-		console.log(cookieUsr)
-    	alert('Consultando info usuario de id: ' + cookieUsr.id + '-username: '+ cookieUsr.username);
-    	UserFactory.usuario.show({id: cookieUsr.id}, function (response) {
-    		alert('Respuesta del servicio REST /user/{id}:'+response.username)
-    		if(response.email == null){
+    	UserFactory.usuario.show({id: cookieUsr.id}, 
+    	function (response) 
+    	{
+    		if(response.email == null)
+    		{
     			$scope.msgError = "No se encontro info para el usuario."; 
-    		}else{
-    			//alert(response);
+    		}
+    		else
+    		{
     			$scope.infoUsuario = response;    			
     		}
     	})
@@ -263,23 +264,18 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.listaRegistrados = {};
 
     //LISTA USUARIOS REGISTRADOS
-	$scope.listarRegistrados = function(){
-		console.log("listar registrados")
-  		//$scope.listaRegistrados = factoryUsuarios;
-  		//alert('listando usuarios registrados: ')
-	  	UserFactory.usuarios.mostrar(function (response)
+	$scope.listarRegistrados = function()
+	{
+		var cookieUsr = $cookieStore.get('usuario');
+	  	UserFactory.usuarios.mostrar({id: cookieUsr.id}, function (response)
 		{
-			//alert('listaAmigos:'+response[0]);
-	  		//alert('listado de usuarios registrados: '+response.length)
-	  		if(response.length <= 0){
+	  		if(response.length <= 0)
+	  		{
 	  			$scope.msgError = "No hay usuarios registrados en el momento"; 
-	  		}else{
-	  			//alert(response);
-	  			$scope.listaRegistrados = response;
-				for(var i=0; i<$scope.listaRegistrados.length; ++i){
-					console.log($scope.listaRegistrados[i]);
-				}//PARA TOMAR DE REST
-	  	    	//$scope.listaRegistrados = factoryUsuarios;//PARA TOMAR DE simulado.
+	  		}
+	  		else
+	  		{
+	  			$scope.listaRegistrados = response.message;
 	  		}
 	  	})
 	};
