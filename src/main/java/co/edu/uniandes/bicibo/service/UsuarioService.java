@@ -93,6 +93,7 @@ public class UsuarioService {
         {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
+            entitymanager.getTransaction( ).begin( );
                         
             Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
             
@@ -138,34 +139,7 @@ public class UsuarioService {
     public JSONObject ListarRegistrados (String id)
     {
     	JSONObject obj = new JSONObject();
-        try
-        {
-        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-
-            EntityManager entityManager;
-        	entityManager = emfactory.createEntityManager( );
-        	entityManager.getTransaction( ).begin( );
-
-            Usuario user = new Usuario( ); 
-            user.setNombre("abimelec");
-            user.setEmail("aacuesta@gmail.com");
-            user.setUsername("abimelec");
-            user.setPassword("12345678a");
-            
-            entityManager.persist( user );
-            entityManager.getTransaction( ).commit( );
-
-            entityManager.close( );
-            emfactory.close( );
-            obj.put("status", "OK");
-            obj.put("message", "Usuario Creado");
-        }
-        catch (Exception e)
-        {
-        	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar registrar el usuario. <br>"+e.getMessage());
-        }    
-    	return obj;
+        return obj;
     }
     
     public JSONObject ListarAmigos (String id)
@@ -197,4 +171,35 @@ public class UsuarioService {
         }    	
     	return obj;
     }
+    
+    public JSONObject AgregarAmigo (String id, String idAmigo)
+    {
+    	JSONObject obj = new JSONObject();
+    	try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
+            entitymanager.getTransaction( ).begin( );
+            
+            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            Usuario amigo = entitymanager.find(Usuario.class, Integer.parseInt(idAmigo));
+            
+            List<Usuario> amigos = usuario.getAmigos();
+            amigos.add(amigo);
+            
+            usuario.setAmigos(amigos);
+            
+            entitymanager.getTransaction( ).commit( );
+            entitymanager.close();
+            emfactory.close();
+            obj.put("status", "OK");
+            obj.put("message", "Amigo agregado");
+        }
+    	catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar agregar el amigo del usuario. <br>"+e.getMessage());
+        }    	
+    	return obj;
+    } 
 }
