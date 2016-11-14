@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import javax.persistence.PersistenceContext;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
+import java.util.*;
 
 public class UsuarioService {
 	
@@ -50,20 +51,31 @@ public class UsuarioService {
         try{
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
+            Usuario usuario = new Usuario();
            // Usuario usuario = entitymanager.find( Usuario.class 1651 );
             //System.out.println("Nombre ID = " + usuario.getNombre());
          // Creamos un query con JPQL y lo ejecutamos directamente.
             Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
-                   query.setParameter(1, username); 
-                   query.setParameter(2, clave); 
+            query.setParameter(1, username); 
+            query.setParameter(2, clave); 
             
             // Espera en el resultado un objeto unico.
             System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
-            obj.put("status", "OK");
-            obj.put("message", "El usuario ha iniciado sesión");
+            
+            Object result = query.getSingleResult();
+            usuario = (Usuario) result;
+            if(result == null){
+            	obj.put("status", "ERROR");
+                obj.put("message", "Usuario o Clave incorrecta.");
+            }else{
+	            obj.put("id", usuario.getId().toString());
+	            obj.put("username", usuario.getUsername().toString());
+	            obj.put("status", "OK");
+	            obj.put("message", "El usuario ha iniciado sesión");
+            }
         }catch (Exception e){
         	obj.put("status", "ERROR");
-            obj.put("message", "Email o Clave incorrecta.\n"+e.getMessage());
+            obj.put("message", "Usuario o Clave incorrecta.");
         }
     	
         return obj;
