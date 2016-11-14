@@ -156,7 +156,7 @@ public class UsuarioService {
             for(Usuario e:amigos) 
             {
             	mensaje = mensaje + "{ \"id\" : " + e.getId() + 
-            						", \"nombre\" : ";
+            						", \"nombre\" : " + e.getNombre();
                 System.out.println("Employee NAME :"+e);
             }
             
