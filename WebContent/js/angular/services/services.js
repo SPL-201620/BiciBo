@@ -40,8 +40,8 @@ services.factory('UserFactory', function ($resource) {
 		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, {
 			show:{method:'GET'},
 		}),
-		user: $resource(url_servicio_rest+'/user/update',{},{
-			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre', email: '@email', edad: '@edad', fotoPerfil: '@fotoPerfil'} }
+		user: $resource(url_servicio_rest+'/user',{},{
+			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre',  mail: '@mail', password: '@password', username: '@username', edad: '@edad', fotoPerfil: '@fotoPerfil'} }
 		}),
 		usuarios: $resource(url_servicio_rest + '/users', {}, {
 			mostrar:{method:'GET', params:{}, isArray: true}
