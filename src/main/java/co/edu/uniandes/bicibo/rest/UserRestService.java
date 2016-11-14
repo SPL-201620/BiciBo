@@ -80,8 +80,8 @@ public class UserRestService
     
 	@Path("/users")
 	@GET
-    public JSONObject ListarRegistrados(@PathParam("id") String id) {
-		System.out.println("ID: "+id);
+    public JSONObject ListarRegistrados(@PathParam("id") String id) 
+	{
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.ListarRegistrados(id);
     }

@@ -17,7 +17,7 @@ import java.util.List;
 public class Usuario implements Serializable 
 {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true)
     private String username;
