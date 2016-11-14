@@ -52,13 +52,15 @@ public class UserRestService
         UserService userService = new UserService();
         return userService.Logout();
     }
-		
+	/*
+	 * Servicio para consultar la informacion de un usuario en particular
+	 * */
+	@GET		
 	@Path("/user/{id}")
-	@GET
-    public User InfoUsuario(@PathParam("id") String id) 
+    public Usuario InfoUsuario(@PathParam("id") String id) 
 	{
-        UserService userService = new UserService();
-        return userService.InfoUsuairo(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.InfoUsuairo(Integer.parseInt(id));
     }
 	
 	@Path("/user")

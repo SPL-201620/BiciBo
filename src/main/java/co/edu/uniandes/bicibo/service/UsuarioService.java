@@ -14,7 +14,7 @@ import java.util.*;
 public class UsuarioService {
 	
     public JSONObject Registrar(String nombre, String email, String username, String clave) 
-    {       
+    {      	
         JSONObject obj = new JSONObject();
         try
         {
@@ -169,5 +169,34 @@ public class UsuarioService {
             obj.put("message", "Se produjo un error al intentar cargar los amigos del usuario. <br>"+e.getMessage());
         }    	
     	return obj;
+    }
+    
+    public Usuario InfoUsuairo(int id){
+        Usuario usuario = new Usuario();
+    	 try
+         {
+         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+             EntityManager entitymanager = emfactory.createEntityManager();
+             // Creamos un query con JPQL y lo ejecutamos directamente.
+             Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.id = ?1");
+             query.setParameter(1, id);
+             
+             Object result = query.getSingleResult();
+             if(result == null)
+             {
+                 usuario = null;
+             }
+             else
+             {
+            usuario = (Usuario) result;
+             }
+         }
+         catch (Exception e)
+         {
+        	 usuario = null;
+         }	
+    	 
+    	 return usuario;
+    	
     }
 }
