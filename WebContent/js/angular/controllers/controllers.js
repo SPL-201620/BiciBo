@@ -159,10 +159,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		return;
     	}else{
         	UserSesion.iniciar.sesion({email: email_usu, clave: clave_usu}, function (response) {
-        		//alert('llamado a servicio REST: '+response.nombre)
-        		inicioSesion.resolve(response);
-				window.location.assign('#/perfil');
-				window.location.reload(true);
+        		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
+        		if(response.status == "OK"){
+            		inicioSesion.resolve(response);
+    				window.location.assign('#/perfil');
+    				window.location.reload(true);
+        			
+        		}else{
+        			alert(response.message)
+        		}
         	});
         	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
     			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.

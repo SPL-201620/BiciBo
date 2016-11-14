@@ -33,11 +33,12 @@ public class UserRestService {
 		return Response.status(200).entity(output).build();
 	}
 	*/
-	@Path("/login")
 	@POST
-    public User Login() {
-        UserService userService = new UserService();
-        return userService.Login();
+	@Path("/login")
+    public JSONObject Login(@QueryParam("email") String email,
+    		@QueryParam("clave") String clave) {
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.Login(email, clave);
     }
 	@Path("/logout")
 	@POST
