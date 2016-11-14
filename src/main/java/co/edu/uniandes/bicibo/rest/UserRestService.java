@@ -82,7 +82,7 @@ public class UserRestService
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.ListarRegistrados(id);
     }
-	@Path("/friends")
+	@Path("/friends/{id}")
 	@GET
     public User ListarAmigos(@PathParam("id") String id) {
         UserService userService = new UserService();
