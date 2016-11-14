@@ -48,7 +48,7 @@ public class UserRestService {
     }
 	
 	@POST
-	@Path("/user/add")
+	@Path("/user")
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
