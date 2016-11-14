@@ -21,10 +21,10 @@ var url_servicio_rest = '/bicibo/rest';
 services.factory('UserSesion', function ($resource) {
     var metodo = {
 		iniciar: $resource('/bicibo/rest/login', {}, {
-			sesion:{method:'POST', params:{username: '@username', clave: '@clave'}}
+			sesion:{method:'POST', params:{username: '@username', password: '@password'}}
 		}),
 		registrar: $resource(url_servicio_rest + '/user', {}, {
-			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', clave: '@clave', fotoPerfil: '@fotoPerfil'}}
+			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', password: '@password', rutaFoto: '@rutaFoto'}}
 		}),
 		logout: $resource(url_servicio_rest + '/logout', {}, {
 			normal:{method:'POST', params:{id: '@id'}}
@@ -41,7 +41,7 @@ services.factory('UserFactory', function ($resource) {
 			show:{method:'GET'},
 		}),
 		user: $resource(url_servicio_rest+'/user',{},{
-			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre',  mail: '@mail', password: '@password', username: '@username', edad: '@edad', fotoPerfil: '@fotoPerfil'} }
+			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre',  email: '@email', password: '@password', username: '@username', edad: '@edad', rutaFoto: '@rutaFoto'} }
 		}),
 		usuarios: $resource(url_servicio_rest + '/users', {}, {
 			mostrar:{method:'GET', params:{}, isArray: true}
