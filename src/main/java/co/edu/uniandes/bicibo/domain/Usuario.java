@@ -19,6 +19,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(unique = true)
+    private String username;
     private String email;
     private String password;
     private Integer edad;
@@ -52,6 +53,14 @@ public class Usuario implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -125,6 +134,7 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Usuario{" +
                 "id=" + id +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", edad=" + edad +

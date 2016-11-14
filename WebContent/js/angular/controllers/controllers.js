@@ -144,6 +144,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       $scope.usuario = {
     		  nombre: '',
               email: '',
+              username: '',
               clave: '',
               fotoPerfil: ''
       };
@@ -187,15 +188,16 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      $scope.registrarUsuario = function() {
       	var nombre_usu = $scope.usuario.nombre;
      	var email_usu = $scope.usuario.email;
+     	var username_usu = $scope.usuario.username;
      	var clave_usu = $scope.usuario.clave;
      	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
-     	alert(nombre_usu+'-'+email_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
+     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
      	if(!email_usu || !clave_usu){
      		alert("Email y Clave son requeridos.");
      		return;
      	}else{
          	
-         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
+         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
          		//alert('registrando.. servicio REST: '+response.status)
          		if(response.status=="OK"){
              		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro

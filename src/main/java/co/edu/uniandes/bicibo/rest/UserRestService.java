@@ -51,11 +51,12 @@ public class UserRestService {
 	@Path("/user/add")
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
+    		@QueryParam("username") String username,
     		@QueryParam("clave") String clave,
     		@QueryParam("fotoPerfil") String fotoPerfil) {
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, clave, fotoPerfil);
+        return usuarioService.Registrar(nombre, email, username, clave, fotoPerfil);
     }
 	
 	@Path("/user/{id}")

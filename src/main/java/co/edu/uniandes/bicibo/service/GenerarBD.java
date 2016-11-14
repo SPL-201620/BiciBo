@@ -13,7 +13,6 @@ public class GenerarBD {
         EntityManagerFactory emf = Persistence.
             createEntityManagerFactory("Eclipselink_JPA_Bicibo");
         EntityManager em = emf.createEntityManager();
-         
         em.close();
     }
 }

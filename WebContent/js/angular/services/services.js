@@ -24,7 +24,7 @@ services.factory('UserSesion', function ($resource) {
 			sesion:{method:'POST', params:{email: '@email', clave: '@clave'}}
 		}),
 		registrar: $resource(url_servicio_rest + '/user/add', {}, {
-			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', clave: '@clave', fotoPerfil: '@fotoPerfil'}}
+			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', clave: '@clave', fotoPerfil: '@fotoPerfil'}}
 		}),
 		logout: $resource(url_servicio_rest + '/logout', {}, {
 			normal:{method:'POST', params:{id: '@id'}}
