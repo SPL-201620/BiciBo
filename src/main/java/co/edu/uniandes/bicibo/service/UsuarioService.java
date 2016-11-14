@@ -8,12 +8,10 @@ import javax.persistence.Query;
 import org.json.simple.JSONObject;
 import javax.persistence.PersistenceContext;
 
-import co.edu.uniandes.bicibo.domain.User;
 import co.edu.uniandes.bicibo.domain.Usuario;
 import java.util.*;
 
 public class UsuarioService {
-<<<<<<< HEAD
 	
     public JSONObject Registrar(String nombre, String email, String username, String clave) 
     {       
@@ -21,18 +19,10 @@ public class UsuarioService {
         try
         {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-=======
-	@PersistenceContext
-	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-	@PersistenceContext
-	EntityManager entitymanager = emfactory.createEntityManager();
->>>>>>> origin/develop-jpa
 
-	public JSONObject Registrar(String nombre, String email, String username, String clave, String fotoPerfil) {
-       
-        JSONObject obj = new JSONObject();
-        try{
-        	entitymanager.getTransaction( ).begin( );
+            EntityManager entityManager;
+        	entityManager = emfactory.createEntityManager( );
+        	entityManager.getTransaction( ).begin( );
 
             Usuario user = new Usuario( ); 
             user.setNombre(nombre);
@@ -40,10 +30,10 @@ public class UsuarioService {
             user.setUsername(username);
             user.setPassword(clave);
             
-            entitymanager.persist( user );
-            entitymanager.getTransaction( ).commit( );
+            entityManager.persist( user );
+            entityManager.getTransaction( ).commit( );
 
-            entitymanager.close( );
+            entityManager.close( );
             emfactory.close( );
             obj.put("status", "OK");
             obj.put("message", "Usuario Creado");
@@ -56,11 +46,15 @@ public class UsuarioService {
         return obj;
     }
     
-    public JSONObject Login(String username, String clave) {
+    public JSONObject Login(String username, String clave) 
+    {        
         JSONObject obj = new JSONObject();
-        try{
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
             Usuario usuario = new Usuario();
-         // Creamos un query con JPQL y lo ejecutamos directamente.
+            // Creamos un query con JPQL y lo ejecutamos directamente.
             Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
             query.setParameter(1, username); 
             query.setParameter(2, clave); 
@@ -69,11 +63,14 @@ public class UsuarioService {
             System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
             
             Object result = query.getSingleResult();
-            if(result == null){
+            usuario = (Usuario) result;
+            if(result == null)
+            {
             	obj.put("status", "ERROR");
                 obj.put("message", "Usuario o Clave incorrecta.");
-            }else{
-                usuario = (Usuario) result;
+            }
+            else
+            {
 	            obj.put("id", usuario.getId().toString());
 	            obj.put("username", usuario.getUsername().toString());
 	            obj.put("status", "OK");
@@ -88,7 +85,6 @@ public class UsuarioService {
         return obj;
     }
     
-<<<<<<< HEAD
     public JSONObject UpdateUsuario(String id, String nombre, String email, String password, String username, 
     		String edad, String fotoPerfil) 
     {        
@@ -137,21 +133,11 @@ public class UsuarioService {
             obj.put("message", "Se produjo un error al intentar actualizar el usuario. <br>"+e.getMessage());
         }    	
         return obj;
-=======
-    public Usuario InfoUsuairo(int id) {
-    	 Usuario usuario = new Usuario();
-         // Creamos un query con JPQL y lo ejecutamos directamente.
-    	 Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.id = ?1");
-         query.setParameter(1, id);
-         Object result = query.getSingleResult();
-         if(result == null){
-        	 usuario = null;
-         }else{
-             usuario = (Usuario) result;
-         }
-         
-         return usuario;
->>>>>>> origin/develop-jpa
     }
-
+    
+    public JSONObject ListarRegistrados (String id)
+    {
+    	JSONObject obj = new JSONObject();
+    	return obj;
+    }
 }
