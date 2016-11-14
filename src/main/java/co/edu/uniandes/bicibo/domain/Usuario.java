@@ -14,7 +14,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Usuario", schema = "bicibo")
-public class Usuario implements Serializable {
+public class Usuario implements Serializable 
+{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -27,17 +28,14 @@ public class Usuario implements Serializable {
     private String rutaFoto;
 
     @OneToMany
-    //@JsonIgnore --SAntiago
     List<Usuario> amigos;
 
     @OneToMany
     List<Recorrido> recorridos;
     
-    /* Santiago
     @OneToMany
     List<RecorridoGrupal> recorridosGrupalesAdmin;
-     */
-
+    
     public Usuario()
     {
         amigos = new ArrayList<>();
@@ -118,7 +116,6 @@ public class Usuario implements Serializable {
     public void setRecorridos(List<Recorrido> recorridos) {
         this.recorridos = recorridos;
     }
-/*
     
     public List<RecorridoGrupal> getRecorridosGrupalesAdmin() {
         return recorridosGrupalesAdmin;
@@ -127,8 +124,6 @@ public class Usuario implements Serializable {
     public void setRecorridosGrupalesAdmin(List<RecorridoGrupal> recorridosGrupalesAdmin) {
         this.recorridosGrupalesAdmin = recorridosGrupalesAdmin;
     }
-
-*/
 
     @Override
     public String toString() {
