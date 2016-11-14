@@ -217,8 +217,9 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     // funcion para el boton de salir o cerrar sesion.
     $scope.salir = function(){
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('saliendo..')
+    	alert('saliendo..:'+cookieUsr.id)
     	UserSesion.logout.normal({id: cookieUsr.id}, function (response) {
+    		alert('respuesta servcion /logout: '+response.status)
     		if(response.status != "OK"){
     			$log.info(response.message);
     		}else{
@@ -366,7 +367,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     $scope.listarRecorridos = function(){
     	var id_recorrido = $routeParams.id;
-    	//alert('listando recorridos: '+id_recorrido)
+    	alert('listando recorridos: '+id_recorrido)
     	if(typeof id_recorrido != "undefined"){
     		//alert('entra a mostrar recorrido.');
     		$('#tablaInfoRecorridos').hide();
