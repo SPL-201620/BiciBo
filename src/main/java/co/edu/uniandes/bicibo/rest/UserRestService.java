@@ -61,7 +61,7 @@ public class UserRestService
         return userService.InfoUsuairo(id);
     }
 	
-	@Path("/user/{id}")
+	@Path("/user")
 	@PUT
     public JSONObject UpdateUsuario(@QueryParam("id") String id,
     		@QueryParam("nombre") String nombre,
