@@ -84,10 +84,10 @@ public class UserRestService
     }
 	@Path("/friends/{id}")
 	@GET
-    public User ListarAmigos(@PathParam("id") String id) {
+    public JSONObject ListarAmigos(@PathParam("id") String id) {
 		//pruebas
-        UserService userService = new UserService();
-        return userService.ListarAmigos(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.ListarAmigos(id);
     }
 	@Path("/friends/add")
 	@POST
