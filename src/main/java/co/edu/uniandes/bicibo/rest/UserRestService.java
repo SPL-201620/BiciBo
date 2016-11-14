@@ -22,67 +22,65 @@ import org.json.simple.JSONObject;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
-public class UserRestService {
-	/*
-	@GET
-	@Produces("text/html")
-	public Response getStartingPage()
-	{
-		String output = "<h1>Hello World!<h1>" +
-				"<p>RESTful Service is running ... <br>Ping @ " + new Date().toString() + "</p<br>";
-		return Response.status(200).entity(output).build();
-	}
-	*/
-	@POST
-	@Path("/login")
-    public JSONObject Login(@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) {
-		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Login(username, clave);
-    }
-	@Path("/logout")
-	@POST
-    public User Logout() {
-        UserService userService = new UserService();
-        return userService.Logout();
-    }
-	/*
-	 * Servicio para el modulo de registro de usuarios
-	 * */
+public class UserRestService 
+{
 	@POST
 	@Path("/user")
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
-    		@QueryParam("clave") String clave,
-    		@QueryParam("fotoPerfil") String fotoPerfil) {
+    		@QueryParam("clave") String clave) 
+	{
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, username, clave, fotoPerfil);
+        return usuarioService.Registrar(nombre, email, username, clave);
     }
-	/*
-	 * Servicio para consultar la info de un usuario.
-	 * */
-	@GET
-	@Path("/user/{id}")
-    public Usuario InfoUsuairo(@PathParam("id") String id) {
-        UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.InfoUsuairo(Integer.parseInt(id));
+	
+	@POST
+	@Path("/login")
+    public JSONObject Login(@QueryParam("username") String username,
+    		@QueryParam("clave") String clave) 
+	{
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.Login(username, clave);
     }
-	@Path("/user/{id}")
-	@PUT
-    public User UpdateUsuairo(@PathParam("id") String id) {
+	
+	@Path("/logout")
+	@POST
+    public User Logout() 
+	{
         UserService userService = new UserService();
-        return userService.UpdateUsuairo(id);
+        return userService.Logout();
     }
-
+		
+	@Path("/user/{id}")
+	@GET
+    public User InfoUsuario(@PathParam("id") String id) 
+	{
+        UserService userService = new UserService();
+        return userService.InfoUsuairo(id);
+    }
+	
+	@Path("/user")
+	@PUT
+    public JSONObject UpdateUsuario(@QueryParam("id") String id,
+    		@QueryParam("nombre") String nombre,
+    		@QueryParam("email") String email,
+    		@QueryParam("password") String password,
+    		@QueryParam("username") String username,    		
+    		@QueryParam("edad") String edad,
+    		@QueryParam("fotoPerfil") String fotoPerfil) 
+	{
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.UpdateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
+    }
     
 	@Path("/users")
 	@GET
     public JSONObject ListarRegistrados(@PathParam("id") String id) {
 		System.out.println("ID: "+id);
-        UserService userService = new UserService();
-        return userService.ListarRegistrados(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.ListarRegistrados(id);
     }
 	@Path("/friends")
 	@GET
