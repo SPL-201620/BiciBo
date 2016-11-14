@@ -29,20 +29,21 @@ public class UserRestService
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) 
+    		@QueryParam("password") String password,
+    		@QueryParam("rutaFoto") String rutaFoto) 
 	{
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, username, clave);
+        return usuarioService.Registrar(nombre, email, username, password, rutaFoto);
     }
 	
 	@POST
 	@Path("/login")
     public JSONObject Login(@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) 
+    		@QueryParam("password") String password) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Login(username, clave);
+        return usuarioService.Login(username, password);
     }
 	
 	@Path("/logout")
@@ -52,13 +53,15 @@ public class UserRestService
         UserService userService = new UserService();
         return userService.Logout();
     }
-		
+	/*
+	 * Servicio para consultar la informacion de un usuario en particular
+	 * */
+	@GET		
 	@Path("/user/{id}")
-	@GET
-    public User InfoUsuario(@PathParam("id") String id) 
+    public Usuario InfoUsuario(@PathParam("id") String id) 
 	{
-        UserService userService = new UserService();
-        return userService.InfoUsuairo(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.InfoUsuairo(Integer.parseInt(id));
     }
 	
 	@Path("/user")

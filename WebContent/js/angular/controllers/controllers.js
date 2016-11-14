@@ -145,8 +145,8 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		  nombre: '',
               email: '',
               username: '',
-              clave: '',
-              fotoPerfil: ''
+              password: '',
+              rutaFoto: ''
       };
     
     //Para cuando se de clic en enviar y se hace el llamado al servicio REST
@@ -154,12 +154,12 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     $scope.iniciarSesion = function() {
     	var username_usu = $scope.usuario.username;
-    	var clave_usu = $scope.usuario.clave;
+    	var clave_usu = $scope.usuario.password;
     	if(!username_usu || !clave_usu){
     		alert("Usuario y Clave son requeridos.");
     		return;
     	}else{
-        	UserSesion.iniciar.sesion({username: username_usu, clave: clave_usu}, function (response) {
+        	UserSesion.iniciar.sesion({username: username_usu, password: clave_usu}, function (response) {
         		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
         		if(response.status == "OK"){
             		inicioSesion.resolve(response);
@@ -189,15 +189,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       	var nombre_usu = $scope.usuario.nombre;
      	var email_usu = $scope.usuario.email;
      	var username_usu = $scope.usuario.username;
-     	var clave_usu = $scope.usuario.clave;
-     	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
-     	if(!email_usu || !clave_usu){
-     		alert("Email y Clave son requeridos.");
+     	var password_usu = $scope.usuario.password;
+     	var rutaFoto_usu = $scope.usuario.rutaFoto;
+     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
+     	if(!username_usu || !password_usu){
+     		alert("Usuario y Clave son requeridos.");
      		return;
      	}else{
          	
-         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
+         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, password: password_usu, rutaFoto: rutaFoto_usu}, function (response) {
          		//alert('registrando.. servicio REST: '+response.status)
          		if(response.status=="OK"){
              		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro
@@ -234,7 +234,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //USUARIO
       $scope.infoUsuario = {
               nombre: '',
-              mail: '',
+              email: '',
               password: '',
               username: '',
               edad: '',
