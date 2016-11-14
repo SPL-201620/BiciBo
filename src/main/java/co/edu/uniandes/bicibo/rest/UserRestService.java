@@ -23,6 +23,7 @@ import org.json.simple.JSONObject;
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserRestService 
+<<<<<<< HEAD
 {
 	@POST
 	@Path("/user")
@@ -36,6 +37,9 @@ public class UserRestService
         return usuarioService.Registrar(nombre, email, username, clave);
     }
 	
+=======
+{	
+>>>>>>> origin/develop-jpa
 	@POST
 	@Path("/login")
     public JSONObject Login(@QueryParam("username") String username,
@@ -52,13 +56,29 @@ public class UserRestService
         UserService userService = new UserService();
         return userService.Logout();
     }
-		
-	@Path("/user/{id}")
+	/*
+	 * Servicio para el modulo de registro de usuarios
+	 * */
+	@POST
+	@Path("/user")
+    public JSONObject Registrar(@QueryParam("nombre") String nombre,
+    		@QueryParam("email") String email,
+    		@QueryParam("username") String username,
+    		@QueryParam("clave") String clave,
+    		@QueryParam("fotoPerfil") String fotoPerfil) {
+		System.out.println("email: "+email);
+        UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.Registrar(nombre, email, username, clave, fotoPerfil);
+    }
+	/*
+	 * Servicio para consultar la info de un usuario.
+	 * */
 	@GET
-    public User InfoUsuario(@PathParam("id") String id) 
-	{
-        UserService userService = new UserService();
-        return userService.InfoUsuairo(id);
+	@Path("/user/{id}")
+    public Usuario InfoUsuairo(@PathParam("id") String id) {
+        UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.InfoUsuairo(Integer.parseInt(id));
+
     }
 	
 	@Path("/user/{id}")

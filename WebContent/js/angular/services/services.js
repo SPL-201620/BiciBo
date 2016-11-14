@@ -37,7 +37,7 @@ services.factory('UserSesion', function ($resource) {
 //Servicios USUARIO
 services.factory('UserFactory', function ($resource) {
     var metodo = {
-		usuario: $resource(url_servicio_rest + '/user', {}, {
+		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, {
 			show:{method:'GET'},
 		}),
 		user: $resource(url_servicio_rest+'/user/update',{},{

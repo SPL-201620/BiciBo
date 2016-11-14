@@ -235,7 +235,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       $scope.infoUsuario = {
               nombre: '',
               email: '',
-              fotoPerfil: '',
+              rutaFoto: '',
               edad: ''
       };
     
@@ -244,8 +244,9 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 		console.log("infoUsuario")
     	var cookieUsr = $cookieStore.get('usuario');
 		console.log(cookieUsr)
-    	//alert('Consultando info usuario de id: ' + cookieUsr.id);
+    	alert('Consultando info usuario de id: ' + cookieUsr.id + '-username: '+ cookieUsr.username);
     	UserFactory.usuario.show({id: cookieUsr.id}, function (response) {
+    		alert('Respuesta del servicio REST /user/{id}:'+response.username)
     		if(response.email == null){
     			$scope.msgError = "No se encontro info para el usuario."; 
     		}else{
