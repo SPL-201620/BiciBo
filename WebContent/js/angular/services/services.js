@@ -41,7 +41,7 @@ services.factory('UserFactory', function ($resource) {
 			show:{method:'GET'},
 		}),
 		user: $resource(url_servicio_rest+'/user',{},{
-			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre',  email: '@email', password: '@password', username: '@username', edad: '@edad', rutaFoto: '@rutaFoto'} }
+			update: { method: 'PUT', params: {id: '@id', username: '@username',  email: '@email', password: '@password',  edad: '@edad', nombre: '@nombre', rutaFoto: '@rutaFoto'} }
 		}),
 		usuarios: $resource(url_servicio_rest + '/users', {}, {
 			mostrar:{method:'GET', params:{}, isArray: true}
@@ -53,9 +53,9 @@ services.factory('UserFactory', function ($resource) {
 //Servicio AMIGOS
 services.factory('FriendFactory', function ($resource) {
     var metodo = {
-		amigos: $resource(url_servicio_rest + '/friends/@id', {}, {
-			show:{method:'GET', params: {}, isArray: true },
-	        create: { method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }
+		amigos: $resource(url_servicio_rest + '/friends/:id', {id: '@id'}, {
+			show:{method:'GET'},
+			create: { method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }       
 		})
     };
     return metodo;
