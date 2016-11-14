@@ -29,20 +29,21 @@ public class UserRestService
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) 
+    		@QueryParam("password") String password,
+    		@QueryParam("rutaFoto") String rutaFoto) 
 	{
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, username, clave);
+        return usuarioService.Registrar(nombre, email, username, password, rutaFoto);
     }
 	
 	@POST
 	@Path("/login")
     public JSONObject Login(@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) 
+    		@QueryParam("password") String password) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Login(username, clave);
+        return usuarioService.Login(username, password);
     }
 	
 	@Path("/logout")
