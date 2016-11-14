@@ -53,8 +53,8 @@ services.factory('UserFactory', function ($resource) {
 //Servicio AMIGOS
 services.factory('FriendFactory', function ($resource) {
     var metodo = {
-		amigos: $resource(url_servicio_rest + '/friends', {}, {
-			show:{method:'GET', params: {id: '@id'}, isArray: true },
+		amigos: $resource(url_servicio_rest + '/friends/@id', {}, {
+			show:{method:'GET', params: {}, isArray: true },
 	        create: { method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }
 		})
     };
