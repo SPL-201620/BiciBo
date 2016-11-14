@@ -284,21 +284,24 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	})
 	};
 	
-    $scope.actualizarUsuario = function(){
+    $scope.actualizarUsuario = function()
+    {
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('Actualizando info usuario: '+ $scope.infoUsuario.id)
-    	UserFactory.user.update({id: $scope.infoUsuario.id, nombre: $scope.infoUsuario.nombre,
-    		email: $scope.infoUsuario.email, edad: $scope.infoUsuario.edad, fotoPerfil: $scope.infoUsuario.fotoPerfil}, function (response) {
-    		//alert('respuesta'+response.status)
-    		if(response.status != "OK"){
-    			$scope.msgError = response.message; 
-    		}else{
-				//alert('respuesta'+response.status)
-    			window.location.assign('#/perfil');
-                window.location.reload(true);
-                //$location.path('/perfil');
-    		}
-    	})
+    	UserFactory.user.update({id: $scope.infoUsuario.id, username : "", email: $scope.infoUsuario.email, 
+    		password : "", edad: $scope.infoUsuario.edad, nombre: $scope.infoUsuario.nombre,
+    		fotoPerfil: $scope.infoUsuario.fotoPerfil}, 
+    		function (response) 
+    		{
+	    		if(response.status != "OK")
+	    		{
+	    			$scope.msgError = response.message; 
+	    		}
+	    		else
+	    		{
+	    			window.location.assign('#/perfil');
+	                window.location.reload(true);
+	    		}
+    		})
     };
     $scope.noActualizar = function(){
     	window.location.assign('#/perfil');
@@ -307,21 +310,21 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     
     //LISTA AMIGOS
-    $scope.listarAmigos = function(){
+    $scope.listarAmigos = function()
+    {
 		console.log("listar amigos")
     	var cookieUsr = $cookieStore.get('usuario');
     	$scope.listaAmigos = {};
-    	
-    	//$scope.listaAmigos = factoryUsuarios;
-    	FriendFactory.amigos.show({id: cookieUsr.id}, function (response) {
-
-			//alert('listaAmigos:'+response[0].nombre);
-    		if(response.length <= 0){
+    	FriendFactory.amigos.show({id: cookieUsr.id}, 
+    	function (response) 
+    	{
+    		if(response.length == 0)
+    		{
     			$scope.msgError = "No tiene amigos en el momento"; 
-    		}else{
-    			//alert(response);
-    			$scope.listaAmigos = response;//PARA TOMAR DE REST
-    	    	//$scope.listaAmigos = factoryUsuarios;//PARA TOMAR DE SIMULADO.
+    		}
+    		else
+    		{
+    			$scope.listaAmigos = response.message;
     		}
     	})
     };

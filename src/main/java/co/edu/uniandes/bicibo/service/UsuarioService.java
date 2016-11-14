@@ -104,6 +104,27 @@ public class UsuarioService {
         return obj;
     }
     
+    public Usuario InfoUsuairo(int id)
+    {
+        Usuario usuario = new Usuario();
+    	try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
+            
+            usuario = entitymanager.find(Usuario.class, id);
+            usuario.setAmigos(null);
+        	usuario.setRecorridos(null);
+        	usuario.setRecorridosGrupalesAdmin(null);
+        }
+        catch (Exception e)
+        {
+            usuario = null;
+        }
+        return usuario;
+    	
+    }
+    
     public JSONObject UpdateUsuario(String id, String nombre, String email, String password, String username, 
     		String edad, String fotoPerfil) 
     {        
@@ -113,44 +134,53 @@ public class UsuarioService {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
             entitymanager.getTransaction( ).begin( );
-                        
+            
             Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
-            
-            if(nombre.equals("") && nombre.equals(usuario.getNombre()))
+            if( usuario != null)
             {
-            	usuario.setNombre(nombre);
+            	if(!nombre.equals("") && !nombre.equals(usuario.getNombre()))
+                {
+                	usuario.setNombre(nombre);
+                }
+                if(!email.equals("") && !email.equals(usuario.getEmail()))
+                {
+                	usuario.setEmail(email);
+                }
+                if(!password.equals("") && !password.equals(usuario.getPassword()))
+                {
+                	usuario.setPassword(password);
+                }
+                if(!username.equals("") && !username.equals(usuario.getUsername()))
+                {
+                	usuario.setUsername(username);
+                }
+                if(!edad.equals("") && usuario.getEdad() == null || 
+                		!edad.equals("") && Integer.parseInt(edad) != usuario.getEdad())
+                {
+                	usuario.setEdad(Integer.parseInt(edad));
+                }
+                if(fotoPerfil != null && !fotoPerfil.equals("") && usuario.getRutaFoto() == null || 
+                		fotoPerfil != null && !fotoPerfil.equals("") && !fotoPerfil.equals(usuario.getRutaFoto()))
+                {
+                	usuario.setRutaFoto((fotoPerfil));
+                }  
+                entitymanager.persist(usuario);
+                entitymanager.getTransaction( ).commit( );
+                entitymanager.close();
+                emfactory.close();
+                obj.put("status", "OK");
+                obj.put("message", "Usuario actualizado");
             }
-            if(email.equals("") && email.equals(usuario.getEmail()))
+            else
             {
-            	usuario.setEmail(email);
+            	obj.put("status", "ERROR");
+                obj.put("message", "Usuario no existe");
             }
-            if(password.equals("") && password.equals(usuario.getPassword()))
-            {
-            	usuario.setPassword(password);
-            }
-            if(username.equals("") && username.equals(usuario.getUsername()))
-            {
-            	usuario.setUsername(username);
-            }
-            if(edad.equals("") && Integer.parseInt(edad) != usuario.getEdad())
-            {
-            	usuario.setEdad(Integer.parseInt(edad));
-            }
-            if(fotoPerfil.equals("") && fotoPerfil.equals(usuario.getRutaFoto()))
-            {
-            	usuario.setRutaFoto((fotoPerfil));
-            }  
-            
-            entitymanager.getTransaction( ).commit( );
-            entitymanager.close();
-            emfactory.close();
-            obj.put("status", "OK");
-            obj.put("message", "Usuario actualizado");
         }
         catch (Exception e)
         {
         	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar actualizar el usuario. <br>"+e.getMessage());
+            obj.put("message", "Se produjo un error al intentar actualizar el usuario. <br>" + e.getMessage());
         }    	
         return obj;
     }
@@ -158,6 +188,24 @@ public class UsuarioService {
     public JSONObject ListarRegistrados (String id)
     {
     	JSONObject obj = new JSONObject();
+    	try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
+            
+            Query query = entitymanager.createQuery("SELECT a FROM Usuario a");
+            
+            List<Usuario> amigos = query.getResultList();
+            
+            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            
+            
+        }
+    	catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar cargar los usuarios registrados. <br>"+e.getMessage());
+        }    	
         return obj;
     }
     
@@ -190,27 +238,6 @@ public class UsuarioService {
         }    	
     	return obj;
     }
-    
-
-    public Usuario InfoUsuairo(int id){
-        Usuario usuario = new Usuario();
-    	try
-        {
-        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-            EntityManager entitymanager = emfactory.createEntityManager();
-            
-            usuario = entitymanager.find(Usuario.class, id);
-            usuario.setAmigos(null);
-        	usuario.setRecorridos(null);
-        	usuario.setRecorridosGrupalesAdmin(null);
-        }
-        catch (Exception e)
-        {
-            usuario = null;
-        }
-        return usuario;
-    	
-    }
 
     public JSONObject AgregarAmigo (String id, String idAmigo)
     {
@@ -228,7 +255,8 @@ public class UsuarioService {
     		amigos.add(amigo);
 
     		usuario.setAmigos(amigos);
-
+    		
+    		entitymanager.persist(usuario);
     		entitymanager.getTransaction( ).commit( );
     		entitymanager.close();
     		emfactory.close();
