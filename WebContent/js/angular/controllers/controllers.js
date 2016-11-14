@@ -389,14 +389,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	$scope.listaRecorridos = {};
         	
         	//$scope.listaRecorridos = factoryRecorridos;//Temporal Comentariar
+        	alert('listando recorridos usuario: '+cookieUsr.id)
         	RouteFactory.rutas.show({id: cookieUsr.id},function (response) {
 				console.log(response[0]);
-        		//alert(response.length)
-        		if(response.length <= 0){
-        			$scope.msgError = "No tiene recorridos en el momento"; 
+        		alert(response.length)
+        		if(response.status =="ERROR"){
+        			$scope.msgError = response.message; 
         		}else{
         			//alert(response);
-        			$scope.listaRecorridos = response;
+        			$scope.listaRecorridos = response.recorridos;
         	    	//$scope.listaRecorridos = factoryRecorridos;
         		}
         	})

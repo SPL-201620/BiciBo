@@ -2,7 +2,6 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.UsuarioService;
-import co.edu.uniandes.bicibo.service.RecorridoService;
 
 import java.util.Date;
 
@@ -101,15 +100,15 @@ public class UserRestService
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado
 	 * */
-	/*
+
+	@GET
 	@Path("/recorridosUser/{id}")
-	@POST
     public JSONObject ListarRecorridos(@PathParam("id") String id) 
 	{
-		RecorridoService recorridoService = new RecorridoService();
-        return recorridoService.ListarRecorridos(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.ListarRecorridos(id);
     }
-	
+	/*
 	
 	@Path("/routes")
 	@GET
