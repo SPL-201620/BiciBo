@@ -149,7 +149,7 @@ public class UsuarioService {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
             
-            Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
+            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
             
             
             entitymanager.close();

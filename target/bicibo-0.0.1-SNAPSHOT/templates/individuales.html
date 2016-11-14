@@ -78,18 +78,18 @@
 		  <div class="form-group">
 		    <label for="distancia" class="col-sm-2 control-label">Distancia</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="distancia" name="distancia" placeholder="Cantidad kilometros."
+		      <input type="text" readonly="readonly" class="form-control" id="distancia" name="distancia" placeholder="Cantidad kilometros."
 		      ng-model="infoRecorrido.distancia">
 		    </div>
 		  </div>
-		  <div class="form-group">
+		  <div class="form-group hide">
 		    <label for="hora_salida" class="col-sm-2 control-label">Hora salida</label>
 		    <div class="col-sm-10">
 		      <input type="text" class="form-control" id="hora_salida" name="hora_salida" placeholder="Formato: HH:MM"
 		      ng-model="infoRecorrido.hora_salida">
 		    </div>
 		  </div>
-		  <div class="form-group">
+		  <div class="form-group hide">
 		    <label for="hora_llegada" class="col-sm-2 control-label">Hora llegada</label>
 		    <div class="col-sm-10">
 		      <input type="text" class="form-control" id="hora_llegada" name="hora_llegada" placeholder="Formato: HH:MM"
@@ -99,7 +99,7 @@
 		  <div class="form-group">
 		    <label for="tiempoEstimado" class="col-sm-2 control-label">Tiempo estimado</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="tiempoEstimado" name="tiempoEstimado" placeholder="Tiempo minutos, aproximadamente."
+		      <input type="text" readonly="readonly" class="form-control" id="tiempoEstimado" name="tiempoEstimado" placeholder="Tiempo minutos, aproximadamente."
 		      ng-model="infoRecorrido.tiempoEstimado">
 		    </div>
 		  </div>
@@ -124,7 +124,7 @@
 		      ng-model="infoRecorrido.infoClima">
 		    </div>
 		  </div>
-		  <div class="form-group">
+		  <div class="form-group hide">
 		    <label for="realizado" class="col-sm-2 control-label">Realizado</label>
 		    <div class="col-sm-10">
 		      <input type="text" class="form-control" id="realizado" name="realizado" placeholder="Detalles del clima."
