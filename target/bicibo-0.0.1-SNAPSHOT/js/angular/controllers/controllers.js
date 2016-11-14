@@ -142,25 +142,33 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	
     //Session Usuario
       $scope.usuario = {
+    		  nombre: '',
               email: '',
-              clave: ''
+              username: '',
+              clave: '',
+              fotoPerfil: ''
       };
     
     //Para cuando se de clic en enviar y se hace el llamado al servicio REST
     //$scope.iniciarSesion = {};
     
     $scope.iniciarSesion = function() {
-    	var email_usu = $scope.usuario.email;
+    	var username_usu = $scope.usuario.username;
     	var clave_usu = $scope.usuario.clave;
-    	if(!email_usu || !clave_usu){
+    	if(!username_usu || !clave_usu){
     		alert("Usuario y Clave son requeridos.");
     		return;
     	}else{
-        	UserSesion.iniciar.sesion({email: email_usu, clave: clave_usu}, function (response) {
-        		//alert('llamado a servicio REST: '+response.nombre)
-        		inicioSesion.resolve(response);
-				window.location.assign('#/perfil');
-				window.location.reload(true);
+        	UserSesion.iniciar.sesion({username: username_usu, clave: clave_usu}, function (response) {
+        		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
+        		if(response.status == "OK"){
+            		inicioSesion.resolve(response);
+    				window.location.assign('#/perfil');
+    				window.location.reload(true);
+        			
+        		}else{
+        			alert(response.message)
+        		}
         	});
         	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
     			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.
@@ -178,17 +186,25 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      $scope.registrarUsuario = {};
      
      $scope.registrarUsuario = function() {
+      	var nombre_usu = $scope.usuario.nombre;
      	var email_usu = $scope.usuario.email;
+     	var username_usu = $scope.usuario.username;
      	var clave_usu = $scope.usuario.clave;
-     	
+     	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
+     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
      	if(!email_usu || !clave_usu){
-     		alert("Usuario y Clave son requeridos.");
+     		alert("Email y Clave son requeridos.");
      		return;
      	}else{
          	
-         	UserSesion.registrar.normal({email: email_usu, clave: clave_usu}, function (response) {
+         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
          		//alert('registrando.. servicio REST: '+response.status)
-         		inicioSesion.resolve(response);
+         		if(response.status=="OK"){
+             		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro
+         			mostraPanelExito();
+         		}else{
+         			$("#panelError").html(response.message)
+         		}
          	});
          	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
      			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.
@@ -219,7 +235,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       $scope.infoUsuario = {
               nombre: '',
               email: '',
-              fotoPerfil: '',
+              rutaFoto: '',
               edad: ''
       };
     
@@ -228,13 +244,14 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 		console.log("infoUsuario")
     	var cookieUsr = $cookieStore.get('usuario');
 		console.log(cookieUsr)
-    	//alert('Consultando info usuario de id: ' + cookieUsr.id);
+    	alert('Consultando info usuario de id: ' + cookieUsr.id + '-username: '+ cookieUsr.username);
     	UserFactory.usuario.show({id: cookieUsr.id}, function (response) {
+    		alert('Respuesta del servicio REST /user/{id}:'+response.username)
     		if(response.email == null){
     			$scope.msgError = "No se encontro info para el usuario."; 
     		}else{
     			//alert(response);
-    			$scope.infoUsuario = response;
+    			$scope.infoUsuario = response;    			
     		}
     	})
     	
@@ -257,7 +274,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  			//alert(response);
 	  			$scope.listaRegistrados = response;
 				for(var i=0; i<$scope.listaRegistrados.length; ++i){
-					console.log(listaRegistrados[i]);
+					console.log($scope.listaRegistrados[i]);
 				}//PARA TOMAR DE REST
 	  	    	//$scope.listaRegistrados = factoryUsuarios;//PARA TOMAR DE simulado.
 	  		}
@@ -368,7 +385,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		var cookieUsr = $cookieStore.get('usuario');
         	$scope.listaRecorridos = {};
         	
-        	//$scope.listaRecorridos = factoryRecorridos;
+        	//$scope.listaRecorridos = factoryRecorridos;//Temporal Comentariar
         	RouteFactory.rutas.show({id: cookieUsr.id},function (response) {
 				console.log(response[0]);
         		//alert(response.length)
@@ -563,7 +580,10 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     //PARA GMAPS
     $scope.mostrarRuta = function cargarMapa(origen, destino){
-		
+		/*var pruebaConsumirWS = $.post("https://maps.googleapis.com/maps/api/distancematrix/json?origins=carrera 15 124 30, Bogota, Colombia&destinations=Carrera 1 18a 12, Bogota, Colombia");
+		pruebaConsumirWS.done(function( data ) {	    	
+			$( "#areaMapa" ).empty().append( data );
+	  	});*/
     	$( "#areaMapa" ).empty();
 		var posting = $.post( "templates/mostrarMapa.html", { ori: origen, des:  destino} );
 		// Put the results in a div
