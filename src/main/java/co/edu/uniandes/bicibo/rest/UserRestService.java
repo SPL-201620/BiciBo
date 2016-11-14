@@ -76,7 +76,7 @@ public class UserRestService
         return usuarioService.UpdateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
     }
     
-	@Path("/users")
+	@Path("/users/{id}")
 	@GET
     public JSONObject ListarRegistrados(@PathParam("id") String id) 
 	{

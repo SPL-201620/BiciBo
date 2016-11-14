@@ -194,12 +194,27 @@ public class UsuarioService {
             EntityManager entitymanager = emfactory.createEntityManager();
             
             Query query = entitymanager.createQuery("SELECT a FROM Usuario a");
-            
-            List<Usuario> amigos = query.getResultList();
+            List<Usuario> persons = query.getResultList();
             
             Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            System.out.println("ola");
+            ArrayList<Usuario> usuariosNoAmigos = new ArrayList();
             
-            
+            for(int i = 0; i< persons.size();i++)
+            {
+                if(!usuario.getAmigos().contains(persons.get(i)) && !persons.get(i).equals(usuario))
+                {
+                	persons.get(i).setAmigos(null);
+                	persons.get(i).setRecorridos(null);
+                	persons.get(i).setRecorridosGrupalesAdmin(null);
+                	usuariosNoAmigos.add(persons.get(i));
+                }
+            }
+            System.out.println("ola2");
+            entitymanager.close();
+            emfactory.close();
+            obj.put("status", "OK");
+            obj.put("message", usuariosNoAmigos);      
         }
     	catch (Exception e)
         {
