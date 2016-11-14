@@ -29,12 +29,11 @@ public class UserRestService
     public JSONObject Registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
-    		@QueryParam("clave") String clave,
-    		@QueryParam("fotoPerfil") String fotoPerfil) 
+    		@QueryParam("clave") String clave) 
 	{
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, username, clave, fotoPerfil);
+        return usuarioService.Registrar(nombre, email, username, clave);
     }
 	
 	@POST
@@ -64,10 +63,16 @@ public class UserRestService
 	
 	@Path("/user/{id}")
 	@PUT
-    public User UpdateUsuario(@PathParam("id") String id) 
+    public JSONObject UpdateUsuario(@QueryParam("id") String id,
+    		@QueryParam("nombre") String nombre,
+    		@QueryParam("email") String email,
+    		@QueryParam("password") String password,
+    		@QueryParam("username") String username,    		
+    		@QueryParam("edad") String edad,
+    		@QueryParam("fotoPerfil") String fotoPerfil) 
 	{
-        UserService userService = new UserService();
-        return userService.UpdateUsuairo(id);
+		UsuarioService usuarioService = new UsuarioService();
+        return usuarioService.UpdateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
     }
 
     

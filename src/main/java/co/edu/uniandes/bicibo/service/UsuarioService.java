@@ -13,7 +13,7 @@ import java.util.*;
 
 public class UsuarioService {
 	
-    public JSONObject Registrar(String nombre, String email, String username, String clave, String fotoPerfil) 
+    public JSONObject Registrar(String nombre, String email, String username, String clave) 
     {       
         JSONObject obj = new JSONObject();
         try
@@ -29,7 +29,6 @@ public class UsuarioService {
             user.setEmail(email);
             user.setUsername(username);
             user.setPassword(clave);
-            user.setRutaFoto(fotoPerfil);
             
             entityManager.persist( user );
             entityManager.getTransaction( ).commit( );
@@ -83,6 +82,56 @@ public class UsuarioService {
         	obj.put("status", "ERROR");
             obj.put("message", "Usuario o Clave incorrecta.");
         }
+        return obj;
+    }
+    
+    public JSONObject UpdateUsuario(String id, String nombre, String email, String password, String username, 
+    		String edad, String fotoPerfil) 
+    {        
+    	JSONObject obj = new JSONObject();
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entitymanager = emfactory.createEntityManager();
+                        
+            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            
+            if(nombre.equals("") && nombre.equals(usuario.getNombre()))
+            {
+            	usuario.setNombre(nombre);
+            }
+            if(email.equals("") && email.equals(usuario.getEmail()))
+            {
+            	usuario.setEmail(email);
+            }
+            if(password.equals("") && password.equals(usuario.getPassword()))
+            {
+            	usuario.setPassword(password);
+            }
+            if(username.equals("") && username.equals(usuario.getUsername()))
+            {
+            	usuario.setUsername(username);
+            }
+            if(edad.equals("") && Integer.parseInt(edad) != usuario.getEdad())
+            {
+            	usuario.setEdad(Integer.parseInt(edad));
+            }
+            if(fotoPerfil.equals("") && fotoPerfil.equals(usuario.getRutaFoto()))
+            {
+            	usuario.setRutaFoto((fotoPerfil));
+            }  
+            
+            entitymanager.getTransaction( ).commit( );
+            entitymanager.close();
+            emfactory.close();
+            obj.put("status", "OK");
+            obj.put("message", "Usuario actualizado");
+        }
+        catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar actualizar el usuario. <br>"+e.getMessage());
+        }    	
         return obj;
     }
 
