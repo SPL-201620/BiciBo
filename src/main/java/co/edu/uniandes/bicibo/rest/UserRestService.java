@@ -74,7 +74,6 @@ public class UserRestService
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.UpdateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
     }
-
     
 	@Path("/users")
 	@GET
