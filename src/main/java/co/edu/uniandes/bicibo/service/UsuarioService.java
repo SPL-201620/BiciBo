@@ -17,7 +17,7 @@ public class UsuarioService {
 	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
 	@PersistenceContext
 	EntityManager entitymanager = emfactory.createEntityManager();
-	
+
 	public JSONObject Registrar(String nombre, String email, String username, String clave, String fotoPerfil) {
        
         JSONObject obj = new JSONObject();
@@ -38,11 +38,12 @@ public class UsuarioService {
             emfactory.close( );
             obj.put("status", "OK");
             obj.put("message", "Usuario Creado");
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
         	obj.put("status", "ERROR");
             obj.put("message", "Se produjo un error al intentar registrar el usuario. <br>"+e.getMessage());
-        }
-    	
+        }    	
         return obj;
     }
     
@@ -69,11 +70,12 @@ public class UsuarioService {
 	            obj.put("status", "OK");
 	            obj.put("message", "El usuario ha iniciado sesión");
             }
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
         	obj.put("status", "ERROR");
             obj.put("message", "Usuario o Clave incorrecta.");
         }
-    	
         return obj;
     }
     

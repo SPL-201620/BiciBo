@@ -22,27 +22,21 @@ import org.json.simple.JSONObject;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
-public class UserRestService {
-	/*
-	@GET
-	@Produces("text/html")
-	public Response getStartingPage()
-	{
-		String output = "<h1>Hello World!<h1>" +
-				"<p>RESTful Service is running ... <br>Ping @ " + new Date().toString() + "</p<br>";
-		return Response.status(200).entity(output).build();
-	}
-	*/
+public class UserRestService 
+{	
 	@POST
 	@Path("/login")
     public JSONObject Login(@QueryParam("username") String username,
-    		@QueryParam("clave") String clave) {
+    		@QueryParam("clave") String clave) 
+	{
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.Login(username, clave);
     }
+	
 	@Path("/logout")
 	@POST
-    public User Logout() {
+    public User Logout() 
+	{
         UserService userService = new UserService();
         return userService.Logout();
     }
@@ -68,10 +62,13 @@ public class UserRestService {
     public Usuario InfoUsuairo(@PathParam("id") String id) {
         UsuarioService usuarioService = new UsuarioService();
         return usuarioService.InfoUsuairo(Integer.parseInt(id));
+
     }
+	
 	@Path("/user/{id}")
 	@PUT
-    public User UpdateUsuairo(@PathParam("id") String id) {
+    public User UpdateUsuario(@PathParam("id") String id) 
+	{
         UserService userService = new UserService();
         return userService.UpdateUsuairo(id);
     }
