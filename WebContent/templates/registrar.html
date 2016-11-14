@@ -1,14 +1,14 @@
 <div style="padding-top:50px;">
 <div class="container">
-	<form class="form-signin">
+	<form id="formRegistro" class="form-signin">
 		  <h2 class="form-signin-heading">Registro</h2>
 		  <label for="nombre" class="sr-only">Nombres</label>
 		  <input type="text" id="nombre" ng-model="usuario.nombre" class="form-control" placeholder="Nombre" required="" autofocus="">
 		  <label for="email" class="sr-only">Email</label>
 		  <input type="email" id="email" ng-model="usuario.email" class="form-control" placeholder="Email address" required="" autofocus="">
 		  <label for="pwd" class="sr-only">Clave</label>
-		  <input type="password"  id="pwd" ng-model="usuario.clave" class="form-control" placeholder="Password" required="">
-		  <input type="text" id="fotoPerfil" style="display:none" ng-model="usuario.fotoPerfil" required="">
+		  <input type="password"  id="pwd" ng-model="usuario.clave" class="form-control" placeholder="Clave" required="">
+		  <input type="text" id="fotoPerfil" style="display:none" ng-model="usuario.fotoPerfil">
 		  
 		  <br />
 		  <label class="form-control" >Seleccione un avatar.</label>
@@ -27,15 +27,16 @@
 			      Cambiar
 			      </a>
 			</div>
-			
-		  
-		  
-		  
+		  <div id="panelError" style="color:red" ></div>
 		  <div class="text-center">
 		  	<button class="btn btn-primary" type="submit" ng-click="registrarUsuario()">Guardar</button>
 		  	<a href="#/" class="btn btn-primary" onclick="$('#formLogin').show()">Cancelar</a>
 		  </div>
 	</form>
+	<div id="panelExito" style="display:none" class="jumbotron text-center">
+		<h3>El registro se llevo a cabo correctamente</h3>
+		<a href="#/" class="btn btn-md btn-primary"  onclick="$('#formLogin').show();">Continuar</a>
+	</div>
 </div>
 
 </div>

@@ -184,7 +184,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      	var email_usu = $scope.usuario.email;
      	var clave_usu = $scope.usuario.clave;
      	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
-     	
+     	alert(nombre_usu+'-'+email_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
      	if(!email_usu || !clave_usu){
      		alert("Email y Clave son requeridos.");
      		return;
@@ -192,7 +192,12 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
          	
          	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
          		//alert('registrando.. servicio REST: '+response.status)
-         		inicioSesion.resolve(response);
+         		if(response.status=="OK"){
+             		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro
+         			mostraPanelExito();
+         		}else{
+         			$("#panelError").html(response.message)
+         		}
          	});
          	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
      			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.

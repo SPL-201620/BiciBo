@@ -23,7 +23,7 @@ services.factory('UserSesion', function ($resource) {
 		iniciar: $resource('/bicibo/rest/login', {}, {
 			sesion:{method:'POST', params:{email: '@email', clave: '@clave'}}
 		}),
-		registrar: $resource(url_servicio_rest + '/user', {}, {
+		registrar: $resource(url_servicio_rest + '/user/add', {}, {
 			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', clave: '@clave', fotoPerfil: '@fotoPerfil'}}
 		}),
 		logout: $resource(url_servicio_rest + '/logout', {}, {

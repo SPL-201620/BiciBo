@@ -1,6 +1,7 @@
 package co.edu.uniandes.bicibo.service;
 
 import co.edu.uniandes.bicibo.domain.User;
+import org.json.simple.JSONObject;
 
 public class UserService {
 /*
@@ -65,11 +66,11 @@ public class UserService {
         
         return user;
     }
-    public User ListarRegistrados(String id) {
-        User user = new User();
-        user.setStatus("OK");
-        user.setMessage("Listado de usuarios que aún no son mis amigos...");
-        return user;
+    public JSONObject ListarRegistrados(String id) {
+        JSONObject obj = new JSONObject();
+        obj.put("status", "OK");
+        obj.put("mensaje", "Usuario Creado");
+        return obj;
     }
     public User AgregarAmigo(String id) {
         User user = new User();
