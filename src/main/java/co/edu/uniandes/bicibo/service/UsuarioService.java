@@ -196,6 +196,7 @@ public class UsuarioService {
             else
             {
             	usuario = (Usuario) result;
+            	usuario.setAmigos(null);
             }
         }
         catch (Exception e)
