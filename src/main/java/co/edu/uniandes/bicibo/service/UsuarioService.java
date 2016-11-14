@@ -13,7 +13,7 @@ import java.util.*;
 
 public class UsuarioService {
 	
-    public JSONObject Registrar(String nombre, String email, String username, String clave) 
+    public JSONObject Registrar(String nombre, String email, String username, String password, String rutaFoto) 
     {       
         JSONObject obj = new JSONObject();
         try
@@ -28,7 +28,8 @@ public class UsuarioService {
             user.setNombre(nombre);
             user.setEmail(email);
             user.setUsername(username);
-            user.setPassword(clave);
+            user.setPassword(password);
+            user.setRutaFoto(rutaFoto);
             
             entityManager.persist( user );
             entityManager.getTransaction( ).commit( );
@@ -172,34 +173,67 @@ public class UsuarioService {
     	return obj;
     }
     
-    public JSONObject AgregarAmigo (String id, String idAmigo)
-    {
-    	JSONObject obj = new JSONObject();
+
+    public Usuario InfoUsuairo(int id){
+        Usuario usuario = new Usuario();
     	try
         {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
-            entitymanager.getTransaction( ).begin( );
+
+            // Creamos un query con JPQL y lo ejecutamos directamente.
+            Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.id = ?1");
+            query.setParameter(1, id); 
             
-            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
-            Usuario amigo = entitymanager.find(Usuario.class, Integer.parseInt(idAmigo));
+            // Espera en el resultado un objeto unico.
+            System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
             
-            List<Usuario> amigos = usuario.getAmigos();
-            amigos.add(amigo);
-            
-            usuario.setAmigos(amigos);
-            
-            entitymanager.getTransaction( ).commit( );
-            entitymanager.close();
-            emfactory.close();
-            obj.put("status", "OK");
-            obj.put("message", "Amigo agregado");
+            Object result = query.getSingleResult();
+            if(result == null)
+            {
+                usuario = null;
+            }
+            else
+            {
+            	usuario = (Usuario) result;
+            }
         }
-    	catch (Exception e)
+        catch (Exception e)
         {
-        	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar agregar el amigo del usuario. <br>"+e.getMessage());
-        }    	
+            usuario = null;
+        }
+        return usuario;
+    	
+    }
+
+    public JSONObject AgregarAmigo (String id, String idAmigo)
+    {
+    	JSONObject obj = new JSONObject();
+    	try
+    	{
+    		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+    		EntityManager entitymanager = emfactory.createEntityManager();
+    		entitymanager.getTransaction( ).begin( );
+
+    		Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+    		Usuario amigo = entitymanager.find(Usuario.class, Integer.parseInt(idAmigo));
+
+    		List<Usuario> amigos = usuario.getAmigos();
+    		amigos.add(amigo);
+
+    		usuario.setAmigos(amigos);
+
+    		entitymanager.getTransaction( ).commit( );
+    		entitymanager.close();
+    		emfactory.close();
+    		obj.put("status", "OK");
+    		obj.put("message", "Amigo agregado");
+    	}
+    	catch (Exception e)
+    	{
+    		obj.put("status", "ERROR");
+    		obj.put("message", "Se produjo un error al intentar agregar el amigo del usuario. <br>"+e.getMessage());
+    	}    	
     	return obj;
     } 
 }
