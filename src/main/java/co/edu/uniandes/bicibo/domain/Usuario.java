@@ -39,10 +39,8 @@ public class Usuario implements Serializable
     public Usuario()
     {
         amigos = new ArrayList<>();
-        
-         recorridos = new ArrayList<>();
-         //recorridosGrupalesAdmin = new ArrayList<>();
-        
+        recorridos = new ArrayList<>();
+        recorridosGrupalesAdmin = new ArrayList<>();
     }
 
     public Integer getId() {

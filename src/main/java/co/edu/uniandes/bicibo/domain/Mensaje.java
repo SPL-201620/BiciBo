@@ -19,10 +19,10 @@ public class Mensaje implements Serializable
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToMany
+    @OneToOne
     private Usuario usuarioOrigen;
     private String mensaje;
-    @OneToMany
+    @OneToOne
     private Usuario usuarioDestino;
         
     public Mensaje()

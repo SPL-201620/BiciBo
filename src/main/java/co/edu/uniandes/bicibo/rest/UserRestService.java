@@ -1,6 +1,7 @@
 package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
+import co.edu.uniandes.bicibo.service.MensajeService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 
 import java.util.Date;
@@ -142,4 +143,16 @@ public class UserRestService
     }
     */
 	
+	//Mensajes
+	
+	@POST
+	@Path("/mensaje")
+    public JSONObject EnviarMensaje(@QueryParam("id_usuario_origen") String id_usuario_origen,
+    		@QueryParam("mensaje") String mensaje,
+    		@QueryParam("id_usuario_destino") String id_usuario_destino) 
+	{
+		System.out.println("olaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "+mensaje + id_usuario_origen + " + "+ id_usuario_destino);
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.enviarMensaje(id_usuario_origen, mensaje, id_usuario_destino);
+    }
 }

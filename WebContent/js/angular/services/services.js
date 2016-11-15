@@ -61,7 +61,7 @@ services.factory('FriendFactory', function ($resource) {
 		{
 			show:{method:'GET'}
 		}),
-		amigo: $resource(url_servicio_rest + '/friend', {id: '@id'}, 
+		amigo: $resource(url_servicio_rest + '/friend', {}, 
 		{				
 			create:{ method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }       
 		})
@@ -139,6 +139,22 @@ services.factory('RouteFactory', function ($resource) {
 				fecha_recorrido:'@fecha_recorrido', 
 				frecuencia:'@frecuencia'} 
 			}
+		})
+    };
+    return metodo;
+});
+
+//Mensajes
+services.factory('MessageFactory', function ($resource) {
+    var metodo = 
+    {
+		/*amigos: $resource(url_servicio_rest + '/friends/:id', {id: '@id'}, 
+		{
+			show:{method:'GET'}
+		}),*/
+		mensaje: $resource(url_servicio_rest + '/mensaje', {}, 
+		{				
+			create:{ method: 'POST', params: {id_usuario_origen: '@id_usuario_origen', mensaje: '@mensaje', id_usuario_destino: '@id_usuario_destino'} }       
 		})
     };
     return metodo;

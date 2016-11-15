@@ -596,10 +596,28 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	    	$("#origenInMapa").val(origen)
 	    	$("#destinoInMapa").val(destino)
 	  	});
-	}
-    
-    
-    
-    
+    }
+
+    //Mensajes
+    $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
+    {
+    	alert('uniendose a recorrido en grupo: ' + mensajeEnviado + '   ' + id_usuario_destino);
+    	var cookieUsr = $cookieStore.get('usuario');
+    	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
+    	function (response) 
+    	{
+    		alert('uniendose a recorrido en grupo: ');
+    		if(response.status != "OK")
+    		{
+    			$scope.msgError = response.message; 
+    		}
+    		else
+    		{
+    			window.location.assign('#/perfil');
+    			window.location.reload(true);
+    		}
+    	})
+    };
+
 }]);//Fin Controlador principal
 
