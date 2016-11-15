@@ -2,6 +2,7 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.UsuarioService;
+import co.edu.uniandes.bicibo.service.RecorridoService;
 
 import java.util.Date;
 
@@ -96,6 +97,37 @@ public class UserRestService
 	{
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.AgregarAmigo(id, idAmigo);
+    }
+	/*
+	 * Listar las recorridos individuales que un usuario ha realizado
+	 * */
+
+	@POST
+	@Path("/recorrido")
+    public JSONObject AgregarRecorrido(@PathParam("id_usuario") String id_usuario,
+    		@PathParam("origen") String origen,
+    		@PathParam("destino") String destino,
+    		@PathParam("hora_salida") String hora_salida,
+    		@PathParam("hora_llegada") String hora_llegada,
+    		@PathParam("fecha_recorrido") String fecha_recorrido,
+    		@PathParam("realizado") String realizado,
+    		@PathParam("distancia") String distancia,
+    		@PathParam("tiempoEstimado") String tiempoEstimado,
+    		@PathParam("caloriasQuemadas") String caloriasQuemadas,
+    		@PathParam("infoClima") String infoClima) 
+	{
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.AgregarRecorrido(id_usuario,  
+        		origen,
+        		destino,
+        		hora_salida,
+        		hora_llegada,
+        		fecha_recorrido,
+        		realizado,
+        		distancia,
+        		tiempoEstimado,
+        		caloriasQuemadas,
+        		infoClima);
     }
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado

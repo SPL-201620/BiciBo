@@ -285,6 +285,7 @@ public class UsuarioService {
     	}    	
     	return obj;
     } 
+    
     public JSONObject ListarRecorridos (String id)
     {
     	JSONObject obj = new JSONObject();
