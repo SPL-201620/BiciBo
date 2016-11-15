@@ -24,6 +24,8 @@ public class Mensaje implements Serializable
     private String mensaje;
     @OneToOne
     private Usuario usuarioDestino;
+    
+    private boolean nuevo;
         
     public Mensaje()
     {
@@ -62,6 +64,14 @@ public class Mensaje implements Serializable
 		this.usuarioDestino = usuarioDestino;
 	}
 
+	public boolean isNuevo() {
+		return nuevo;
+	}
+
+	public void setNuevo(boolean nuevo) {
+		this.nuevo = nuevo;
+	}
+
 	@Override
     public String toString() {
         return "Usuario{" +
@@ -69,6 +79,7 @@ public class Mensaje implements Serializable
                 ", usuarioOrigen='" + usuarioOrigen.getId() + '\'' +
                 ", mensaje='" + mensaje + '\'' +
                 ", usuarioDestino='" + usuarioDestino.getId() + '\'' +
+                ", nuevo='" + nuevo + '\'' +
                 '}';
     }
 }

@@ -34,6 +34,7 @@ public class MensajeService
         	mensajeNuevo.setUsuarioOrigen(usuarioOrigen);
         	mensajeNuevo.setMensaje(mensaje);
         	mensajeNuevo.setUsuarioDestino(usuarioDestino);
+        	mensajeNuevo.setNuevo(true);
         	System.out.println("///////////////////////////5");
         	entityManager.persist(mensajeNuevo);
         	entityManager.getTransaction( ).commit( );
@@ -50,6 +51,65 @@ public class MensajeService
         }    	
         return obj;
 	}
+
+	public JSONObject numMensajes(String id)
+	{
+		JSONObject obj = new JSONObject();
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entityManager = emfactory.createEntityManager( );
+            
+        	Usuario usuario = entityManager.find(Usuario.class, Integer.parseInt(id));
+        	Query query = entityManager.createQuery("SELECT m FROM Mensaje m WHERE m.nuevo=true AND (m.usuarioOrigen = ?1 or m.usuarioDestino = ?1)");
+            query.setParameter(1, usuario); 
+            
+            // Espera en el resultado un objeto unico.
+            List<Mensaje> result = query.getResultList();
+            int filas = result.size();
+            
+            entityManager.close( );
+            emfactory.close( );
+            obj.put("NumMensajesNuevos", filas);
+        }
+        catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar enumerar los mensajes. <br>"+e.getMessage());
+        }    	
+        return obj;
+	}
 	
-    
+	public JSONObject verMensajes(String id)
+	{
+		JSONObject obj = new JSONObject();
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+            EntityManager entityManager = emfactory.createEntityManager( );
+            
+        	Usuario usuario = entityManager.find(Usuario.class, Integer.parseInt(id));
+            Query query = entityManager.createQuery("SELECT m FROM Mensaje m WHERE m.nuevo=true AND (m.usuarioOrigen = ?1 or m.usuarioDestino = ?1)");
+            query.setParameter(1, usuario); 
+            
+            // Espera en el resultado un objeto unico.
+            List<Mensaje> result = query.getResultList();
+            for(Mensaje m : result)
+            {
+            	m.getUsuarioOrigen().setAmigos(null);
+            	m.getUsuarioDestino().setAmigos(null);
+            }
+            
+            entityManager.close( );
+            emfactory.close( );
+            obj.put("status", "OK");
+            obj.put("message", result);
+        }
+        catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar traer los mensajes. <br>"+e.getMessage());
+        }    	
+        return obj;
+	}
 }

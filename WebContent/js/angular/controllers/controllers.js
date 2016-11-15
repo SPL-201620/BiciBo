@@ -601,8 +601,8 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //Mensajes
     $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
     {
-    	alert('uniendose a recorrido en grupo: ' + mensajeEnviado + '   ' + id_usuario_destino);
     	var cookieUsr = $cookieStore.get('usuario');
+    	alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);    	
     	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
     	function (response) 
     	{

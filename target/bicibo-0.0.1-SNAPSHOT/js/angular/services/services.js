@@ -21,10 +21,10 @@ var url_servicio_rest = '/bicibo/rest';
 services.factory('UserSesion', function ($resource) {
     var metodo = {
 		iniciar: $resource('/bicibo/rest/login', {}, {
-			sesion:{method:'POST', params:{username: '@username', clave: '@clave'}}
+			sesion:{method:'POST', params:{username: '@username', password: '@password'}}
 		}),
 		registrar: $resource(url_servicio_rest + '/user', {}, {
-			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', clave: '@clave', fotoPerfil: '@fotoPerfil'}}
+			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', password: '@password', rutaFoto: '@rutaFoto'}}
 		}),
 		logout: $resource(url_servicio_rest + '/logout', {}, {
 			normal:{method:'POST', params:{id: '@id'}}
@@ -37,14 +37,17 @@ services.factory('UserSesion', function ($resource) {
 //Servicios USUARIO
 services.factory('UserFactory', function ($resource) {
     var metodo = {
-		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, {
+		usuario: $resource(url_servicio_rest + '/user/:id', {id: '@id'}, 
+		{
 			show:{method:'GET'},
 		}),
-		user: $resource(url_servicio_rest+'/user/update',{},{
-			update: { method: 'PUT', params: {id: '@id', nombre: '@nombre', email: '@email', edad: '@edad', fotoPerfil: '@fotoPerfil'} }
+		user: $resource(url_servicio_rest+'/user',{},
+		{
+			update: { method: 'PUT', params: {id: '@id', username: '@username',  email: '@email', password: '@password',  edad: '@edad', nombre: '@nombre', rutaFoto: '@rutaFoto'} }
 		}),
-		usuarios: $resource(url_servicio_rest + '/users', {}, {
-			mostrar:{method:'GET', params:{}, isArray: true}
+		usuarios: $resource(url_servicio_rest + '/users/:id', {id: '@id'}, 
+		{
+			mostrar:{method:'GET'}
 		})
     };
     return metodo;
@@ -52,10 +55,15 @@ services.factory('UserFactory', function ($resource) {
 
 //Servicio AMIGOS
 services.factory('FriendFactory', function ($resource) {
-    var metodo = {
-		amigos: $resource(url_servicio_rest + '/friends', {}, {
-			show:{method:'GET', params: {id: '@id'}, isArray: true },
-	        create: { method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }
+    var metodo = 
+    {
+		amigos: $resource(url_servicio_rest + '/friends/:id', {id: '@id'}, 
+		{
+			show:{method:'GET'}
+		}),
+		amigo: $resource(url_servicio_rest + '/friend', {}, 
+		{				
+			create:{ method: 'POST', params: {id: '@id', id_friend: '@id_friend'} }       
 		})
     };
     return metodo;
@@ -65,8 +73,8 @@ services.factory('FriendFactory', function ($resource) {
 
 services.factory('RouteFactory', function ($resource) {
     var metodo = {
-    	rutas: $resource(url_servicio_rest + '/recorridosUser', {}, {
-			show:{method:'GET', params:{}, isArray: true}
+    	rutas: $resource(url_servicio_rest + '/recorridosUser/:id', {id: '@id'}, {
+			show:{method:'GET'}
 		}),
 		ruta1: $resource(url_servicio_rest + '/recorrido/add', {}, {
 			crear:{method:'POST', params: {id: '@id',
@@ -131,6 +139,22 @@ services.factory('RouteFactory', function ($resource) {
 				fecha_recorrido:'@fecha_recorrido', 
 				frecuencia:'@frecuencia'} 
 			}
+		})
+    };
+    return metodo;
+});
+
+//Mensajes
+services.factory('MessageFactory', function ($resource) {
+    var metodo = 
+    {
+		/*amigos: $resource(url_servicio_rest + '/friends/:id', {id: '@id'}, 
+		{
+			show:{method:'GET'}
+		}),*/
+		mensaje: $resource(url_servicio_rest + '/mensaje', {}, 
+		{				
+			create:{ method: 'POST', params: {id_usuario_origen: '@id_usuario_origen', mensaje: '@mensaje', id_usuario_destino: '@id_usuario_destino'} }       
 		})
     };
     return metodo;
