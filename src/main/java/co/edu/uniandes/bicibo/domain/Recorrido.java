@@ -11,9 +11,9 @@ import java.util.Date;
 /**
  * Entidad que representa un Recorrido en el sistema de BiciBo.
  * @author Abimelec
- */
+ */ 
 @Entity
-@Table(name = "Recorrido", schema = "bicibo")
+@Table(name = "Recorridos", schema = "bicibo")
 public class Recorrido implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
