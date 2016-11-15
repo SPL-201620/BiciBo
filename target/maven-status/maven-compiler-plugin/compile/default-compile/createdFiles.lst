@@ -1,9 +1,7 @@
-co\edu\uniandes\bicibo\service\CreateEmployee.class
+co\edu\uniandes\bicibo\service\MensajeService.class
+co\edu\uniandes\bicibo\domain\Mensaje.class
 co\edu\uniandes\bicibo\domain\RecorridoGrupal.class
-co\edu\uniandes\bicibo\domain\User.class
-co\edu\uniandes\bicibo\domain\Employee.class
 co\edu\uniandes\bicibo\domain\Recorrido.class
-co\edu\uniandes\bicibo\service\UserService.class
 co\edu\uniandes\bicibo\service\UsuarioService.class
 co\edu\uniandes\bicibo\domain\Usuario.class
 co\edu\uniandes\bicibo\rest\UserRestService.class

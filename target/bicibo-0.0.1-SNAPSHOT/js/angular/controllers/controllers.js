@@ -145,8 +145,8 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		  nombre: '',
               email: '',
               username: '',
-              clave: '',
-              fotoPerfil: ''
+              password: '',
+              rutaFoto: ''
       };
     
     //Para cuando se de clic en enviar y se hace el llamado al servicio REST
@@ -154,12 +154,12 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     $scope.iniciarSesion = function() {
     	var username_usu = $scope.usuario.username;
-    	var clave_usu = $scope.usuario.clave;
-    	if(!username_usu || !clave_usu){
+    	var password_usu = $scope.usuario.password;
+    	if(!username_usu || !password_usu){
     		alert("Usuario y Clave son requeridos.");
     		return;
     	}else{
-        	UserSesion.iniciar.sesion({username: username_usu, clave: clave_usu}, function (response) {
+        	UserSesion.iniciar.sesion({username: username_usu, password: password_usu}, function (response) {
         		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
         		if(response.status == "OK"){
             		inicioSesion.resolve(response);
@@ -189,15 +189,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       	var nombre_usu = $scope.usuario.nombre;
      	var email_usu = $scope.usuario.email;
      	var username_usu = $scope.usuario.username;
-     	var clave_usu = $scope.usuario.clave;
-     	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
-     	if(!email_usu || !clave_usu){
-     		alert("Email y Clave son requeridos.");
+     	var password_usu = $scope.usuario.password;
+     	var rutaFoto_usu = $scope.usuario.rutaFoto;
+     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
+     	if(!username_usu || !password_usu){
+     		alert("Usuario y Clave son requeridos.");
      		return;
      	}else{
          	
-         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
+         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, password: password_usu, rutaFoto: rutaFoto_usu}, function (response) {
          		//alert('registrando.. servicio REST: '+response.status)
          		if(response.status=="OK"){
              		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro
@@ -217,8 +217,9 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     // funcion para el boton de salir o cerrar sesion.
     $scope.salir = function(){
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('saliendo..')
+    	alert('saliendo..:'+cookieUsr.id)
     	UserSesion.logout.normal({id: cookieUsr.id}, function (response) {
+    		alert('respuesta servcion /logout: '+response.status)
     		if(response.status != "OK"){
     			$log.info(response.message);
     		}else{
@@ -235,22 +236,25 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       $scope.infoUsuario = {
               nombre: '',
               email: '',
-              rutaFoto: '',
-              edad: ''
+              password: '',
+              username: '',
+              edad: '',
+              rutaFoto: ''              
       };
     
     //INFO USUARIO ESPECIFICO
-    $scope.getInfoUsuario = function(){
-		console.log("infoUsuario")
+    $scope.getInfoUsuario = function()
+    {
     	var cookieUsr = $cookieStore.get('usuario');
-		console.log(cookieUsr)
-    	alert('Consultando info usuario de id: ' + cookieUsr.id + '-username: '+ cookieUsr.username);
-    	UserFactory.usuario.show({id: cookieUsr.id}, function (response) {
-    		alert('Respuesta del servicio REST /user/{id}:'+response.username)
-    		if(response.email == null){
+    	UserFactory.usuario.show({id: cookieUsr.id}, 
+    	function (response) 
+    	{
+    		if(response.email == null)
+    		{
     			$scope.msgError = "No se encontro info para el usuario."; 
-    		}else{
-    			//alert(response);
+    		}
+    		else
+    		{
     			$scope.infoUsuario = response;    			
     		}
     	})
@@ -260,42 +264,40 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.listaRegistrados = {};
 
     //LISTA USUARIOS REGISTRADOS
-	$scope.listarRegistrados = function(){
-		console.log("listar registrados")
-  		//$scope.listaRegistrados = factoryUsuarios;
-  		//alert('listando usuarios registrados: ')
-	  	UserFactory.usuarios.mostrar(function (response)
+	$scope.listarRegistrados = function()
+	{
+		var cookieUsr = $cookieStore.get('usuario');
+	  	UserFactory.usuarios.mostrar({id: cookieUsr.id}, function (response)
 		{
-			//alert('listaAmigos:'+response[0]);
-	  		//alert('listado de usuarios registrados: '+response.length)
-	  		if(response.length <= 0){
+	  		if(response.length <= 0)
+	  		{
 	  			$scope.msgError = "No hay usuarios registrados en el momento"; 
-	  		}else{
-	  			//alert(response);
-	  			$scope.listaRegistrados = response;
-				for(var i=0; i<$scope.listaRegistrados.length; ++i){
-					console.log($scope.listaRegistrados[i]);
-				}//PARA TOMAR DE REST
-	  	    	//$scope.listaRegistrados = factoryUsuarios;//PARA TOMAR DE simulado.
+	  		}
+	  		else
+	  		{
+	  			$scope.listaRegistrados = response.message;
 	  		}
 	  	})
 	};
 	
-    $scope.actualizarUsuario = function(){
+    $scope.actualizarUsuario = function()
+    {
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('Actualizando info usuario: '+ $scope.infoUsuario.id)
-    	UserFactory.user.update({id: $scope.infoUsuario.id, nombre: $scope.infoUsuario.nombre,
-    		email: $scope.infoUsuario.email, edad: $scope.infoUsuario.edad, fotoPerfil: $scope.infoUsuario.fotoPerfil}, function (response) {
-    		//alert('respuesta'+response.status)
-    		if(response.status != "OK"){
-    			$scope.msgError = response.message; 
-    		}else{
-				//alert('respuesta'+response.status)
-    			window.location.assign('#/perfil');
-                window.location.reload(true);
-                //$location.path('/perfil');
-    		}
-    	})
+    	UserFactory.user.update({id: $scope.infoUsuario.id, username : "", email: $scope.infoUsuario.email, 
+    		password : "", edad: $scope.infoUsuario.edad, nombre: $scope.infoUsuario.nombre,
+    		fotoPerfil: $scope.infoUsuario.fotoPerfil}, 
+    		function (response) 
+    		{
+	    		if(response.status != "OK")
+	    		{
+	    			$scope.msgError = response.message; 
+	    		}
+	    		else
+	    		{
+	    			window.location.assign('#/perfil');
+	                window.location.reload(true);
+	    		}
+    		})
     };
     $scope.noActualizar = function(){
     	window.location.assign('#/perfil');
@@ -304,21 +306,20 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     
     //LISTA AMIGOS
-    $scope.listarAmigos = function(){
-		console.log("listar amigos")
+    $scope.listarAmigos = function()
+    {
     	var cookieUsr = $cookieStore.get('usuario');
     	$scope.listaAmigos = {};
-    	
-    	//$scope.listaAmigos = factoryUsuarios;
-    	FriendFactory.amigos.show({id: cookieUsr.id}, function (response) {
-
-			//alert('listaAmigos:'+response[0].nombre);
-    		if(response.length <= 0){
+    	FriendFactory.amigos.show({id: cookieUsr.id}, 
+    	function (response) 
+    	{
+    		if(response.length == 0)
+    		{
     			$scope.msgError = "No tiene amigos en el momento"; 
-    		}else{
-    			//alert(response);
-    			$scope.listaAmigos = response;//PARA TOMAR DE REST
-    	    	//$scope.listaAmigos = factoryUsuarios;//PARA TOMAR DE SIMULADO.
+    		}
+    		else
+    		{
+    			$scope.listaAmigos = response.message;
     		}
     	})
     };
@@ -326,13 +327,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //AGREGAR AMIGO
     $scope.agregarAmigo = function(id_amigo){
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('agregando amigo: '+id_amigo);
-    	FriendFactory.amigos.create({id: cookieUsr.id, id_friend: id_amigo}, function (response) {
-    		//alert('agregado amigo'+response.status);
-    		if(response.status != "OK"){
+    	FriendFactory.amigo.create({id: cookieUsr.id, id_friend: id_amigo}, 
+    	function (response) 
+    	{
+    		if(response.status != "OK")
+    		{
     			$scope.msgError = response.message; 
-    		}else{
-    			//alert(response);
+    		}
+    		else
+    		{
     			window.location.assign('#/perfil');
                 window.location.reload(true);
     		}
@@ -361,7 +364,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     $scope.listarRecorridos = function(){
     	var id_recorrido = $routeParams.id;
-    	//alert('listando recorridos: '+id_recorrido)
+    	alert('listando recorridos: '+id_recorrido)
     	if(typeof id_recorrido != "undefined"){
     		//alert('entra a mostrar recorrido.');
     		$('#tablaInfoRecorridos').hide();
@@ -386,14 +389,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	$scope.listaRecorridos = {};
         	
         	//$scope.listaRecorridos = factoryRecorridos;//Temporal Comentariar
+        	alert('listando recorridos usuario: '+cookieUsr.id)
         	RouteFactory.rutas.show({id: cookieUsr.id},function (response) {
 				console.log(response[0]);
-        		//alert(response.length)
-        		if(response.length <= 0){
-        			$scope.msgError = "No tiene recorridos en el momento"; 
+        		alert(response.length)
+        		if(response.status =="ERROR"){
+        			$scope.msgError = response.message; 
         		}else{
         			//alert(response);
-        			$scope.listaRecorridos = response;
+        			$scope.listaRecorridos = response.recorridos;
         	    	//$scope.listaRecorridos = factoryRecorridos;
         		}
         	})
@@ -592,10 +596,28 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	    	$("#origenInMapa").val(origen)
 	    	$("#destinoInMapa").val(destino)
 	  	});
-	}
-    
-    
-    
-    
+    }
+
+    //Mensajes
+    $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
+    {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);    	
+    	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
+    	function (response) 
+    	{
+    		alert('uniendose a recorrido en grupo: ');
+    		if(response.status != "OK")
+    		{
+    			$scope.msgError = response.message; 
+    		}
+    		else
+    		{
+    			window.location.assign('#/perfil');
+    			window.location.reload(true);
+    		}
+    	})
+    };
+
 }]);//Fin Controlador principal
 
