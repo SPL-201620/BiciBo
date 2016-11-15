@@ -33,19 +33,11 @@ public class Recorrido implements Serializable {
 
     public String fecha_recorrido;
 
-    public int distancia;
+    public String distancia;
 
-    public int tiempoEstimado;
+    public String tiempoEstimado;
 
-    public int getCaloriasQuemadas() {
-        return caloriasQuemadas;
-    }
-
-    public void setCaloriasQuemadas(int caloriasQuemadas) {
-        this.caloriasQuemadas = caloriasQuemadas;
-    }
-
-    public int caloriasQuemadas;
+    public String caloriasQuemadas;
 
     public String infoClima;
 
@@ -113,27 +105,35 @@ public class Recorrido implements Serializable {
         this.id_usuario = id_usuario;
     }
 
-    public int getDistancia() {
-        return distancia;
-    }
+    public String getDistancia() {
+		return distancia;
+	}
 
-    public void setDistancia(int distancia) {
-        this.distancia = distancia;
-    }
+	public void setDistancia(String distancia) {
+		this.distancia = distancia;
+	}
 
-    public int getTiempoEstimado() {
-        return tiempoEstimado;
-    }
+	public String getTiempoEstimado() {
+		return tiempoEstimado;
+	}
 
-    public void setTiempoEstimado(int tiempoEstimado) {
-        this.tiempoEstimado = tiempoEstimado;
-    }
+	public void setTiempoEstimado(String tiempoEstimado) {
+		this.tiempoEstimado = tiempoEstimado;
+	}
 
-    public String getInfoClima() {
+	public String getCaloriasQuemadas() {
+		return caloriasQuemadas;
+	}
+
+	public void setCaloriasQuemadas(String caloriasQuemadas) {
+		this.caloriasQuemadas = caloriasQuemadas;
+	}
+
+	public String getInfoClima() {
         return infoClima;
     }
 
     public void setInfoClima(String infoClima) {
         this.infoClima = infoClima;
-    }
+    } 
 }
