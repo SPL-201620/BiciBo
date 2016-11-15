@@ -13,7 +13,7 @@ import java.util.Date;
  * @author Abimelec
  */
 @Entity
-@Table(name = "Recorrido", schema = "bicibo")
+@Table(name = "recorridos", schema = "bicibo")
 public class Recorrido implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

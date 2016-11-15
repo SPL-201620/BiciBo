@@ -8,7 +8,6 @@ import javax.persistence.Query;
 import org.json.simple.JSONObject;
 import javax.persistence.PersistenceContext;
 
-import co.edu.uniandes.bicibo.domain.User;
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.domain.Recorrido;
 import java.util.*;
