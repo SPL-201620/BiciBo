@@ -90,9 +90,9 @@ public class UserRestService
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.ListarAmigos(id);
     }
-	@Path("/friends")
+	@Path("/friend")
 	@POST
-    public JSONObject AgregarAmigo(@PathParam("id") String id,@PathParam("id_friend") String idAmigo) 
+    public JSONObject AgregarAmigo(@QueryParam("id") String id,@QueryParam("id_friend") String idAmigo) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.AgregarAmigo(id, idAmigo);

@@ -308,7 +308,6 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //LISTA AMIGOS
     $scope.listarAmigos = function()
     {
-		console.log("listar amigos")
     	var cookieUsr = $cookieStore.get('usuario');
     	$scope.listaAmigos = {};
     	FriendFactory.amigos.show({id: cookieUsr.id}, 
@@ -328,13 +327,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //AGREGAR AMIGO
     $scope.agregarAmigo = function(id_amigo){
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('agregando amigo: '+id_amigo);
-    	FriendFactory.amigos.create({id: cookieUsr.id, id_friend: id_amigo}, function (response) {
-    		//alert('agregado amigo'+response.status);
-    		if(response.status != "OK"){
+    	FriendFactory.amigo.create({id: cookieUsr.id, id_friend: id_amigo}, 
+    	function (response) 
+    	{
+    		if(response.status != "OK")
+    		{
     			$scope.msgError = response.message; 
-    		}else{
-    			//alert(response);
+    		}
+    		else
+    		{
     			window.location.assign('#/perfil');
                 window.location.reload(true);
     		}
