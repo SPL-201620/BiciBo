@@ -13,7 +13,7 @@ import java.util.List;
  * @author Abimelec
  */
 @Entity
-@Table(name = "Usuario", schema = "bicibo")
+@Table(name = "usuarios", schema = "bicibo")
 public class Usuario implements Serializable 
 {
 	@Id

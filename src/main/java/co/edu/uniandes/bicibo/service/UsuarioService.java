@@ -8,7 +8,6 @@ import javax.persistence.Query;
 import org.json.simple.JSONObject;
 import javax.persistence.PersistenceContext;
 
-import co.edu.uniandes.bicibo.domain.User;
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.domain.Recorrido;
 import java.util.*;
@@ -197,7 +196,6 @@ public class UsuarioService {
             List<Usuario> persons = query.getResultList();
             
             Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
-            System.out.println("ola");
             ArrayList<Usuario> usuariosNoAmigos = new ArrayList();
             
             for(int i = 0; i< persons.size();i++)
@@ -210,7 +208,6 @@ public class UsuarioService {
                 	usuariosNoAmigos.add(persons.get(i));
                 }
             }
-            System.out.println("ola2");
             entitymanager.close();
             emfactory.close();
             obj.put("status", "OK");
@@ -268,9 +265,13 @@ public class UsuarioService {
 
     		List<Usuario> amigos = usuario.getAmigos();
     		amigos.add(amigo);
-
     		usuario.setAmigos(amigos);
     		
+    		/*amigos = amigo.getAmigos();
+    		amigos.add(usuario);
+    		amigo.setAmigos(amigos);
+
+    		entitymanager.persist(amigo);*/
     		entitymanager.persist(usuario);
     		entitymanager.getTransaction( ).commit( );
     		entitymanager.close();

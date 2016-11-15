@@ -9,9 +9,9 @@ import javax.persistence.Persistence;
  * @author Abimelec
  */
 public class GenerarBD {
-	public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.
-            createEntityManagerFactory("Eclipselink_JPA_Bicibo");
+	public static void main(String[] args) 
+	{
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Eclipselink_JPA_Bicibo");
         EntityManager em = emf.createEntityManager();
         em.close();
     }
