@@ -2,7 +2,7 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.UsuarioService;
-import co.edu.uniandes.bicibo.service.RecorridoService;
+//import co.edu.uniandes.bicibo.service.RecorridoService;
 
 import java.util.Date;
 
@@ -101,7 +101,7 @@ public class UserRestService
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado
 	 * */
-
+/*EN PROCESO....ABIMELEC
 	@POST
 	@Path("/recorrido")
     public JSONObject AgregarRecorrido(@PathParam("id_usuario") String id_usuario,
@@ -129,6 +129,7 @@ public class UserRestService
         		caloriasQuemadas,
         		infoClima);
     }
+---FIN ABIMELEC*/    
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado
 	 * */

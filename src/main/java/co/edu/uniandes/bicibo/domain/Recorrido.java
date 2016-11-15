@@ -11,9 +11,9 @@ import java.util.Date;
 /**
  * Entidad que representa un Recorrido en el sistema de BiciBo.
  * @author Abimelec
- */ 
+ */
 @Entity
-@Table(name = "Recorridos", schema = "bicibo")
+@Table(name = "recorridos", schema = "bicibo")
 public class Recorrido implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,18 +36,10 @@ public class Recorrido implements Serializable {
     public String distancia;
 
     public String tiempoEstimado;
-    
+
     public String caloriasQuemadas;
 
     public String infoClima;
-
-    public String getCaloriasQuemadas() {
-        return caloriasQuemadas;
-    }
-
-    public void setCaloriasQuemadas(String caloriasQuemadas) {
-        this.caloriasQuemadas = caloriasQuemadas;
-    }
 
     public Integer getId() {
         return id;
@@ -114,26 +106,34 @@ public class Recorrido implements Serializable {
     }
 
     public String getDistancia() {
-        return distancia;
-    }
+		return distancia;
+	}
 
-    public void setDistancia(String distancia) {
-        this.distancia = distancia;
-    }
+	public void setDistancia(String distancia) {
+		this.distancia = distancia;
+	}
 
-    public String getTiempoEstimado() {
-        return tiempoEstimado;
-    }
+	public String getTiempoEstimado() {
+		return tiempoEstimado;
+	}
 
-    public void setTiempoEstimado(String tiempoEstimado) {
-        this.tiempoEstimado = tiempoEstimado;
-    }
+	public void setTiempoEstimado(String tiempoEstimado) {
+		this.tiempoEstimado = tiempoEstimado;
+	}
 
-    public String getInfoClima() {
+	public String getCaloriasQuemadas() {
+		return caloriasQuemadas;
+	}
+
+	public void setCaloriasQuemadas(String caloriasQuemadas) {
+		this.caloriasQuemadas = caloriasQuemadas;
+	}
+
+	public String getInfoClima() {
         return infoClima;
     }
 
     public void setInfoClima(String infoClima) {
         this.infoClima = infoClima;
-    }
+    } 
 }
