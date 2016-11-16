@@ -158,17 +158,41 @@ public class UserRestService
 	
 	@GET
 	@Path("/numMensajes/{id}")
-    public JSONObject NumMensajesNuevos(@PathParam("id") String id) 
+    public JSONObject darNumMensajesNuevos(@PathParam("id") String id) 
 	{
         MensajeService mensajeService = new MensajeService();
-        return mensajeService.numMensajes(id);
+        return mensajeService.darNumMensajesNuevos(id);
     }
 	
 	@GET
 	@Path("/mensajes/{id}")
-    public JSONObject mensajesNuevos(@PathParam("id") String id) 
+    public JSONObject verMensajesNuevos(@PathParam("id") String id) 
 	{
         MensajeService mensajeService = new MensajeService();
-        return mensajeService.verMensajes(id);
+        return mensajeService.verMensajesNuevos(id);
+    }
+	
+	@PUT
+	@Path("/mensaje")
+    public JSONObject marcarMensajeVisto(@QueryParam("id_mensaje") String id) 
+	{
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.marcarMensajeVisto(id);
+    }
+	
+	@GET
+	@Path("/chat/{id}/{id2}")
+    public JSONObject verChat(@PathParam("id") String id, @PathParam("id2") String id2) 
+	{
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.verChat(id, id2);
+    }
+	
+	@PUT
+	@Path("/mensajes")
+    public JSONObject marcarMensajeSVisto(@QueryParam("id_usuario_origen") String id, @QueryParam("id_usuario_destino") String id2) 
+	{
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.marcarMensajesVisto(id, id2);
     }
 }
