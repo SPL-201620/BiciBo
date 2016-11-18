@@ -72,6 +72,7 @@ public class MensajeService
             
             entityManager.close( );
             emfactory.close( );
+            obj.put("status", "OK");
             obj.put("NumMensajesNuevos", filas);
         }
         catch (Exception e)
