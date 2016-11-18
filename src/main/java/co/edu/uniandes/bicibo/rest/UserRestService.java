@@ -2,6 +2,7 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.MensajeService;
+import co.edu.uniandes.bicibo.service.RecorridoService;
 import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 
@@ -26,7 +27,7 @@ public class UserRestService
 {
 	@POST
 	@Path("/user")
-    public JSONObject Registrar(@QueryParam("nombre") String nombre,
+    public JSONObject registrar(@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("username") String username,
     		@QueryParam("password") String password,
@@ -34,39 +35,39 @@ public class UserRestService
 	{
 		System.out.println("email: "+email);
         UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Registrar(nombre, email, username, password, rutaFoto);
+        return usuarioService.registrar(nombre, email, username, password, rutaFoto);
     }
 	
 	@POST
 	@Path("/login")
-    public JSONObject Login(@QueryParam("username") String username,
+    public JSONObject login(@QueryParam("username") String username,
     		@QueryParam("password") String password) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Login(username, password);
+        return usuarioService.login(username, password);
     }
 	
 	@Path("/logout")
 	@POST
-    public JSONObject Logout(@QueryParam("id") String id) 
+    public JSONObject logout(@QueryParam("id") String id) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.Logout(id);
+        return usuarioService.logout(id);
     }
 	/*
 	 * Servicio para consultar la informacion de un usuario en particular
 	 * */
 	@GET		
 	@Path("/user/{id}")
-    public Usuario InfoUsuario(@PathParam("id") String id) 
+    public Usuario infoUsuario(@PathParam("id") String id) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.InfoUsuairo(Integer.parseInt(id));
+        return usuarioService.infoUsuario(Integer.parseInt(id));
     }
 	
 	@Path("/user")
 	@PUT
-    public JSONObject UpdateUsuario(@QueryParam("id") String id,
+    public JSONObject updateUsuario(@QueryParam("id") String id,
     		@QueryParam("nombre") String nombre,
     		@QueryParam("email") String email,
     		@QueryParam("password") String password,
@@ -75,29 +76,29 @@ public class UserRestService
     		@QueryParam("fotoPerfil") String fotoPerfil) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.UpdateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
+        return usuarioService.updateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
     }
     
 	@Path("/users/{id}")
 	@GET
-    public JSONObject ListarRegistrados(@PathParam("id") String id) 
+    public JSONObject listarRegistrados(@PathParam("id") String id) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.ListarRegistrados(id);
+        return usuarioService.listarRegistrados(id);
     }
 	@Path("/friends/{id}")
 	@GET
-    public JSONObject ListarAmigos(@PathParam("id") String id) 
+    public JSONObject listarAmigos(@PathParam("id") String id) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.ListarAmigos(id);
+        return usuarioService.listarAmigos(id);
     }
 	@Path("/friend")
 	@POST
-    public JSONObject AgregarAmigo(@QueryParam("id") String id,@QueryParam("id_friend") String idAmigo) 
+    public JSONObject agregarAmigo(@QueryParam("id") String id,@QueryParam("id_friend") String idAmigo) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.AgregarAmigo(id, idAmigo);
+        return usuarioService.agregarAmigo(id, idAmigo);
     }
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado
@@ -105,19 +106,20 @@ public class UserRestService
 
 	@GET
 	@Path("/recorridosUser/{id}")
-    public JSONObject ListarRecorridos(@PathParam("id") String id) 
+    public JSONObject listarRecorridos(@PathParam("id") String id) 
 	{
-		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.ListarRecorridos(id);
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.listarRecorridos(id);
+    }
+	
+	@Path("/recorrido")
+	@GET
+    public JSONObject darRecorrido(@PathParam("id") String id) 
+	{
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.darRecorrido(id);
     }
 	/*
-	
-	@Path("/routes")
-	@GET
-    public User ListarRecorridos(@PathParam("id") String id) {
-        UserService userService = new UserService();
-        return userService.ListarRecorridos(id);
-    }
 	@Path("/route/add")
 	@POST
     public User AgregarRecorrido(@PathParam("id") String id) {
@@ -148,7 +150,7 @@ public class UserRestService
 	
 	@POST
 	@Path("/mensaje")
-    public JSONObject EnviarMensaje(@QueryParam("id_usuario_origen") String id_usuario_origen,
+    public JSONObject enviarMensaje(@QueryParam("id_usuario_origen") String id_usuario_origen,
     		@QueryParam("mensaje") String mensaje,
     		@QueryParam("id_usuario_destino") String id_usuario_destino) 
 	{
