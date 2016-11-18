@@ -2,6 +2,7 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.MensajeService;
+import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 
 import java.util.Date;
@@ -194,5 +195,13 @@ public class UserRestService
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.marcarMensajesVisto(id, id2);
+    }
+	
+	@GET
+	@Path("/sitiosAlquiler")
+    public JSONObject darSitiosAlquiler() 
+	{
+        SitioAlquilerService sitioAlquilerService = new SitioAlquilerService();
+        return sitioAlquilerService.darSitiosAlquiler();
     }
 }
