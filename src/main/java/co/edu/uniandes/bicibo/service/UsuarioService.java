@@ -12,8 +12,8 @@ import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.domain.Recorrido;
 import java.util.*;
 
-public class UsuarioService {
-	
+public class UsuarioService 
+{	
     public JSONObject Registrar(String nombre, String email, String username, String password, String rutaFoto) 
     {       
         JSONObject obj = new JSONObject();

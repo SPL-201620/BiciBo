@@ -1,6 +1,7 @@
 package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
+import co.edu.uniandes.bicibo.service.MensajeService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 //import co.edu.uniandes.bicibo.service.RecorridoService;
 
@@ -174,4 +175,32 @@ public class UserRestService
         return userService.UnirseRecorridoGrupo(id);
     }
     */
+	//Mensajes
+	
+	@POST
+	@Path("/mensaje")
+    public JSONObject EnviarMensaje(@QueryParam("id_usuario_origen") String id_usuario_origen,
+    		@QueryParam("mensaje") String mensaje,
+    		@QueryParam("id_usuario_destino") String id_usuario_destino) 
+	{
+		System.out.println("olaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa2 "+mensaje + id_usuario_origen + " + "+ id_usuario_destino);
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.enviarMensaje("1", "hello", "2");
+    }
+	
+	@GET
+	@Path("/numMensajes/{id}")
+    public JSONObject NumMensajesNuevos(@PathParam("id") String id) 
+	{
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.numMensajes(id);
+    }
+	
+	@GET
+	@Path("/mensajes/{id}")
+    public JSONObject mensajesNuevos(@PathParam("id") String id) 
+	{
+        MensajeService mensajeService = new MensajeService();
+        return mensajeService.verMensajes(id);
+    }
 }
