@@ -14,7 +14,7 @@ import java.util.*;
 
 public class UsuarioService 
 {	
-    public JSONObject Registrar(String nombre, String email, String username, String password, String rutaFoto) 
+    public JSONObject registrar(String nombre, String email, String username, String password, String rutaFoto) 
     {       
         JSONObject obj = new JSONObject();
         try
@@ -48,7 +48,7 @@ public class UsuarioService
         return obj;
     }
     
-    public JSONObject Login(String username, String clave) 
+    public JSONObject login(String username, String clave) 
     {        
         JSONObject obj = new JSONObject();
         try
@@ -87,7 +87,7 @@ public class UsuarioService
         return obj;
     }
 
-    public JSONObject Logout(String id) {
+    public JSONObject logout(String id) {
     	JSONObject obj = new JSONObject();
         try
         {
@@ -103,7 +103,7 @@ public class UsuarioService
         return obj;
     }
     
-    public Usuario InfoUsuairo(int id)
+    public Usuario infoUsuario(int id)
     {
         Usuario usuario = new Usuario();
     	try
@@ -124,7 +124,7 @@ public class UsuarioService
     	
     }
     
-    public JSONObject UpdateUsuario(String id, String nombre, String email, String password, String username, 
+    public JSONObject updateUsuario(String id, String nombre, String email, String password, String username, 
     		String edad, String fotoPerfil) 
     {        
     	JSONObject obj = new JSONObject();
@@ -184,7 +184,7 @@ public class UsuarioService
         return obj;
     }
     
-    public JSONObject ListarRegistrados (String id)
+    public JSONObject listarRegistrados (String id)
     {
     	JSONObject obj = new JSONObject();
     	try
@@ -221,7 +221,7 @@ public class UsuarioService
         return obj;
     }
     
-    public JSONObject ListarAmigos (String id)
+    public JSONObject listarAmigos (String id)
     {
     	JSONObject obj = new JSONObject();
     	try
@@ -251,7 +251,7 @@ public class UsuarioService
     	return obj;
     }
 
-    public JSONObject AgregarAmigo (String id, String idAmigo)
+    public JSONObject agregarAmigo (String id, String idAmigo)
     {
     	JSONObject obj = new JSONObject();
     	try
@@ -286,36 +286,4 @@ public class UsuarioService
     	}    	
     	return obj;
     } 
-    public JSONObject ListarRecorridos (String id)
-    {
-    	JSONObject obj = new JSONObject();
-    	try
-        {
-        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-            EntityManager entitymanager = emfactory.createEntityManager();
-            
-            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
-                        
-            List<Recorrido> recorridos = usuario.getRecorridos();
-            
-            System.out.println("---->>>Resultado recorridos: "+recorridos.size());
-            
-            if(recorridos.size() <= 0){
-                obj.put("status", "ERROR");
-                obj.put("message", "No existen recorridos registrados en el momento.");
-            	
-            }else{
-                obj.put("status", "OK");
-                obj.put("recorridos", recorridos);
-            }
-            entitymanager.close();
-            emfactory.close();
-        }
-    	catch (Exception e)
-        {
-        	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar cargar los recorridos del usuario. <br>"+e.getMessage());
-        }    	
-    	return obj;
-    }
 }
