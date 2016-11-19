@@ -14,7 +14,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "recorridos", schema = "bicibo")
-public class Recorrido implements Serializable {
+public class Recorrido implements Serializable 
+{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
@@ -135,5 +136,24 @@ public class Recorrido implements Serializable {
 
     public void setInfoClima(String infoClima) {
         this.infoClima = infoClima;
-    } 
+    }
+
+	@Override
+	public String toString() 
+	{
+		return "Recorrido ["
+				+ "id=" + id + 
+				", id_usuario=" + id_usuario + 
+				", realizado=" + realizado + 
+				", origen=" + origen + 
+				", destino=" + destino + 
+				", hora_salida=" + hora_salida + 
+				", hora_llegada=" + hora_llegada + 
+				", fecha_recorrido=" + fecha_recorrido +
+				", distancia=" + distancia + 
+				", tiempoEstimado="	+ tiempoEstimado + 
+				", caloriasQuemadas=" + caloriasQuemadas + 
+				", infoClima=" + infoClima + 
+				"]";
+	}
 }
