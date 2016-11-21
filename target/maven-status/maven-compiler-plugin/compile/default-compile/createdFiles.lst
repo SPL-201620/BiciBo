@@ -1,8 +1,12 @@
 co\edu\uniandes\bicibo\service\MensajeService.class
-co\edu\uniandes\bicibo\domain\Mensaje.class
-co\edu\uniandes\bicibo\domain\RecorridoGrupal.class
+co\edu\uniandes\bicibo\domain\SitioAlquiler.class
 co\edu\uniandes\bicibo\domain\Recorrido.class
 co\edu\uniandes\bicibo\service\UsuarioService.class
+co\edu\uniandes\bicibo\service\SitioAlquilerService.class
+co\edu\uniandes\bicibo\domain\PuntoUbicacion.class
 co\edu\uniandes\bicibo\domain\Usuario.class
-co\edu\uniandes\bicibo\rest\UserRestService.class
 co\edu\uniandes\bicibo\service\GenerarBD.class
+co\edu\uniandes\bicibo\domain\Mensaje.class
+co\edu\uniandes\bicibo\domain\RecorridoGrupal.class
+co\edu\uniandes\bicibo\service\RecorridoService.class
+co\edu\uniandes\bicibo\rest\UserRestService.class

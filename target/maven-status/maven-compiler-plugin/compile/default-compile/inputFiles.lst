@@ -1,4 +1,6 @@
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\RecorridoGrupal.java
+C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\PuntoUbicacion.java
+C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\service\SitioAlquilerService.java
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\Recorrido.java
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\service\UsuarioService.java
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\service\MensajeService.java
@@ -6,3 +8,5 @@ C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\Usuario.java
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\Mensaje.java
 C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\rest\UserRestService.java
+C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\service\RecorridoService.java
+C:\Users\wr.guarin234\Documents\EntregaFinal\bicibo\BiciBo\src\main\java\co\edu\uniandes\bicibo\domain\SitioAlquiler.java
