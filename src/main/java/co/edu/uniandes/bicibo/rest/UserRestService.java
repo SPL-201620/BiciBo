@@ -119,13 +119,45 @@ public class UserRestService
 		RecorridoService recorridoService = new RecorridoService();
         return recorridoService.darRecorrido(id);
     }
-	/*
-	@Path("/route/add")
+	
+	@Path("/recorrido")
 	@POST
-    public User AgregarRecorrido(@PathParam("id") String id) {
-        UserService userService = new UserService();
-        return userService.AgregarRecorrido(id);
+    public JSONObject agregarRecorrido(@QueryParam("id_usuario") String idUsuario,
+    		@QueryParam("origen") String origen,
+    		@QueryParam("destino") String destino,
+    		@QueryParam("hora_salida") String horaSalida,
+    		@QueryParam("hora_llegada") String horaLlegada,
+    		@QueryParam("fecha_recorrido") String fechaRecorrido,
+    		@QueryParam("realizado") String realizado,
+    		@QueryParam("distancia") String distancia,
+    		@QueryParam("tiempoEstimado") String tiempoEstimado,
+    		@QueryParam("caloriasQuemadas") String caloriasQuemadas,
+    		@QueryParam("infoClima") String infoClima) 
+	{
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.agregarRecorrido(idUsuario, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
+        		realizado, distancia, tiempoEstimado, caloriasQuemadas, infoClima);
     }
+	
+	@Path("/recorrido")
+	@PUT
+    public JSONObject actualizarRecorrido(@QueryParam("id_recorrido") String id_recorrido,
+    		@QueryParam("origen") String origen,
+    		@QueryParam("destino") String destino,
+    		@QueryParam("hora_salida") String horaSalida,
+    		@QueryParam("hora_llegada") String horaLlegada,
+    		@QueryParam("fecha_recorrido") String fechaRecorrido,
+    		@QueryParam("realizado") String realizado,
+    		@QueryParam("distancia") String distancia,
+    		@QueryParam("tiempoEstimado") String tiempoEstimado,
+    		@QueryParam("caloriasQuemadas") String caloriasQuemadas,
+    		@QueryParam("infoClima") String infoClima) 
+	{
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.actualizarRecorrido(id_recorrido, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
+        		realizado, distancia, tiempoEstimado, caloriasQuemadas, infoClima);
+    }
+	/*
 	@Path("/routes2")
 	@GET
     public User ListarRecorridosGrupo() {
