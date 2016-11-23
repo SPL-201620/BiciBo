@@ -112,6 +112,14 @@
 	<form id="formAgregarRecorrido" method="post" enctype="multipart/form-data" name="formAgregarRecorrido" class="form-horizontal" style="display:none;">
 
 		<div class="form-group">
+			<label for="nombre_organizador" class="col-sm-2 control-label">Nombre Organizador</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="nombre_organizador" name="nombre_organizador" placeholder="Nombre Organizador"
+					   ng-model="infoRecorrido.nombre_organizador">
+			</div>
+		</div>
+		
+		<div class="form-group">
 			<label for="origen" class="col-sm-2 control-label">Origen</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="origen" name="origen" placeholder="Formato: calle carrera complemento, ciudad, pais."
@@ -148,9 +156,37 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="distancia" class="col-sm-2 control-label">Distancia</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="distancia" name="distancia" placeholder="Distancia estimada en kilometros (Opcional)"
+					   ng-model="infoRecorrido.distancia">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="tiempoEstimado" class="col-sm-2 control-label">Tiempo Estimado</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="tiempoEstimado" name="tiempoEstimado" placeholder="Tiempo estimado para el recorrido (Opcional)"
+					   ng-model="infoRecorrido.tiempoEstimado">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="caloriasQuemadas" class="col-sm-2 control-label">Calorias quemadas en promedio</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="caloriasQuemadas" name="caloriasQuemadas" placeholder="Numero estimado de calorias a quemar (Opcional)"
+					   ng-model="infoRecorrido.caloriasQuemadas">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="infoClima" class="col-sm-2 control-label">información del Clima</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="infoClima" name="infoClima" placeholder="Soleado,Parcialmente nublado, Nublado, Lluvia moderada, Lluvioso, Tormenta electrica (Opcional)"
+					   ng-model="infoRecorrido.infoClima">
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="frecuencia" class="col-sm-2 control-label">Frecuencia</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="Frecuencia"
+				<input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="Frecuencia: Unica, Entre semana, Fines de semana, Diario, Semanal"
 					   ng-model="infoRecorrido.frecuencia">
 			</div>
 		</div>

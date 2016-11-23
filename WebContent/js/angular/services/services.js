@@ -129,16 +129,21 @@ services.factory('RouteFactory', function ($resource)
 				} 
 			}
 		}),
-    	ruta4: $resource(url_servicio_rest + '/recorridosGrupal', {}, {
-			showRr:{method:'GET', params: {} , isArray: true}
+    	ruta4: $resource(url_servicio_rest + '/recorridosGrupal/:id', {}, {
+			showRr:{method:'GET', params: {id: '@id'}}
 		}),
-		ruta5: $resource(url_servicio_rest + '/recorridoGrupal/add', {}, {
-			crearR:{method:'POST', params: {id: '@id',
+		ruta5: $resource(url_servicio_rest + '/recorridoGrupal', {}, {
+			crearR:{method:'POST', params: {id_usuario: '@id_usuario',
+				nombre_organizador:'@nombre_organizador',
 				origen:'@origen', 
 				destino: '@destino', 
-				hora_salida:'@hora_salida',
-				hora_llegada: '@hora_llegada', 
-				fecha_recorrido:'@fecha_recorrido', 
+				horaSalida:'@horaSalida',
+				horaLlegada: '@horaLlegada', 
+				fechaRecorrido:'@fechaRecorrido', 
+				distancia:'@distancia', 
+				tiempoEstimado:'@tiempoEstimado', 
+				caloriasQuemadas:'@caloriasQuemadas', 
+				infoClima:'@infoClima',
 				frecuencia:'@frecuencia'} 
 			}
 		}),
@@ -147,10 +152,10 @@ services.factory('RouteFactory', function ($resource)
 				id_recorrido:'@id_recorrido'} 
 			}
 		}),
-    	ruta7: $resource(url_servicio_rest + '/recorridoGrupal/:id', {}, {
-			show7:{method:'GET', params: {id: '@id'}}
+    	ruta7: $resource(url_servicio_rest + '/recorridoGrupal/:id/:id2', {}, {
+			show7:{method:'GET', params: {id: '@id', id2: '@id2'}}
 		}),
-		ruta8: $resource(url_servicio_rest + '/recorridoGrupal/update', {}, {
+		ruta8: $resource(url_servicio_rest + '/recorridoGrupal', {}, {
 			actualizar:{method:'PUT', params: {id_recorrido: '@id_recorrido',
 				id: '@id', 
 				origen:'@origen', 

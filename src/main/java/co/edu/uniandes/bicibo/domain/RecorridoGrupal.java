@@ -13,10 +13,11 @@ import java.util.Date;
  * @author Abimelec
  */
 @Entity
-@Table(name = "recorridos_grupales", schema = "bicibo")
-public class RecorridoGrupal implements Serializable  {
+@Table(name = "recorridosGrupales", schema = "bicibo")
+public class RecorridoGrupal implements Serializable  
+{
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
     public Integer id_usuario;
@@ -33,143 +34,149 @@ public class RecorridoGrupal implements Serializable  {
 
     public String fecha_recorrido;
 
-    //public int distancia;
+    public int distancia;
 
-    //public int tiempoEstimado;
+    public int tiempoEstimado;
 
-    //public int caloriasQuemadas;
+    public int caloriasQuemadas;
 
-    //public String infoClima;
+    public String infoClima;
 
-    public String esFrecuente;
+    public String frecuencia;
+    
+    public List<Usuario> inscritos;
 
-    public Boolean getRegistrado() {
-        return registrado;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setRegistrado(Boolean registrado) {
-        this.registrado = registrado;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    private Boolean registrado;
+	public Integer getId_usuario() {
+		return id_usuario;
+	}
 
-    @OneToMany
-    List<Usuario> suscritos;
+	public void setId_usuario(Integer id_usuario) {
+		this.id_usuario = id_usuario;
+	}
 
-    public RecorridoGrupal()
-    {
-        suscritos = new ArrayList<>();
-    }
+	public String getNombre_organizador() {
+		return nombre_organizador;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setNombre_organizador(String nombre_organizador) {
+		this.nombre_organizador = nombre_organizador;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public String getOrigen() {
+		return origen;
+	}
 
-    public Integer getId_usuario() {
-        return id_usuario;
-    }
+	public void setOrigen(String origen) {
+		this.origen = origen;
+	}
 
-    public void setId_usuario(Integer id_usuario) {
-        this.id_usuario = id_usuario;
-    }
+	public String getDestino() {
+		return destino;
+	}
 
-    public String getNombre_organizador() {
-        return nombre_organizador;
-    }
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
 
-    public void setNombre_organizador(String nombre_organizador) {
-        this.nombre_organizador = nombre_organizador;
-    }
+	public String getHora_salida() {
+		return hora_salida;
+	}
 
-    public String getOrigen() {
-        return origen;
-    }
+	public void setHora_salida(String hora_salida) {
+		this.hora_salida = hora_salida;
+	}
 
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
+	public String getHora_llegada() {
+		return hora_llegada;
+	}
 
-    public String getDestino() {
-        return destino;
-    }
+	public void setHora_llegada(String hora_llegada) {
+		this.hora_llegada = hora_llegada;
+	}
 
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
+	public String getFecha_recorrido() {
+		return fecha_recorrido;
+	}
 
-    public String getHora_salida() {
-        return hora_salida;
-    }
+	public void setFecha_recorrido(String fecha_recorrido) {
+		this.fecha_recorrido = fecha_recorrido;
+	}
 
-    public void setHora_salida(String hora_salida) {
-        this.hora_salida = hora_salida;
-    }
+	public int getDistancia() {
+		return distancia;
+	}
 
-    public String getHora_llegada() {
-        return hora_llegada;
-    }
+	public void setDistancia(int distancia) {
+		this.distancia = distancia;
+	}
 
-    public void setHora_llegada(String hora_llegada) {
-        this.hora_llegada = hora_llegada;
-    }
+	public int getTiempoEstimado() {
+		return tiempoEstimado;
+	}
 
-    public String getFecha_recorrido() {
-        return fecha_recorrido;
-    }
+	public void setTiempoEstimado(int tiempoEstimado) {
+		this.tiempoEstimado = tiempoEstimado;
+	}
 
-    public void setFecha_recorrido(String fecha_recorrido) {
-        this.fecha_recorrido = fecha_recorrido;
-    }
+	public int getCaloriasQuemadas() {
+		return caloriasQuemadas;
+	}
 
-    //public int getDistancia() {
-      //  return distancia;
-    //}
+	public void setCaloriasQuemadas(int caloriasQuemadas) {
+		this.caloriasQuemadas = caloriasQuemadas;
+	}
 
-    //public void setDistancia(int distancia) {
-      //  this.distancia = distancia;
-    //}
+	public String getInfoClima() {
+		return infoClima;
+	}
 
-    //public int getTiempoEstimado() {
- //       return tiempoEstimado;
-   // }
+	public void setInfoClima(String infoClima) {
+		this.infoClima = infoClima;
+	}
 
-    //public void setTiempoEstimado(int tiempoEstimado) {
-        //this.tiempoEstimado = tiempoEstimado;
-    //}
+	public String getFrecuencia() {
+		return frecuencia;
+	}
 
-    //public int getCaloriasQuemadas() {
-     //   return caloriasQuemadas;
-    //}
+	public void setFrecuencia(String frecuencia) {
+		this.frecuencia = frecuencia;
+	}
+	
+	public List<Usuario> getInscritos() {
+		return inscritos;
+	}
 
-    //public void setCaloriasQuemadas(int caloriasQuemadas) {
-        //this.caloriasQuemadas = caloriasQuemadas;
-    //}
+	public void setInscritos(List<Usuario> inscritos) {
+		this.inscritos = inscritos;
+	}
 
-    //public String getInfoClima() {
-        //return infoClima;
-   // }
+	@Override
+	public String toString() 
+	{
+		return "RecorridoGrupal [id=" + id + 
+				", id_usuario=" + id_usuario + 
+				", nombre_organizador=" + nombre_organizador
+				+ ", origen=" + origen + 
+				", destino=" + destino + 
+				", hora_salida=" + hora_salida + 
+				", hora_llegada=" + hora_llegada + 
+				", fecha_recorrido=" + fecha_recorrido + 
+				", distancia=" + distancia + 
+				", tiempoEstimado=" + tiempoEstimado + 
+				", caloriasQuemadas=" + caloriasQuemadas + 
+				", infoClima=" + infoClima + 
+				", frecuencia=" + frecuencia + 
+				", inscritos=" + inscritos + 
+				"]";
+	}
 
-    //public void setInfoClima(String infoClima) {
-      //  this.infoClima = infoClima;
-    //}
-
-    public String getEsFrecuente() {
-        return esFrecuente;
-    }
-
-    public void setEsFrecuente(String esFrecuente) {
-        this.esFrecuente = esFrecuente;
-    }
-
-    public List<Usuario> getSuscritos() {
-        return suscritos;
-    }
-
-    public void setSuscritos(List<Usuario> suscritos) {
-        this.suscritos = suscritos;
-    }
+    
 }

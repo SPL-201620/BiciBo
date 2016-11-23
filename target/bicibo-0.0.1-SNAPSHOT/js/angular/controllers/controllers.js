@@ -549,18 +549,24 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	//$scope.infoRecorrido = factoryRecorrido;
     		//alert('revisar que cargue la info del recorrido en grupo..');
     		//$('#btnGuardarRecorrido').attr('ng-click', editarRecorridoGrupo());
-    	}else{
+    	}
+    	else
+    	{
     		
 	    	var cookieUsr = $cookieStore.get('usuario');
 	    	$scope.listaRecorridosGrupo = {};
 	    	//alert('listando recorrridos en grupo')
 	    	//$scope.listaRecorridosGrupo = factoryRecorridos;
-	    	RouteFactory.ruta4.showRr({}, function (response) {
-	    		
+	    	RouteFactory.ruta4.showRr({}, 
+	    	function (response) 
+	    	{
 	    		//alert(response.length)
-	    		if(response.length <= 0){
+	    		if(response.length <= 0)
+	    		{
 	    			$scope.msgError = "No tiene recorridos en grupo en el momento"; 
-	    		}else{
+	    		}
+	    		else
+	    		{
 	    			//alert(response);
 	    			$scope.listaRecorridosGrupo = response;
 	    	    	//$scope.listaRecorridosGrupo = factoryRecorridos;
@@ -572,26 +578,36 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	window.location.assign('#/grupo');
         window.location.reload(true);
     };
-    $scope.ingresarRecorridoGrupo = function(){
+    $scope.ingresarRecorridoGrupo = function()
+    {
 		$('#formAgregarRecorrido').show();
 		$('#formEditarRecorrido').hide();
     	var cookieUsr = $cookieStore.get('usuario');
-    	//alert('Ingresando info recorrido grupo: '+ $scope.infoRecorrido.origen)
+    	alert('Ingresando info recorrido grupo: '+ $scope.infoRecorrido.origen)
     	RouteFactory.ruta5.crearR({id: cookieUsr.id,
+    		nombre_organizador:$scope.infoRecorrido.nombre_organizador,
     		origen:$scope.infoRecorrido.origen, 
     		destino: $scope.infoRecorrido.destino, 
     		hora_salida:$scope.infoRecorrido.hora_salida,
 			hora_llegada: $scope.infoRecorrido.hora_llegada, 
 			fecha_recorrido:$scope.infoRecorrido.fecha_recorrido, 
-			frecuencia:$scope.infoRecorrido.frecuencia}, function (response) {    	
-    		//alert('recorrido ingresado: '+response.status)
-    		if(response.status != "OK"){
-    			$scope.msgError = response.message; 
-    		}else{
-    			window.location.assign('#/grupo');
-                window.location.reload(true);
-    		}
-    	})
+			distancia:$scope.infoRecorrido.distancia, 
+			tiempoEstimado:$scope.infoRecorrido.tiempoEstimado, 
+			caloriasQuemadas:$scope.infoRecorrido.caloriasQuemadas, 
+			infoClima:$scope.infoRecorrido.infoClima,
+			frecuencia:$scope.infoRecorrido.frecuencia}, 
+			function (response) 
+			{    	
+	    		alert('recorrido ingresado: '+response.status)
+	    		if(response.status != "OK"){
+	    			$scope.msgError = response.message; 
+	    		}
+	    		else
+	    		{
+	    			window.location.assign('#/grupo');
+	                window.location.reload(true);
+	    		}
+			})
     };
     //Evento de Editar recorrido en grupo
     $scope.mostrarEditarRecorridoGrupo = function (idRecorrido)

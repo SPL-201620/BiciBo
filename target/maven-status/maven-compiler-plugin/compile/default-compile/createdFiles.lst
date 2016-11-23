@@ -5,6 +5,7 @@ co\edu\uniandes\bicibo\service\UsuarioService.class
 co\edu\uniandes\bicibo\service\SitioAlquilerService.class
 co\edu\uniandes\bicibo\domain\PuntoUbicacion.class
 co\edu\uniandes\bicibo\domain\Usuario.class
+co\edu\uniandes\bicibo\service\RecorridoGrupalService.class
 co\edu\uniandes\bicibo\service\GenerarBD.class
 co\edu\uniandes\bicibo\domain\Mensaje.class
 co\edu\uniandes\bicibo\domain\RecorridoGrupal.class
