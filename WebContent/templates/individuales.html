@@ -26,7 +26,7 @@
 					<tr>
 						<td width="10%">{{ record.id }}</td>
 						<td width="90%" style="vertical-align: middle">
-							<div class="col-xs-12"><a href="javascript:;" class="pull-right" ng-click="mostrarEditarRecorrido(record.id)">Editar</a></div>
+							<div class="col-xs-12"><a href="javascript:;" class="pull-right" ng-click="listarRecorridos(record.id); mostrarEditarRecorrido(record.id)">Editar</a></div>
 						
 							<div class="row">
 							  <div class="col-xs-6"><strong>Origen:</strong> {{ record.origen }}</div>
@@ -221,7 +221,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10 text-center">
-					<button id="btnEditarRecorrido" type="submit" class="btn btn-primary" ng-click="editarRecorrido()">Actualizar</button>
+					<button id="btnEditarRecorrido" type="submit" class="btn btn-primary" ng-click="editarRecorrido(infoRecorrido.id)">Actualizar</button>
 					<button type="submit" class="btn btn-primary" ng-click="noAgregarRecorrido()">Cancelar</button>
 				</div>
 			</div>

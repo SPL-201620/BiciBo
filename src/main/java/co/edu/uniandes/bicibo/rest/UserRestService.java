@@ -2,6 +2,7 @@ package co.edu.uniandes.bicibo.rest;
 
 import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.service.MensajeService;
+import co.edu.uniandes.bicibo.service.RecorridoGrupalService;
 import co.edu.uniandes.bicibo.service.RecorridoService;
 import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
@@ -112,7 +113,7 @@ public class UserRestService
         return recorridoService.listarRecorridos(id);
     }
 	
-	@Path("/recorrido")
+	@Path("/recorrido/{id}")
 	@GET
     public JSONObject darRecorrido(@PathParam("id") String id) 
 	{
@@ -157,19 +158,36 @@ public class UserRestService
         return recorridoService.actualizarRecorrido(id_recorrido, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
         		realizado, distancia, tiempoEstimado, caloriasQuemadas, infoClima);
     }
-	/*
-	@Path("/routes2")
+	
+	@Path("/recorridosGrupal/{id}")
 	@GET
-    public User ListarRecorridosGrupo() {
-        UserService userService = new UserService();
-        return userService.ListarRecorridosGrupo();
+    public JSONObject listarRecorridosGrupo(@PathParam("id") String id) 
+	{
+		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
+        return recorridoGrupalService.listarRecorridosGrupo(id);
     }
-	@Path("/route/add2")
+	@Path("/recorridoGrupal/{id}/{id2}")
+	@GET
+    public JSONObject verRecorridoGrupo(@PathParam("id") String id, @PathParam("id") String id2) 
+	{
+		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
+        return recorridoGrupalService.verRecorridoGrupo(id, id2);
+    }
+	@Path("/recorridoGrupal")
 	@POST
-    public User AgregarRecorridoGrupo(@PathParam("id") String id) {
-        UserService userService = new UserService();
-        return userService.AgregarRecorridoGrupo(id);
+    public JSONObject agregarRecorridoGrupo(@QueryParam("id_usuario") String idUsuario, 
+    		@QueryParam("nombre_organizador") String nombreOrganizador, @QueryParam("origen") String origen, 
+    		@QueryParam("destino") String destino, @QueryParam("horaSalida") String horaSalida, 
+    		@QueryParam("horaLlegada") String horaLlegada, @QueryParam("fechaRecorrido") String fechaRecorrido, 
+    		@QueryParam("distancia") String distancia, @QueryParam("tiempoEstimado") String tiempoEstimado, 
+    		@QueryParam("caloriasQuemadas") String caloriasQuemadas, @QueryParam("infoClima") String infoClima, 
+    		@QueryParam("frecuencia") String frecuencia) 
+	{
+		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
+        return recorridoGrupalService.agregarRecorridoGrupo(idUsuario, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
+        		distancia, tiempoEstimado, caloriasQuemadas, infoClima, frecuencia, nombreOrganizador);
     }
+	/*
 	@Path("/route/insert")
 	@POST
     public User UnirseRecorridoGrupo(@PathParam("id") String id) {

@@ -32,7 +32,7 @@ public class Usuario implements Serializable
 
     @OneToMany
     List<Recorrido> recorridos;
-    
+        
     @OneToMany
     List<RecorridoGrupal> recorridosGrupalesAdmin;
     
