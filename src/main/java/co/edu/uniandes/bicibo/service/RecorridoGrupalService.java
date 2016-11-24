@@ -35,6 +35,16 @@ public class RecorridoGrupalService
             }
             StoredProcedureQuery query2 = entitymanager.createStoredProcedureQuery("getRegistrosGrupales");
             
+            /*PARA QUE CREEEN ESTE PROCEDIMIENTO EN SUS BASES DE DATOS, ES ASI:
+            CREATE DEFINER=`root`@`localhost` PROCEDURE `getRegistrosGrupales`(IN idUsuario int)
+            		BEGIN
+            			SELECT  CASE WHEN ID IS NULL THEN 0 ELSE 1 END  
+            			FROM bicibo.recorridosgrupales_usuarios ru
+            			LEFT JOIN bicibo.usuarios u
+            			ON 	ru.inscritos_ID = u.ID AND
+            				ID = idUsuario;
+            		END*/
+            
             query2.registerStoredProcedureParameter("id", Integer.class, ParameterMode.IN);
             query2.setParameter("id", Integer.parseInt(id));
             List registrados = query2.getResultList();
@@ -70,7 +80,8 @@ public class RecorridoGrupalService
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
             
-            Recorrido recorrido = entitymanager.find(Recorrido.class, Integer.parseInt(id2));
+            RecorridoGrupal recorrido = entitymanager.find(RecorridoGrupal.class, Integer.parseInt(id2));
+            recorrido.setInscritos(null);
             
                         
             obj.put("status", "OK");

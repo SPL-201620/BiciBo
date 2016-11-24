@@ -168,7 +168,7 @@ public class UserRestService
     }
 	@Path("/recorridoGrupal/{id}/{id2}")
 	@GET
-    public JSONObject verRecorridoGrupo(@PathParam("id") String id, @PathParam("id") String id2) 
+    public JSONObject verRecorridoGrupo(@PathParam("id") String id, @PathParam("id2") String id2) 
 	{
 		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
         return recorridoGrupalService.verRecorridoGrupo(id, id2);
