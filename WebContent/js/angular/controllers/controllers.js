@@ -502,23 +502,28 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     };
     
   //LISTA RECORRIDOS GRUPO
-    $scope.listarRecorridosGrupo = function()
+    $scope.listarRecorridosGrupo = function(idRecorrido)
     {
-    	var id_recorrido = $routeParams.id;
-    	alert('listando recorridos: '+id_recorrido)
-    	if(typeof id_recorrido != "undefined")
+    	alert('listando recorridos: '+idRecorrido)
+    	var cookieUsr = $cookieStore.get('usuario');
+    	if(typeof idRecorrido != "undefined")
     	{
     		alert('entra a mostrar recorrido.');
     		$('#tablaInfoRecorridos').hide();
-    		$scope.listaRecorridosGrupo = {};
-    		$scope.infoRecorrido = RouteFactory.ruta7.show7({id: id_recorrido}, function (response) {
-						        		if(response.origen == null){
-						        			$scope.msgError = "No se encontro info del recorrido en grupo."; 
-						        		}else{
-						        			//alert(response);
-						        			$scope.infoRecorrido = response;
-						        		}
-						        	});
+    		$scope.infoRecorrido = RouteFactory.ruta7.show7({id: cookieUsr.id, id2: idRecorrido}, 
+    		function (response) 
+    		{
+    			alert('Aca1: ');
+    			if(response.message.id == null)
+    			{
+    				$scope.msgError = "No se encontro info del recorrido en grupo."; 
+				}
+    			else
+    			{
+    				alert('Aca: '+ response.message.id);
+    				$scope.infoRecorrido = response.message;
+				}
+			});
 
     		$('#formAgregarRecorrido').hide();
 			$('#formEditarRecorrido').show();
@@ -528,8 +533,6 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	}
     	else
     	{
-	    	var cookieUsr = $cookieStore.get('usuario');
-	    	$scope.listaRecorridosGrupo = {};
 	    	RouteFactory.ruta4.showRr({id: cookieUsr.id}, 
 	    	function (response) 
 	    	{
@@ -590,10 +593,12 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     //Evento de Editar recorrido en grupo
     $scope.mostrarEditarRecorridoGrupo = function (idRecorrido)
     {
+    	alert('Editar recorrido grupo: '+idRecorrido)
     	$('#areaMapa').empty();
 		$('#tablaInfoRecorridos').hide();
-		$('#formAgregarRecorrido').show();
-		$location.path('/grupo/' + idRecorrido);
+		$('#formAgregarRecorrido').hide();
+		$('#formEditarRecorrido').show();
+		//$location.path('/grupo/' + idRecorrido);
 	};
     $scope.editarRecorridoGrupo = function(idRecorrido){
     	var cookieUsr = $cookieStore.get('usuario');

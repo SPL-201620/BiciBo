@@ -25,7 +25,7 @@
 				<tr>
 					<td width="10%">{{ record.id }}</td>
 					<td width="90%" style="vertical-align: middle">	
-						<div class="col-xs-12"><a href="javascript:;" class="pull-right" ng-click="mostrarEditarRecorridoGrupo(record.recorrido.id)">Editar</a></div>
+						<div class="col-xs-12"><a href="javascript:;" class="pull-right" ng-click="listarRecorridosGrupo(record.recorrido.id) ; mostrarEditarRecorridoGrupo(record.recorrido.id)">Editar</a></div>
 						<div class="row">
 						  <div class="col-xs-6"><strong>Origen:</strong> {{ record.recorrido.origen }}</div>
 						  <div class="col-xs-6"><strong>Destino:</strong> {{ record.recorrido.destino }}</div>
@@ -57,14 +57,20 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<form id="formEditarRecorrido" method="put" enctype="multipart/form-data" name="formEditarRecorrido" class="form-horizontal" style="display:none;">
       
+      <div class="form-group">
+	    <label for="nombreOrganizador" class="col-sm-2 control-label">Nombre Organizador</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="nombreOrganizado" name="nombreOrganizador" placeholder=""
+	      ng-model="infoRecorrido.nombre_organizador">
+	    </div>
+	  </div>
 	  <div class="form-group">
 	    <label for="origen" class="col-sm-2 control-label">Origen</label>
 	    <div class="col-sm-10">
 	      <input type="text" class="form-control" id="orige" name="origen" placeholder="Formato: calle carrera complemento, ciudad, pais."
 	      ng-model="infoRecorrido.origen">
 	    </div>
-	  </div>
-	  
+	  </div>	  
 	  <div class="form-group">
 	    <label for="destino" class="col-sm-2 control-label">Destino</label>
 	    <div class="col-sm-10">
@@ -91,6 +97,34 @@
 	    <div class="col-sm-10">
 	      <input type="text" class="form-control" id="fecha_recorrid" name="fecha_recorrido" placeholder="Formato: HH:MM"
 	      ng-model="infoRecorrido.fecha_recorrido">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="distancia" class="col-sm-2 control-label">Distancia</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="distanci" name="distancia" placeholder="Distancia estimada en kilometros (Opcional)"
+	      ng-model="infoRecorrido.distancia">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="tiempoEstimado" class="col-sm-2 control-label">"Tiempo Estimado"</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="tiempoEstimad" name="tiempoEstimado" placeholder="Tiempo estimado en minutos para el recorrido (Opcional)"
+	      ng-model="infoRecorrido.tiempoEstimado">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="caloriasQuemadas" class="col-sm-2 control-label">Calorias Quemadas</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="caloriasQuemada" name="caloriasQuemadas" placeholder="Numero estimado de calorias a quemar (Opcional)"
+	      ng-model="infoRecorrido.caloriasQuemadas">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="infoClima" class="col-sm-2 control-label">Informacion del Clima</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="infoClim" name="infoClima" placeholder="Soleado,Parcialmente nublado, Nublado, Lluvia moderada, Lluvioso, Tormenta electrica (Opcional)"
+	      ng-model="infoRecorrido.infoClima">
 	    </div>
 	  </div>
 	  <div class="form-group">
