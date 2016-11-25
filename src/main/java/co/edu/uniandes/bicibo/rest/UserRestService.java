@@ -188,7 +188,7 @@ public class UserRestService
 	{
 		System.out.println("olaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa2 "+mensaje + id_usuario_origen + " + "+ id_usuario_destino);
         MensajeService mensajeService = new MensajeService();
-        return mensajeService.enviarMensaje("1", "hello", "2");
+        return mensajeService.enviarMensaje(id_usuario_origen, mensaje, id_usuario_destino);
     }
 	
 	@GET
@@ -216,8 +216,8 @@ public class UserRestService
     }
 	
 	@GET
-	@Path("/chat/{id}/{id2}")
-    public JSONObject verChat(@PathParam("id") String id, @PathParam("id2") String id2) 
+	@Path("/chat")
+    public JSONObject verChat(@QueryParam("id") String id, @QueryParam("id2") String id2) 
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.verChat(id, id2);

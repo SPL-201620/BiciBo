@@ -143,3 +143,20 @@ services.factory('RouteFactory', function ($resource) {
     };
     return metodo;
 });
+
+//Servicio Mensajes
+services.factory('MessageFactory', function ($resource) {
+    var metodo = {
+		mensaje: $resource(url_servicio_rest + '/mensaje', {}, 
+		{				
+			create:{ method: 'POST', params: {id_usuario_origen: '@id_usuario_origen', mensaje: '@mensaje', 
+				id_usuario_destino: '@id_usuario_destino'} },       
+		}),
+		chat: $resource(url_servicio_rest + '/chat', {}, 
+		{				
+			listar:{ method: 'GET', params: {id: '@id', id2: '@id2'} },  
+		}),
+		
+    };
+    return metodo;
+});

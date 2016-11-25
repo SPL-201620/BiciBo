@@ -91,8 +91,8 @@ app.factory('factoryUsuarios', function() {
 //Controlador principal o padre.
 //Para la version final quitar los siguientes servicios: factoryUsuarios, factoryRecorridos , puesto que se usaron para simular la info de la BD.
 
-app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 
-                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido) {
+app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 
+                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory) {
     //AUTENTICACION
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
     
@@ -341,7 +341,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		}
     	})
     };
-   
+    
   //RECORRIDOS INDIVIDUALES
     
   //LISTA RECORRIDOS
@@ -598,7 +598,69 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	});
 	}
     
+    //Mensajes
+    $scope.mensaje = {contenido:''};
+    $scope.template = {};
+    $scope.usuarioDestino = {
+    		id: '',
+    		nombre:''
+    };
+ // callback for ng-click 'enviarMensaje':
+    $scope.enviarMensaje = function (userId, userNombre) {
+    	//alert('Enviar mensaje a:'+userId +'-nombre:'+userNombre);
+    	
+    	$("#focusChat").focus();
+    	$scope.usuarioDestino.id = userId;
+    	$scope.usuarioDestino.nombre= userNombre;
+    	$scope.template = 'templates/nuevoMensaje.html';
+    };
+ // callback for ng-click 'guardarMensaje':
+    $scope.guardarMensaje = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioOrigen = cookieUsr.id;
+    	var idUsuarioDestino = $scope.usuarioDestino.id;
+    	var contenidoMensaje = $scope.mensaje.contenido;
+    	
+    	//alert('guardar mensaje:'+contenidoMensaje+' a:'+idUsuarioDestino + '-de:'+idUsuarioOrigen)
+    	
+    	MessageFactory.mensaje.create({id_usuario_origen: idUsuarioOrigen, 
+    			mensaje: contenidoMensaje, 
+    			id_usuario_destino: idUsuarioDestino})
+    			
+		//Recargar area de mensajes
+		$scope.template = '';
+    	setTimeout(recargarChat, 500);
+    };
     
+    function recargarChat(){
+    	$("#btnEnvMsq").click();	
+    }
+    $scope.cerrarMensajes = function () {
+    	$scope.template = '';
+    };
+    $scope.ListadoChat = {};
+    $scope.listarChat = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioOrigen = cookieUsr.id;
+    	var idUsuarioDestino = $scope.usuarioDestino.id;
+    	
+    	$scope.mensaje.contenido = '';
+    	
+    	//alert('chat entre  destino:'+idUsuarioDestino + '-origen:'+idUsuarioOrigen)
+    	
+    	MessageFactory.chat.listar({id: idUsuarioOrigen, id2: idUsuarioDestino}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoChat = response.message;
+	  		}
+	  	})
+    	
+    };
     
     
 }]);//Fin Controlador principal
