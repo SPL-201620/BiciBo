@@ -1,0 +1,9 @@
+<div ng-init="listarMensajes();">
+</div>
+<div class="list-group" ng-repeat="record in ListadoMensajes">
+  <a href="#" class="list-group-item">
+    <h4 class="list-group-item-heading">De: {{ record.usuarioOrigen.username }}</h4>
+    <p class="list-group-item-text">{{ record.mensaje }}</p>
+  </a>
+  
+</div>
