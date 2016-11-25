@@ -37,13 +37,14 @@ public class RecorridoGrupalService
             
             /*PARA QUE CREEEN ESTE PROCEDIMIENTO EN SUS BASES DE DATOS, ES ASI:
             CREATE DEFINER=`root`@`localhost` PROCEDURE `getRegistrosGrupales`(IN idUsuario int)
-            		BEGIN
-            			SELECT  CASE WHEN ID IS NULL THEN 0 ELSE 1 END  
-            			FROM bicibo.recorridosgrupales_usuarios ru
-            			LEFT JOIN bicibo.usuarios u
-            			ON 	ru.inscritos_ID = u.ID AND
-            				ID = idUsuario;
-            		END*/
+			BEGIN
+				SELECT  CASE WHEN max(ID) IS NULL THEN 0 ELSE 1 END  
+				FROM bicibo.recorridosgrupales_usuarios ru
+				LEFT JOIN bicibo.usuarios u
+				ON 	ru.inscritos_ID = u.ID AND
+			    ID = idUsuario
+				GROUP BY RecorridoGrupal_ID;
+			END*/
             
             query2.registerStoredProcedureParameter("id", Integer.class, ParameterMode.IN);
             query2.setParameter("id", Integer.parseInt(id));
@@ -151,48 +152,113 @@ public class RecorridoGrupalService
         }    	
         return obj;
     }
-    /*
-    public JSONObject actualizarRecorrido(String idRecorrido, String origen, String destino, String horaSalida, 
-    		String horaLlegada, String fechaRecorrido, String realizado, String distancia, String tiempoEstimado, 
-    		String caloriasQuemadas, String infoClima) 
+    
+    public JSONObject actualizarRecorridoGrupo(String id, String origen, String destino, String horaSalida, 
+    		String horaLlegada, String fechaRecorrido, String distancia, String tiempoEstimado, 
+    		String caloriasQuemadas, String infoClima, String frecuencia, String nombreOrganizador) 
     {       
         JSONObject obj = new JSONObject();
         try
-        {
+        {	
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
 
             EntityManager entityManager;
         	entityManager = emfactory.createEntityManager( );
         	entityManager.getTransaction( ).begin( );
-
-        	System.out.println("heloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo2 "+idRecorrido);
-        	Recorrido route = entityManager.find(Recorrido.class, Integer.parseInt(idRecorrido));
-
-            route.setOrigen(origen);
-            route.setDestino(destino);
-            route.setHora_salida(horaSalida);
-            route.setHora_llegada(horaLlegada);
-            route.setFecha_recorrido(fechaRecorrido);
-            route.setRealizado(Boolean.parseBoolean(realizado));
-            route.setDistancia(distancia);
-            route.setTiempoEstimado(tiempoEstimado);
-            route.setCaloriasQuemadas(caloriasQuemadas);
-            route.setInfoClima(infoClima);
+        	
+        	RecorridoGrupal route = entityManager.find(RecorridoGrupal.class, Integer.parseInt(id));
+        	
+        	if(nombreOrganizador != null || nombreOrganizador.equals(""))
+            {
+        		route.setNombre_organizador(nombreOrganizador);
+            }
+        	if(origen != null || origen.equals(""))
+            {
+        		route.setOrigen(origen);
+            }
+        	if(destino != null || destino.equals(""))
+            {
+        		route.setDestino(destino);
+            }
+        	if(horaSalida != null || horaSalida.equals(""))
+            {
+        		route.setHora_salida(horaSalida);
+            }
+        	if(horaLlegada != null || horaLlegada.equals(""))
+            {
+        		route.setHora_llegada(horaLlegada);
+            }
+        	if(fechaRecorrido != null || fechaRecorrido.equals(""))
+            {
+        		route.setFecha_recorrido(fechaRecorrido);
+            }
+            if(distancia != null || distancia.equals(""))
+            {
+            	route.setDistancia(Integer.parseInt(distancia));
+            }
+            if(tiempoEstimado != null || tiempoEstimado.equals(""))
+            {
+            	route.setTiempoEstimado(Integer.parseInt(tiempoEstimado));
+            }
+            if(caloriasQuemadas != null || caloriasQuemadas.equals(""))
+            {
+            	route.setCaloriasQuemadas(Integer.parseInt(caloriasQuemadas));
+            }
+            if(infoClima != null || infoClima.equals(""))
+            {
+            	route.setInfoClima(infoClima);
+            }
+            if(frecuencia != null || frecuencia.equals(""))
+            {
+            	route.setFrecuencia(frecuencia);
+            }
+            
             entityManager.persist( route );
-
+            
             entityManager.getTransaction( ).commit( );
-
             entityManager.close( );
             emfactory.close( );
             obj.put("status", "OK");
-            obj.put("message", "Recorrido Actualizado");
+            obj.put("message", "Recorrido Grupal actualizado.");
         }
         catch (Exception e)
         {
         	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar actualizar el recorrido. <br>"+e.getMessage());
+            obj.put("message", "Se produjo un error al intentar registrar el recorrido grupal. <br>"+e.getMessage());
         }    	
         return obj;
     }
-    */
+    public JSONObject unirseRecorridoGrupo(String id, String idRecorridoGrupal) 
+    { 
+    	JSONObject obj = new JSONObject();
+        try
+        {	
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+
+            EntityManager entityManager;
+        	entityManager = emfactory.createEntityManager( );
+        	entityManager.getTransaction( ).begin( );
+        	
+        	Usuario user = entityManager.find(Usuario.class, Integer.parseInt(id));
+        	RecorridoGrupal route = entityManager.find(RecorridoGrupal.class, Integer.parseInt(idRecorridoGrupal));
+        	
+        	List<Usuario> inscritos = route.getInscritos();
+        	
+        	inscritos.add(user);
+        	route.setInscritos(inscritos);
+        	entityManager.persist( route );
+            
+            entityManager.getTransaction( ).commit( );
+            entityManager.close( );
+            emfactory.close( );
+            obj.put("status", "OK");
+            obj.put("message", "Ha sido unido al recorrido grupal."); 	
+	    }
+	    catch (Exception e)
+	    {
+	    	obj.put("status", "ERROR");
+	        obj.put("message", "Se produjo un error al intentar unirse al recorrido grupal. <br>"+e.getMessage());
+	    }    	
+	    return obj;
+    }
 }
