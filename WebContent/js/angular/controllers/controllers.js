@@ -156,7 +156,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	var password_usu = $scope.usuario.password;
     	if(!username_usu || !password_usu)
     	{
-    		alert("Usuario y Clave son requeridos.");
+    		"Usuario y Clave son requeridos.");
     		return;
     	}
     	else
@@ -194,7 +194,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      	var username_usu = $scope.usuario.username;
      	var password_usu = $scope.usuario.password;
      	var rutaFoto_usu = $scope.usuario.rutaFoto;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
+     	//alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
      	if(!username_usu || !password_usu)
      	{
      		alert("Usuario y Clave son requeridos.");
@@ -221,7 +221,8 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.salir = function()
     {
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('saliendo..:'+cookieUsr.id)
+    	//alert('saliendo..:'+cookieUsr.id)
+    	
     	UserSesion.logout.normal({id: cookieUsr.id}, 
     	function (response) 
     	{
@@ -678,7 +679,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     			
 		//Recargar area de mensajes
 		$scope.template = '';
-    	setTimeout(recargarChat, 500);
+    	setTimeout(recargarChat, 2500);
     };
     
     function recargarChat(){
