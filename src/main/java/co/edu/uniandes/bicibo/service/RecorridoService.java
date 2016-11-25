@@ -1,19 +1,18 @@
 package co.edu.uniandes.bicibo.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import org.json.simple.JSONObject;
-import javax.persistence.PersistenceContext;
 
-import co.edu.uniandes.bicibo.domain.Usuario;
 import co.edu.uniandes.bicibo.domain.Recorrido;
-import java.util.*;
+import co.edu.uniandes.bicibo.domain.Usuario;
 
-public class RecorridoService 
-{	
+public class RecorridoService {
+    
     public JSONObject listarRecorridos (String id)
     {
     	JSONObject obj = new JSONObject();
@@ -191,5 +190,4 @@ public class RecorridoService
         }    	
         return obj;
     }
-    
 }

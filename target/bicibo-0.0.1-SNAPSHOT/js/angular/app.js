@@ -29,16 +29,15 @@ angular.module('ngbicibo', ['ngbicibo.filters', 'ngbicibo.services', 'ngbicibo.d
     }]);
 function avatar1(){
 	$("#avatar2").hide();
-	$("#rutaFoto").val("img/avatars/avatar1.jpg");
+	$("#fotoPerfil").val("img/avatars/avatar1.jpg");
 	$("#btnCambiarAvatar").show();
 }
 function avatar2(){
 	$("#avatar1").hide();
-	$("#rutaFoto").val("img/avatars/avatar2.jpg");
 	$("#btnCambiarAvatar").show();
 }
 function btnCambiarAvatar(){
-	$("#rutaFoto").val(" ");
+	$("#fotoPerfil").val(" ");
 	$("#btnCambiarAvatar").hide();
 	$("#avatar1").show();
 	$("#avatar2").show();
