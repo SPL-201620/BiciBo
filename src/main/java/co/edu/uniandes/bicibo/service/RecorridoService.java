@@ -135,21 +135,50 @@ public class RecorridoService
         	entityManager.getTransaction( ).begin( );
 
         	Recorrido route = entityManager.find(Recorrido.class, Integer.parseInt(idRecorrido));
-
-            route.setOrigen(origen);
-            route.setDestino(destino);
-            route.setHora_salida(horaSalida);
-            route.setHora_llegada(horaLlegada);
-            route.setFecha_recorrido(fechaRecorrido);
-            route.setRealizado(Boolean.parseBoolean(realizado));
-            route.setDistancia(distancia);
-            route.setTiempoEstimado(tiempoEstimado);
-            route.setCaloriasQuemadas(caloriasQuemadas);
-            route.setInfoClima(infoClima);
-            entityManager.persist( route );
+        	
+        	if(origen != null || origen.equals(""))
+            {
+        		route.setOrigen(origen);
+            }
+        	if(destino != null || destino.equals(""))
+            {
+        		route.setDestino(destino);
+            }
+        	if(horaSalida != null || horaSalida.equals(""))
+            {
+        		route.setHora_salida(horaSalida);
+            }
+        	if(horaLlegada != null || horaLlegada.equals(""))
+            {
+        		route.setHora_llegada(horaLlegada);
+            }
+        	if(fechaRecorrido != null || fechaRecorrido.equals(""))
+            {
+        		route.setFecha_recorrido(fechaRecorrido);
+            }
+        	if(realizado != null || realizado.equals(""))
+            {
+        		route.setRealizado(Boolean.parseBoolean(realizado));
+            }
+        	if(distancia != null || distancia.equals(""))
+            {
+        		route.setDistancia(distancia);
+            }
+        	if(tiempoEstimado != null || tiempoEstimado.equals(""))
+            {
+        		route.setTiempoEstimado(tiempoEstimado);
+            }
+        	if(caloriasQuemadas != null || caloriasQuemadas.equals(""))
+            {
+        		route.setCaloriasQuemadas(caloriasQuemadas);
+            }
+        	if(infoClima != null || infoClima.equals(""))
+            {
+        		route.setInfoClima(infoClima);
+            }
+        	entityManager.persist( route );
 
             entityManager.getTransaction( ).commit( );
-
             entityManager.close( );
             emfactory.close( );
             obj.put("status", "OK");

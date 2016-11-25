@@ -166,6 +166,7 @@ public class UserRestService
 		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
         return recorridoGrupalService.listarRecorridosGrupo(id);
     }
+	
 	@Path("/recorridoGrupal/{id}/{id2}")
 	@GET
     public JSONObject verRecorridoGrupo(@PathParam("id") String id, @PathParam("id2") String id2) 
@@ -173,31 +174,56 @@ public class UserRestService
 		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
         return recorridoGrupalService.verRecorridoGrupo(id, id2);
     }
+	
 	@Path("/recorridoGrupal")
 	@POST
     public JSONObject agregarRecorridoGrupo(@QueryParam("id_usuario") String idUsuario, 
-    		@QueryParam("nombre_organizador") String nombreOrganizador, @QueryParam("origen") String origen, 
-    		@QueryParam("destino") String destino, @QueryParam("horaSalida") String horaSalida, 
-    		@QueryParam("horaLlegada") String horaLlegada, @QueryParam("fechaRecorrido") String fechaRecorrido, 
-    		@QueryParam("distancia") String distancia, @QueryParam("tiempoEstimado") String tiempoEstimado, 
-    		@QueryParam("caloriasQuemadas") String caloriasQuemadas, @QueryParam("infoClima") String infoClima, 
+    		@QueryParam("nombre_organizador") String nombreOrganizador, 
+    		@QueryParam("origen") String origen, 
+    		@QueryParam("destino") String destino, 
+    		@QueryParam("horaSalida") String horaSalida, 
+    		@QueryParam("horaLlegada") String horaLlegada, 
+    		@QueryParam("fechaRecorrido") String fechaRecorrido, 
+    		@QueryParam("distancia") String distancia, 
+    		@QueryParam("tiempoEstimado") String tiempoEstimado, 
+    		@QueryParam("caloriasQuemadas") String caloriasQuemadas, 
+    		@QueryParam("infoClima") String infoClima, 
     		@QueryParam("frecuencia") String frecuencia) 
 	{
 		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
         return recorridoGrupalService.agregarRecorridoGrupo(idUsuario, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
         		distancia, tiempoEstimado, caloriasQuemadas, infoClima, frecuencia, nombreOrganizador);
     }
-	/*
-	@Path("/route/insert")
-	@POST
-    public User UnirseRecorridoGrupo(@PathParam("id") String id) {
-        UserService userService = new UserService();
-        return userService.UnirseRecorridoGrupo(id);
+	
+	@Path("/recorridoGrupal")
+	@PUT
+    public JSONObject actualizarRecorridoGrupo(@QueryParam("id") String id, 
+    		@QueryParam("nombre_organizador") String nombreOrganizador, 
+    		@QueryParam("origen") String origen, 
+    		@QueryParam("destino") String destino,
+    		@QueryParam("hora_salida") String horaSalida, 
+    		@QueryParam("hora_llegada") String horaLlegada, 
+    		@QueryParam("fecha_recorrido") String fechaRecorrido, 
+    		@QueryParam("distancia") String distancia, 
+    		@QueryParam("tiempoEstimado") String tiempoEstimado, 
+    		@QueryParam("caloriasQuemadas") String caloriasQuemadas, 
+    		@QueryParam("infoClima") String infoClima, 
+    		@QueryParam("frecuencia") String frecuencia) 
+	{
+		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
+        return recorridoGrupalService.actualizarRecorridoGrupo(id, origen, destino, horaSalida, horaLlegada, fechaRecorrido,
+        		distancia, tiempoEstimado, caloriasQuemadas, infoClima, frecuencia, nombreOrganizador);
     }
-    */
 	
+	@Path("/recorridoGrupal/insert")
+	@POST
+    public JSONObject UnirseRecorridoGrupo(@QueryParam("id") String id, @QueryParam("id2") String idRecorridoGrupal) 
+	{
+		RecorridoGrupalService recorridoGrupalService = new RecorridoGrupalService();
+        return recorridoGrupalService.unirseRecorridoGrupo(id, idRecorridoGrupal);
+    }
+    
 	//Mensajes
-	
 	@POST
 	@Path("/mensaje")
     public JSONObject enviarMensaje(@QueryParam("id_usuario_origen") String id_usuario_origen,
