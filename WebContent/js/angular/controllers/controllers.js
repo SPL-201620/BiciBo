@@ -156,7 +156,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	var password_usu = $scope.usuario.password;
     	if(!username_usu || !password_usu)
     	{
-    		"Usuario y Clave son requeridos.");
+    		alert("Usuario y Clave son requeridos.");
     		return;
     	}
     	else
