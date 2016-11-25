@@ -711,6 +711,25 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	})
     	
     };
+    $scope.ListadoMensajes = {};
+    $scope.listarMensajes = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioActual = cookieUsr.id;
+    	//alert('chat entre  destino:'+idUsuarioDestino + '-origen:'+idUsuarioOrigen)
+    	
+    	MessageFactory.mensajes.listar({id: idUsuarioActual}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoMensajes = response.message;
+	  		}
+	  	})
+    	
+    };
     
     
 }]);//Fin Controlador principal
