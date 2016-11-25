@@ -20,8 +20,6 @@ public class Recorrido implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
-    public Integer id_usuario;
-
     public boolean realizado = true;
 
     public String origen;
@@ -98,14 +96,6 @@ public class Recorrido implements Serializable
         this.fecha_recorrido = fecha_recorrido;
     }
 
-    public Integer getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(Integer id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
     public String getDistancia() {
 		return distancia;
 	}
@@ -143,7 +133,6 @@ public class Recorrido implements Serializable
 	{
 		return "Recorrido ["
 				+ "id=" + id + 
-				", id_usuario=" + id_usuario + 
 				", realizado=" + realizado + 
 				", origen=" + origen + 
 				", destino=" + destino + 

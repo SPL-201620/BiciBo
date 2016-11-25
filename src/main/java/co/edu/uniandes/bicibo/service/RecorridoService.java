@@ -12,60 +12,6 @@ import co.edu.uniandes.bicibo.domain.Recorrido;
 import co.edu.uniandes.bicibo.domain.Usuario;
 
 public class RecorridoService {
-	public JSONObject AgregarRecorrido (String id_usuario,  
-    		String origen,
-    		String destino,
-    		String hora_salida,
-    		String hora_llegada,
-    		String fecha_recorrido,
-    		String realizado,
-    		String distancia,
-    		String tiempoEstimado,
-    		String caloriasQuemadas,
-    		String infoClima)
-    {
-    	JSONObject obj = new JSONObject();
-    	try
-    	{
-    		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
-    		EntityManager entitymanager = emfactory.createEntityManager();
-    		entitymanager.getTransaction( ).begin( );
-    		
-    		Recorrido recorrido = new Recorrido();
-    		recorrido.setId_usuario(Integer.parseInt(id_usuario));
-    		recorrido.setOrigen(origen);
-    		recorrido.setDestino(destino);
-    		recorrido.setHora_salida(hora_salida);
-    		recorrido.setHora_llegada(hora_llegada);
-    		recorrido.setFecha_recorrido(fecha_recorrido);
-    		recorrido.setRealizado(Boolean.parseBoolean(realizado));
-    		recorrido.setDistancia(distancia);
-    		recorrido.setTiempoEstimado(tiempoEstimado);
-    		recorrido.setCaloriasQuemadas(caloriasQuemadas);
-    		recorrido.setInfoClima(infoClima);
-    		
-    		
-    		Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id_usuario));
-
-    		List<Recorrido> recorridos = usuario.getRecorridos();
-    		recorridos.add(recorrido);
-    		usuario.setRecorridos(recorridos);
-
-    		entitymanager.persist(usuario);
-    		entitymanager.persist(recorrido);
-    		entitymanager.getTransaction( ).commit( );
-    		entitymanager.close();
-    		emfactory.close();
-    		obj.put("status", "OK");
-    		obj.put("message", "Recorrido agregado");
-    	}
-    	catch (Exception e)
-    	{
-    		obj.put("status", "ERROR");
-    		obj.put("message", "Se produjo un error al intentar agregar el recorrido del usuario. <br>"+e.getMessage());
-    	}    	
-    	return obj;
-    } 
     
     public JSONObject listarRecorridos (String id)
     {
@@ -109,29 +55,139 @@ public class RecorridoService {
         	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
             EntityManager entitymanager = emfactory.createEntityManager();
             
-            Usuario usuario = entitymanager.find(Usuario.class, Integer.parseInt(id));
+            Recorrido recorrido = entitymanager.find(Recorrido.class, Integer.parseInt(id));
                         
-            List<Recorrido> recorridos = usuario.getRecorridos();
-            
-            if(recorridos.size() <= 0)
-            {
-                obj.put("status", "ERROR");
-                obj.put("message", "No existen recorridos registrados en el momento.");
-            	
-            }
-            else
-            {
-                obj.put("status", "OK");
-                obj.put("recorridos", recorridos);
-            }
+            obj.put("status", "OK");
+            obj.put("message", recorrido); 
             entitymanager.close();
             emfactory.close();
         }
     	catch (Exception e)
         {
         	obj.put("status", "ERROR");
-            obj.put("message", "Se produjo un error al intentar cargar los recorridos del usuario. <br>"+e.getMessage());
+            obj.put("message", "Se produjo un error al intentar cargar el recorrido. <br>" + e.getMessage());
         }    	
     	return obj;
+    }
+    
+    public JSONObject agregarRecorrido(String idUsuario, String origen, String destino, String horaSalida, 
+    		String horaLlegada, String fechaRecorrido, String realizado, String distancia, String tiempoEstimado, 
+    		String caloriasQuemadas, String infoClima) 
+    {       
+        JSONObject obj = new JSONObject();
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+
+            EntityManager entityManager;
+        	entityManager = emfactory.createEntityManager( );
+        	entityManager.getTransaction( ).begin( );
+
+        	Usuario usuario = entityManager.find(Usuario.class, Integer.parseInt(idUsuario));
+
+        	List<Recorrido> recorridos = usuario.getRecorridos();
+
+            Recorrido route = new Recorrido( ); 
+            route.setOrigen(origen);
+            route.setDestino(destino);
+            route.setHora_salida(horaSalida);
+            route.setHora_llegada(horaLlegada);
+            route.setFecha_recorrido(fechaRecorrido);
+            route.setRealizado(Boolean.parseBoolean(realizado));
+            route.setDistancia(distancia);
+            route.setTiempoEstimado(tiempoEstimado);
+            route.setCaloriasQuemadas(caloriasQuemadas);
+            route.setInfoClima(infoClima);
+                        
+            entityManager.persist( route );
+            
+            recorridos.add(route);
+            usuario.setRecorridos(recorridos);
+            
+            entityManager.persist( usuario );
+            entityManager.getTransaction( ).commit( );
+
+            entityManager.close( );
+            emfactory.close( );
+            obj.put("status", "OK");
+            obj.put("message", "Recorrido Creado");
+        }
+        catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar registrar el recorrido. <br>"+e.getMessage());
+        }    	
+        return obj;
+    }
+    
+    public JSONObject actualizarRecorrido(String idRecorrido, String origen, String destino, String horaSalida, 
+    		String horaLlegada, String fechaRecorrido, String realizado, String distancia, String tiempoEstimado, 
+    		String caloriasQuemadas, String infoClima) 
+    {       
+        JSONObject obj = new JSONObject();
+        try
+        {
+        	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+
+            EntityManager entityManager;
+        	entityManager = emfactory.createEntityManager( );
+        	entityManager.getTransaction( ).begin( );
+
+        	Recorrido route = entityManager.find(Recorrido.class, Integer.parseInt(idRecorrido));
+        	
+        	if(origen != null || origen.equals(""))
+            {
+        		route.setOrigen(origen);
+            }
+        	if(destino != null || destino.equals(""))
+            {
+        		route.setDestino(destino);
+            }
+        	if(horaSalida != null || horaSalida.equals(""))
+            {
+        		route.setHora_salida(horaSalida);
+            }
+        	if(horaLlegada != null || horaLlegada.equals(""))
+            {
+        		route.setHora_llegada(horaLlegada);
+            }
+        	if(fechaRecorrido != null || fechaRecorrido.equals(""))
+            {
+        		route.setFecha_recorrido(fechaRecorrido);
+            }
+        	if(realizado != null || realizado.equals(""))
+            {
+        		route.setRealizado(Boolean.parseBoolean(realizado));
+            }
+        	if(distancia != null || distancia.equals(""))
+            {
+        		route.setDistancia(distancia);
+            }
+        	if(tiempoEstimado != null || tiempoEstimado.equals(""))
+            {
+        		route.setTiempoEstimado(tiempoEstimado);
+            }
+        	if(caloriasQuemadas != null || caloriasQuemadas.equals(""))
+            {
+        		route.setCaloriasQuemadas(caloriasQuemadas);
+            }
+        	if(infoClima != null || infoClima.equals(""))
+            {
+        		route.setInfoClima(infoClima);
+            }
+        	entityManager.persist( route );
+
+            entityManager.getTransaction( ).commit( );
+            entityManager.close( );
+            emfactory.close( );
+            obj.put("status", "OK");
+            obj.put("message", "Recorrido Actualizado");
+        }
+        catch (Exception e)
+        {
+        	obj.put("status", "ERROR");
+            obj.put("message", "Se produjo un error al intentar actualizar el recorrido. <br>"+e.getMessage());
+        }    	
+        return obj;
     }
 }
