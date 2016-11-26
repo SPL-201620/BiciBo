@@ -192,7 +192,11 @@ services.factory('MessageFactory', function ($resource) {
 		}),
 		mensajes: $resource(url_servicio_rest + '/mensajes', {}, 
 		{				
-			listar:{ method: 'GET', params: {id: '@id'} },       
+			listar:{ method: 'GET', params: {id: '@id'} },      
+		}),
+		nuevosmensajes: $resource(url_servicio_rest + '/numMensajes', {}, 
+		{				
+			show:{ method: 'GET', params: {id: '@id'} },      
 		}),
 		
     };

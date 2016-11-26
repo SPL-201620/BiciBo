@@ -1,9 +1,27 @@
-<div ng-init="listarMensajes();">
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();listarMensajes();" >
+<div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li><a href="#/perfil">Perfil</a></li>
+        <li><a href="#/individual">Desplazamientos individuales</a></li>
+        <li><a href="#/grupo">Desplazamientos grupales</a></li>
+      </ul>
 </div>
-<div class="list-group" ng-repeat="record in ListadoMensajes">
-  <a href="#" class="list-group-item">
-    <h4 class="list-group-item-heading">De: {{ record.usuarioOrigen.username }}</h4>
-    <p class="list-group-item-text">{{ record.mensaje }}</p>
-  </a>
-  
+    
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<h2 class="page-header">Mensajes</h2>
+      
+	<div class="text-danger" style="padding-bottom:5px;">{{ msgError }}</div>
+	<br />
+	<div class="list-group" ng-repeat="record in ListadoMensajes">
+		<a href="#" class="list-group-item">
+			<h4 class="list-group-item-heading">De: {{ record.usuarioOrigen.username }}</h4>
+		    <p class="list-group-item-text">{{ record.mensaje }}</p>
+		</a>
+	</div>
 </div>
+
+
+
+
+------
+

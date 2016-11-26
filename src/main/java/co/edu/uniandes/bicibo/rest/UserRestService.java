@@ -269,8 +269,8 @@ public class UserRestService
     }
 	
 	@GET
-	@Path("/numMensajes/{id}")
-    public JSONObject darNumMensajesNuevos(@PathParam("id") String id) 
+	@Path("/numMensajes")
+    public JSONObject darNumMensajesNuevos(@QueryParam("id") String id) 
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.darNumMensajesNuevos(id);
