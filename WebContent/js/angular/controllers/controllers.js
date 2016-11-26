@@ -730,6 +730,23 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	})
     	
     };
+    $scope.cantidadMensajesNuevos = '';
+    $scope.totalMensajesNuevos = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioActual = cookieUsr.id;
+    	
+    	MessageFactory.nuevosmensajes.show({id: idUsuarioActual}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  		}
+	  	})
+    };
     
     
 }]);//Fin Controlador principal

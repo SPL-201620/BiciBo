@@ -131,7 +131,7 @@
         -->
   </head>
 
-  <body ng-controller="AppCtrl" ng-init="verificarSesion();">
+  <body ng-controller="AppCtrl" ng-init="verificarSesion();totalMensajesNuevos();">
 
     <nav class="navbar navbar-inverse navbar-fixed-top formLogin">
       <div class="container-fluid">
@@ -154,7 +154,9 @@
           </ul>
 		 <form id="formSalir" class="navbar-form navbar-right" style="display:none">
 		 
-		  <a id="btnMensajes" href="#/mensajes" class="btn btn-default">Mensajes</a>
+		  <a id="btnMensajes" href="#/mensajes" class="btn btn-default">
+		  Mensajes ({{cantidadMensajesNuevos}})
+		  </a>
 		  <a id="btnPerfil" href="#/perfil" class="btn btn-info" style="display:none;">Perfil</a>
 		  <button type="submit" class="btn btn-danger" ng-click="salir()">Salir</button>
 		  </form>
