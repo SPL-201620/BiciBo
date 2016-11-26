@@ -97,21 +97,17 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
     
 	//VERIFICA SESSION
-	$scope.verificarSesion = function()
-	{
+	$scope.verificarSesion = function(){
 		console.log("Verifica sesion")
     	var cookieUsr = $cookieStore.get('usuario');
 		//alert(cookieUsr)
-    	if(typeof cookieUsr == "undefined")
-    	{
+    	if(typeof cookieUsr == "undefined"){
     		//alert('1'+$("#accesoRedesSociales"))
     		$("#formSalir").hide();
     		$("#formLogin").show();
     		$("#btnPerfil").hide();
     		
-    	}
-    	else
-    	{
+    	}else{
     		//alert('2'+$("#accesoRedesSociales"))
     		$("#formSalir").show();
     		$("#formLogin").hide();
@@ -124,10 +120,10 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     inicioSesion.promise.then(usrASesion);
     
     //Aqui es que se inicia la sesion del usuario es decir se crean las cookies 
-    function usrASesion(user)
-    {
-    	if(user.status == "OK")
-    	{
+    function usrASesion(user){
+    	//alert('Creando la session.')
+    	//$scope.usrConectado.nombre = user.nombre;//Info que viene de BD
+    	if(user.status == "OK"){
         	$scope.usrConectado.estaConectado = true;
         	$scope.usrConectado.message = user.message;
         	$log.info($scope.usrConectado);
@@ -138,50 +134,46 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	
         	$location.path('/perfil');
 
-    	}
-    	else
-    	{
+    	}else{
+    		//alert(user.message);
     		$scope.salir();
     	}
     };
 	
     //Session Usuario
-    $scope.usuario = 
-    {
-    		nombre: '',
-    		email: '',
-    		username: '',
-    		password: '',
-    		rutaFoto: ''
-    };
+      $scope.usuario = {
+    		  nombre: '',
+              email: '',
+              username: '',
+              clave: '',
+              fotoPerfil: ''
+      };
     
     //Para cuando se de clic en enviar y se hace el llamado al servicio REST
-    $scope.iniciarSesion = function() 
-    {
+    //$scope.iniciarSesion = {};
+    
+    $scope.iniciarSesion = function() {
     	var username_usu = $scope.usuario.username;
-    	var password_usu = $scope.usuario.password;
-    	if(!username_usu || !password_usu)
-    	{
+    	var clave_usu = $scope.usuario.clave;
+    	if(!username_usu || !clave_usu){
     		alert("Usuario y Clave son requeridos.");
     		return;
-    	}
-    	else
-    	{
-        	UserSesion.iniciar.sesion({username: username_usu, password: password_usu}, 
-        	function (response) 
-        	{
+    	}else{
+        	UserSesion.iniciar.sesion({username: username_usu, clave: clave_usu}, function (response) {
         		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
-        		if(response.status == "OK")
-        		{
+        		if(response.status == "OK"){
             		inicioSesion.resolve(response);
     				window.location.assign('#/perfil');
     				window.location.reload(true);
-        		}
-        		else
-        		{
+        			
+        		}else{
         			alert(response.message)
         		}
         	});
+        	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
+    			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.
+    		});
+			*/
     	}
     };
     
@@ -193,51 +185,43 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      
      $scope.registrarUsuario = {};
      
-     $scope.registrarUsuario = function() 
-     {
+     $scope.registrarUsuario = function() {
       	var nombre_usu = $scope.usuario.nombre;
      	var email_usu = $scope.usuario.email;
      	var username_usu = $scope.usuario.username;
-     	var password_usu = $scope.usuario.password;
-     	var rutaFoto_usu = $scope.usuario.rutaFoto;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
-     	if(!username_usu || !password_usu)
-     	{
-     		alert("Usuario y Clave son requeridos.");
+     	var clave_usu = $scope.usuario.clave;
+     	var fotoPerfil_usu = $scope.usuario.fotoPerfil;
+     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+clave_usu+'-'+fotoPerfil_usu)
+     	if(!email_usu || !clave_usu){
+     		alert("Email y Clave son requeridos.");
      		return;
-     	}
-     	else
-     	{         	
-         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, password: password_usu, rutaFoto: rutaFoto_usu}, 
-         	function (response) 
-         	{
-         		if(response.status=="OK")
-         		{
+     	}else{
+         	
+         	UserSesion.registrar.normal({nombre: nombre_usu, email: email_usu, username:username_usu, clave: clave_usu, fotoPerfil: fotoPerfil_usu}, function (response) {
+         		//alert('registrando.. servicio REST: '+response.status)
+         		if(response.status=="OK"){
+             		//inicioSesion.resolve(response); Si quiero que quede autenticado despues de registro
          			mostraPanelExito();
-         		}
-         		else
-         		{
+         		}else{
          			$("#panelError").html(response.message)
          		}
          	});
+         	/*var usr = UserSesion.iniciar.sesion({email: $scope.usuario.email, clave: $scope.usuario.clave}).$promise.then(function(usr){
+     			inicioSesion.resolve(usr); //Y es aqui cuando se llama la funcion que se crea las cookies.
+     		});
+			*/
+     		
      	}
      };
     
     // funcion para el boton de salir o cerrar sesion.
-    $scope.salir = function()
-    {
+    $scope.salir = function(){
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('saliendo..:'+cookieUsr.id)
-    	UserSesion.logout.normal({id: cookieUsr.id}, 
-    	function (response) 
-    	{
-    		alert('respuesta servcion /logout: '+response.status)
-    		if(response.status != "OK")
-    		{
+    	//alert('saliendo..')
+    	UserSesion.logout.normal({id: cookieUsr.id}, function (response) {
+    		if(response.status != "OK"){
     			$log.info(response.message);
-    		}
-    		else
-    		{
+    		}else{
         		$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
             	$cookieStore.remove('estaConectado');
             	$cookieStore.remove('usuario');            	
@@ -251,25 +235,22 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
       $scope.infoUsuario = {
               nombre: '',
               email: '',
-              password: '',
-              username: '',
-              edad: '',
-              rutaFoto: ''              
+              rutaFoto: '',
+              edad: ''
       };
     
     //INFO USUARIO ESPECIFICO
-    $scope.getInfoUsuario = function()
-    {
+    $scope.getInfoUsuario = function(){
+		console.log("infoUsuario")
     	var cookieUsr = $cookieStore.get('usuario');
-    	UserFactory.usuario.show({id: cookieUsr.id}, 
-    	function (response) 
-    	{
-    		if(response.email == null)
-    		{
+		console.log(cookieUsr)
+    	alert('Consultando info usuario de id: ' + cookieUsr.id + '-username: '+ cookieUsr.username);
+    	UserFactory.usuario.show({id: cookieUsr.id}, function (response) {
+    		alert('Respuesta del servicio REST /user/{id}:'+response.username)
+    		if(response.email == null){
     			$scope.msgError = "No se encontro info para el usuario."; 
-    		}
-    		else
-    		{
+    		}else{
+    			//alert(response);
     			$scope.infoUsuario = response;    			
     		}
     	})
@@ -279,79 +260,79 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.listaRegistrados = {};
 
     //LISTA USUARIOS REGISTRADOS
-	$scope.listarRegistrados = function()
-	{
-		var cookieUsr = $cookieStore.get('usuario');
-	  	UserFactory.usuarios.mostrar({id: cookieUsr.id}, function (response)
+	$scope.listarRegistrados = function(){
+		console.log("listar registrados")
+  		//$scope.listaRegistrados = factoryUsuarios;
+  		//alert('listando usuarios registrados: ')
+	  	UserFactory.usuarios.mostrar(function (response)
 		{
-	  		if(response.length <= 0)
-	  		{
+			//alert('listaAmigos:'+response[0]);
+	  		//alert('listado de usuarios registrados: '+response.length)
+	  		if(response.length <= 0){
 	  			$scope.msgError = "No hay usuarios registrados en el momento"; 
-	  		}
-	  		else
-	  		{
-	  			$scope.listaRegistrados = response.message;
+	  		}else{
+	  			//alert(response);
+	  			$scope.listaRegistrados = response;
+				for(var i=0; i<$scope.listaRegistrados.length; ++i){
+					console.log($scope.listaRegistrados[i]);
+				}//PARA TOMAR DE REST
+	  	    	//$scope.listaRegistrados = factoryUsuarios;//PARA TOMAR DE simulado.
 	  		}
 	  	})
 	};
 	
-    $scope.actualizarUsuario = function()
-    {
+    $scope.actualizarUsuario = function(){
     	var cookieUsr = $cookieStore.get('usuario');
-    	UserFactory.user.update({id: $scope.infoUsuario.id, username : "", email: $scope.infoUsuario.email, 
-    		password : "", edad: $scope.infoUsuario.edad, nombre: $scope.infoUsuario.nombre,
-    		fotoPerfil: $scope.infoUsuario.fotoPerfil}, 
-    		function (response) 
-    		{
-	    		if(response.status != "OK")
-	    		{
-	    			$scope.msgError = response.message; 
-	    		}
-	    		else
-	    		{
-	    			window.location.assign('#/perfil');
-	                window.location.reload(true);
-	    		}
-    		})
+    	//alert('Actualizando info usuario: '+ $scope.infoUsuario.id)
+    	UserFactory.user.update({id: $scope.infoUsuario.id, nombre: $scope.infoUsuario.nombre,
+    		email: $scope.infoUsuario.email, edad: $scope.infoUsuario.edad, fotoPerfil: $scope.infoUsuario.fotoPerfil}, function (response) {
+    		//alert('respuesta'+response.status)
+    		if(response.status != "OK"){
+    			$scope.msgError = response.message; 
+    		}else{
+				//alert('respuesta'+response.status)
+    			window.location.assign('#/perfil');
+                window.location.reload(true);
+                //$location.path('/perfil');
+    		}
+    	})
     };
-    
     $scope.noActualizar = function(){
     	window.location.assign('#/perfil');
         window.location.reload(true);
-    };    
+    };
+    
     
     //LISTA AMIGOS
-    $scope.listarAmigos = function()
-    {
+    $scope.listarAmigos = function(){
+		console.log("listar amigos")
     	var cookieUsr = $cookieStore.get('usuario');
     	$scope.listaAmigos = {};
-    	FriendFactory.amigos.show({id: cookieUsr.id}, 
-    	function (response) 
-    	{
-    		if(response.length == 0)
-    		{
+    	
+    	//$scope.listaAmigos = factoryUsuarios;
+    	FriendFactory.amigos.show({id: cookieUsr.id}, function (response) {
+
+			//alert('listaAmigos:'+response[0].nombre);
+    		if(response.length <= 0){
     			$scope.msgError = "No tiene amigos en el momento"; 
-    		}
-    		else
-    		{
-    			$scope.listaAmigos = response.message;
+    		}else{
+    			//alert(response);
+    			$scope.listaAmigos = response;//PARA TOMAR DE REST
+    	    	//$scope.listaAmigos = factoryUsuarios;//PARA TOMAR DE SIMULADO.
     		}
     	})
     };
     
     //AGREGAR AMIGO
-    $scope.agregarAmigo = function(id_amigo)
-    {
+    $scope.agregarAmigo = function(id_amigo){
     	var cookieUsr = $cookieStore.get('usuario');
-    	FriendFactory.amigo.create({id: cookieUsr.id, id_friend: id_amigo}, 
-    	function (response) 
-    	{
-    		if(response.status != "OK")
-    		{
+    	//alert('agregando amigo: '+id_amigo);
+    	FriendFactory.amigos.create({id: cookieUsr.id, id_friend: id_amigo}, function (response) {
+    		//alert('agregado amigo'+response.status);
+    		if(response.status != "OK"){
     			$scope.msgError = response.message; 
-    		}
-    		else
-    		{
+    		}else{
+    			//alert(response);
     			window.location.assign('#/perfil');
                 window.location.reload(true);
     		}
@@ -361,8 +342,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
   //RECORRIDOS INDIVIDUALES
     
   //LISTA RECORRIDOS
-    $scope.infoRecorrido = 
-    {
+    $scope.infoRecorrido = {
     	id:'',
     	origen:'',
     	destino:'',
@@ -379,152 +359,114 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 		registrado:''
     };
     
-    $scope.listarRecorridos = function()
-    {
+    $scope.listarRecorridos = function(){
     	var id_recorrido = $routeParams.id;
-    	if(typeof id_recorrido != "undefined")
-    	{
+    	//alert('listando recorridos: '+id_recorrido)
+    	if(typeof id_recorrido != "undefined"){
+    		//alert('entra a mostrar recorrido.');
     		$('#tablaInfoRecorridos').hide();
     		$scope.listaRecorridos = {};
-    		$scope.infoRecorrido = RouteFactory.ruta2.show({id: id_recorrido}, 
-    		function (response) 
-    		{
-    			if(response.origen == null)
-				{
-    				$scope.msgError = "No se encontro info del recorrido."; 
-				}
-				else
-				{
-					$scope.infoRecorrido = response;
-				}
-			});
+
+    		$scope.infoRecorrido = RouteFactory.ruta2.show({id: id_recorrido}, function (response) {
+						        		if(response.origen == null){
+						        			$scope.msgError = "No se encontro info del recorrido."; 
+						        		}else{
+						        			//alert(response);
+						        			$scope.infoRecorrido = response;
+						        		}
+						        	});
 
     		$('#formAgregarRecorrido').hide();
 			$('#formEditarRecorrido').show();
-    	}
-    	else
-    	{
+        	//$scope.infoRecorrido = factoryRecorrido;
+    		//alert('revisar que cargue la info del recorrido..');
+    		//$('#btnGuardarRecorrido').attr('ng-click', $scope.editarRecorrido(id_recorrido));
+    	}else{
     		var cookieUsr = $cookieStore.get('usuario');
         	$scope.listaRecorridos = {};
-        	RouteFactory.rutas.show({id: cookieUsr.id},
-        	function (response) 
-        	{
+        	
+        	//$scope.listaRecorridos = factoryRecorridos;//Temporal Comentariar
+        	RouteFactory.rutas.show({id: cookieUsr.id},function (response) {
 				console.log(response[0]);
-        		alert(response.length)
-        		if(response.status =="ERROR")
-        		{
-        			$scope.msgError = response.message; 
-        		}
-        		else
-        		{
-        			$scope.listaRecorridos = response.recorridos;
+        		//alert(response.length)
+        		if(response.length <= 0){
+        			$scope.msgError = "No tiene recorridos en el momento"; 
+        		}else{
+        			//alert(response);
+        			$scope.listaRecorridos = response;
+        	    	//$scope.listaRecorridos = factoryRecorridos;
         		}
         	})
     	}
     };
-    
-    $scope.noAgregarRecorrido = function()
-    {
+    $scope.noAgregarRecorrido = function(){
     	window.location.assign('#/individual');
         window.location.reload(true);
     };
-    
-    $scope.ingresarRecorrido = function()
-    {
+    $scope.ingresarRecorrido = function(){
+    	//Recordar a Santiago incluir los 5 ultimos campos en el servicio REST
 		$('#formAgregarRecorrido').show();
 		$('#formEditarRecorrido').hide();
     	var cookieUsr = $cookieStore.get('usuario');
-    	RouteFactory.ruta1.crear(
-	    	{
-	    		id_usuario: cookieUsr.id,
-	    		origen:$scope.infoRecorrido.origen, 
-	    		destino: $scope.infoRecorrido.destino, 
-	    		hora_salida:$scope.infoRecorrido.hora_salida,
-				hora_llegada: $scope.infoRecorrido.hora_llegada, 
-				fecha_recorrido:$scope.infoRecorrido.fecha_recorrido, 
-				//frecuencia:$scope.infoRecorrido.frecuencia, 
-				distancia:$scope.infoRecorrido.distancia, 
-				tiempoEstimado:$scope.infoRecorrido.tiempoEstimado, 
-				caloriasQuemadas:$scope.infoRecorrido.caloriasQuemadas, 
-				infoClima:$scope.infoRecorrido.infoClima, 
-				realizado:$scope.infoRecorrido.realizado
-			}, 
-			function (response) 
-			{    	
-	    		if(response.status != "OK")
-	    		{
-	    			$scope.msgError = response.message; 
-	    		}
-	    		else
-	    		{
-	    			window.location.assign('#/individual');
-	                window.location.reload(true);
-	    		}
-			}
-		)
-    };
-    
-    $scope.mostrarEditarRecorrido = function (idRecorrido)
-    {
-    	alert('recorrido a actualizar: '+ idRecorrido)
-    	$('#areaMapa').empty();
-		$('#tablaInfoRecorridos').hide();
-		$('#formAgregarRecorrido').hide();
-		$('#formEditarRecorrido').show();		
-		$location.path('/individual/id=' + idRecorrido);
-	};
-	
-	$scope.editarRecorrido = function()
-	{
-		var getUrlParameter = 1;/* function getUrlParameter() {
-		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-	        sURLVariables = sPageURL.split('&'),
-	        sParameterName,
-	        i;
-
-	    for (i = 0; i < sURLVariables.length; i++) {
-	        sParameterName = sURLVariables[i].split('=');
-
-	        if (sParameterName[0] === 'id') {
-	            return sParameterName[1] === undefined ? true : sParameterName[1];
-	        }
-	    }
-	};*/
-		var sPageURL = decodeURIComponent(window.location.search.substring(1))/*,
-        sURLVariables = sPageURL.split('/'),
-        lengthURL = sURLVariables.length,
-        idRecorrido = sURLVariables[0];*/
-		
-    	alert('Llego a editar recorrido2 = ' + sPageURL )
-    	var cookieUsr = $cookieStore.get('usuario');
     	//alert('Ingresando info recorrido usuario: '+ $scope.infoRecorrido.origen)
-    	RouteFactory.ruta3.update({id_recorrido: 1,
+    	RouteFactory.ruta1.crear({id: cookieUsr.id,
     		origen:$scope.infoRecorrido.origen, 
     		destino: $scope.infoRecorrido.destino, 
     		hora_salida:$scope.infoRecorrido.hora_salida,
 			hora_llegada: $scope.infoRecorrido.hora_llegada, 
 			fecha_recorrido:$scope.infoRecorrido.fecha_recorrido, 
-			//frecuencia:$scope.infoRecorrido.frecuencia, 
+			frecuencia:$scope.infoRecorrido.frecuencia, 
 			distancia:$scope.infoRecorrido.distancia, 
 			tiempoEstimado:$scope.infoRecorrido.tiempoEstimado, 
 			caloriasQuemadas:$scope.infoRecorrido.caloriasQuemadas, 
 			infoClima:$scope.infoRecorrido.infoClima, 
-			realizado:$scope.infoRecorrido.realizado}, 
-			function (response) 
-			{    	
-	    		alert('recorrido actualizado: '+response.status)
-	    		if(response.status != "OK")
-	    		{
-	    			$scope.msgError = response.message; 
-	    		}
-	    		else
-	    		{
-	    			window.location.assign('#/individual');
-	                window.location.reload(true);
-	    		}
-			}
-		)
+			realizado:$scope.infoRecorrido.realizado}, function (response) {    	
+    		//alert('recorrido ingresado: '+response.status)
+    		if(response.status != "OK"){
+    			$scope.msgError = response.message; 
+    		}else{
+    			window.location.assign('#/individual');
+                window.location.reload(true);
+    		}
+    	})
     };
+    
+    $scope.mostrarEditarRecorrido = function (idRecorrido){
+    	$('#areaMapa').empty();
+		$('#tablaInfoRecorridos').hide();
+		$('#formAgregarRecorrido').show();
+		$location.path('/individual/' + idRecorrido);
+	};
+	
+	$scope.editarRecorrido = function(idRecorrido){
+
+    	//alert('Llego a editar usuario')
+    	var cookieUsr = $cookieStore.get('usuario');
+    	//alert('Ingresando info recorrido usuario: '+ $scope.infoRecorrido.origen)
+    	RouteFactory.ruta3.update({id_recorrido: idRecorrido,
+    		id: cookieUsr.id, 
+    		origen:$scope.infoRecorrido.origen, 
+    		destino: $scope.infoRecorrido.destino, 
+    		hora_salida:$scope.infoRecorrido.hora_salida,
+			hora_llegada: $scope.infoRecorrido.hora_llegada, 
+			fecha_recorrido:$scope.infoRecorrido.fecha_recorrido, 
+			frecuencia:$scope.infoRecorrido.frecuencia, 
+			distancia:$scope.infoRecorrido.distancia, 
+			tiempoEstimado:$scope.infoRecorrido.tiempoEstimado, 
+			caloriasQuemadas:$scope.infoRecorrido.caloriasQuemadas, 
+			infoClima:$scope.infoRecorrido.infoClima, 
+			realizado:$scope.infoRecorrido.realizado}, function (response) {    	
+    		//alert('recorrido actualizado: '+response.status)
+    		if(response.status != "OK"){
+    			$scope.msgError = response.message; 
+    		}else{
+    			window.location.assign('#/individual');
+                window.location.reload(true);
+    		}
+    	})
+    };
+    
+    
     
   //LISTA RECORRIDOS GRUPO
     $scope.listarRecorridosGrupo = function(){
@@ -549,24 +491,18 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	//$scope.infoRecorrido = factoryRecorrido;
     		//alert('revisar que cargue la info del recorrido en grupo..');
     		//$('#btnGuardarRecorrido').attr('ng-click', editarRecorridoGrupo());
-    	}
-    	else
-    	{
+    	}else{
     		
 	    	var cookieUsr = $cookieStore.get('usuario');
 	    	$scope.listaRecorridosGrupo = {};
 	    	//alert('listando recorrridos en grupo')
 	    	//$scope.listaRecorridosGrupo = factoryRecorridos;
-	    	RouteFactory.ruta4.showRr({}, 
-	    	function (response) 
-	    	{
+	    	RouteFactory.ruta4.showRr({}, function (response) {
+	    		
 	    		//alert(response.length)
-	    		if(response.length <= 0)
-	    		{
+	    		if(response.length <= 0){
 	    			$scope.msgError = "No tiene recorridos en grupo en el momento"; 
-	    		}
-	    		else
-	    		{
+	    		}else{
 	    			//alert(response);
 	    			$scope.listaRecorridosGrupo = response;
 	    	    	//$scope.listaRecorridosGrupo = factoryRecorridos;
@@ -578,40 +514,29 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	window.location.assign('#/grupo');
         window.location.reload(true);
     };
-    $scope.ingresarRecorridoGrupo = function()
-    {
+    $scope.ingresarRecorridoGrupo = function(){
 		$('#formAgregarRecorrido').show();
 		$('#formEditarRecorrido').hide();
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('Ingresando info recorrido grupo: '+ $scope.infoRecorrido.origen)
+    	//alert('Ingresando info recorrido grupo: '+ $scope.infoRecorrido.origen)
     	RouteFactory.ruta5.crearR({id: cookieUsr.id,
-    		nombre_organizador:$scope.infoRecorrido.nombre_organizador,
     		origen:$scope.infoRecorrido.origen, 
     		destino: $scope.infoRecorrido.destino, 
     		hora_salida:$scope.infoRecorrido.hora_salida,
 			hora_llegada: $scope.infoRecorrido.hora_llegada, 
 			fecha_recorrido:$scope.infoRecorrido.fecha_recorrido, 
-			distancia:$scope.infoRecorrido.distancia, 
-			tiempoEstimado:$scope.infoRecorrido.tiempoEstimado, 
-			caloriasQuemadas:$scope.infoRecorrido.caloriasQuemadas, 
-			infoClima:$scope.infoRecorrido.infoClima,
-			frecuencia:$scope.infoRecorrido.frecuencia}, 
-			function (response) 
-			{    	
-	    		alert('recorrido ingresado: '+response.status)
-	    		if(response.status != "OK"){
-	    			$scope.msgError = response.message; 
-	    		}
-	    		else
-	    		{
-	    			window.location.assign('#/grupo');
-	                window.location.reload(true);
-	    		}
-			})
+			frecuencia:$scope.infoRecorrido.frecuencia}, function (response) {    	
+    		//alert('recorrido ingresado: '+response.status)
+    		if(response.status != "OK"){
+    			$scope.msgError = response.message; 
+    		}else{
+    			window.location.assign('#/grupo');
+                window.location.reload(true);
+    		}
+    	})
     };
     //Evento de Editar recorrido en grupo
-    $scope.mostrarEditarRecorridoGrupo = function (idRecorrido)
-    {
+    $scope.mostrarEditarRecorridoGrupo = function (idRecorrido){
     	$('#areaMapa').empty();
 		$('#tablaInfoRecorridos').hide();
 		$('#formAgregarRecorrido').show();
@@ -667,28 +592,10 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	    	$("#origenInMapa").val(origen)
 	    	$("#destinoInMapa").val(destino)
 	  	});
-    }
-
-    //Mensajes
-    $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
-    {
-    	var cookieUsr = $cookieStore.get('usuario');
-    	alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);    	
-    	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
-    	function (response) 
-    	{
-    		alert('uniendose a recorrido en grupo: ');
-    		if(response.status != "OK")
-    		{
-    			$scope.msgError = response.message; 
-    		}
-    		else
-    		{
-    			window.location.assign('#/perfil');
-    			window.location.reload(true);
-    		}
-    	})
-    };
-
+	}
+    
+    
+    
+    
 }]);//Fin Controlador principal
 

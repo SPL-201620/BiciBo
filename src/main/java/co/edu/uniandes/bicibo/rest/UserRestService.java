@@ -6,6 +6,7 @@ import co.edu.uniandes.bicibo.service.RecorridoGrupalService;
 import co.edu.uniandes.bicibo.service.RecorridoService;
 import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
+//import co.edu.uniandes.bicibo.service.RecorridoService;
 
 import java.util.Date;
 
@@ -101,6 +102,38 @@ public class UserRestService
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.agregarAmigo(id, idAmigo);
     }
+	/*
+	 * Listar las recorridos individuales que un usuario ha realizado
+	 * */
+/*EN PROCESO....ABIMELEC
+	@POST
+	@Path("/recorrido")
+    public JSONObject AgregarRecorrido(@PathParam("id_usuario") String id_usuario,
+    		@PathParam("origen") String origen,
+    		@PathParam("destino") String destino,
+    		@PathParam("hora_salida") String hora_salida,
+    		@PathParam("hora_llegada") String hora_llegada,
+    		@PathParam("fecha_recorrido") String fecha_recorrido,
+    		@PathParam("realizado") String realizado,
+    		@PathParam("distancia") String distancia,
+    		@PathParam("tiempoEstimado") String tiempoEstimado,
+    		@PathParam("caloriasQuemadas") String caloriasQuemadas,
+    		@PathParam("infoClima") String infoClima) 
+	{
+		RecorridoService recorridoService = new RecorridoService();
+        return recorridoService.AgregarRecorrido(id_usuario,  
+        		origen,
+        		destino,
+        		hora_salida,
+        		hora_llegada,
+        		fecha_recorrido,
+        		realizado,
+        		distancia,
+        		tiempoEstimado,
+        		caloriasQuemadas,
+        		infoClima);
+    }
+---FIN ABIMELEC*/    
 	/*
 	 * Listar las recorridos individuales que un usuario ha realizado
 	 * */
@@ -232,20 +265,20 @@ public class UserRestService
 	{
 		System.out.println("olaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa2 "+mensaje + id_usuario_origen + " + "+ id_usuario_destino);
         MensajeService mensajeService = new MensajeService();
-        return mensajeService.enviarMensaje("1", "hello", "2");
+        return mensajeService.enviarMensaje(id_usuario_origen, mensaje, id_usuario_destino);
     }
 	
 	@GET
-	@Path("/numMensajes/{id}")
-    public JSONObject darNumMensajesNuevos(@PathParam("id") String id) 
+	@Path("/numMensajes")
+    public JSONObject darNumMensajesNuevos(@QueryParam("id") String id) 
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.darNumMensajesNuevos(id);
     }
 	
 	@GET
-	@Path("/mensajes/{id}")
-    public JSONObject verMensajesNuevos(@PathParam("id") String id) 
+	@Path("/mensajes")
+    public JSONObject verMensajesNuevos(@QueryParam("id") String id) 
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.verMensajesNuevos(id);
@@ -260,8 +293,8 @@ public class UserRestService
     }
 	
 	@GET
-	@Path("/chat/{id}/{id2}")
-    public JSONObject verChat(@PathParam("id") String id, @PathParam("id2") String id2) 
+	@Path("/chat")
+    public JSONObject verChat(@QueryParam("id") String id, @QueryParam("id2") String id2) 
 	{
         MensajeService mensajeService = new MensajeService();
         return mensajeService.verChat(id, id2);

@@ -91,8 +91,8 @@ app.factory('factoryUsuarios', function() {
 //Controlador principal o padre.
 //Para la version final quitar los siguientes servicios: factoryUsuarios, factoryRecorridos , puesto que se usaron para simular la info de la BD.
 
-app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 
-                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido) {
+app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 
+                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory) {
     //AUTENTICACION
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
     
@@ -194,7 +194,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      	var username_usu = $scope.usuario.username;
      	var password_usu = $scope.usuario.password;
      	var rutaFoto_usu = $scope.usuario.rutaFoto;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
+     	//alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
      	if(!username_usu || !password_usu)
      	{
      		alert("Usuario y Clave son requeridos.");
@@ -221,7 +221,8 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.salir = function()
     {
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('saliendo..:'+cookieUsr.id)
+    	//alert('saliendo..:'+cookieUsr.id)
+    	
     	UserSesion.logout.normal({id: cookieUsr.id}, 
     	function (response) 
     	{
@@ -645,28 +646,120 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	    	$("#origenInMapa").val(origen)
 	    	$("#destinoInMapa").val(destino)
 	  	});
-    }
-
+	}
+    
     //Mensajes
-    $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
-    {
-    	var cookieUsr = $cookieStore.get('usuario');
-    	alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);    	
-    	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
-    	function (response) 
-    	{
-    		alert('uniendose a recorrido en grupo: ');
-    		if(response.status != "OK")
-    		{
-    			$scope.msgError = response.message; 
-    		}
-    		else
-    		{
-    			window.location.assign('#/perfil');
-    			window.location.reload(true);
-    		}
-    	})
+    $scope.mensaje = {contenido:''};
+    $scope.template = {};
+    $scope.usuarioDestino = {
+    		id: '',
+    		nombre:''
     };
-
+ // callback for ng-click 'enviarMensaje':
+    $scope.enviarMensaje = function (userId, userNombre) {
+    	//alert('Enviar mensaje a:'+userId +'-nombre:'+userNombre);
+    	
+    	$("#focusChat").focus();
+    	$scope.usuarioDestino.id = userId;
+    	$scope.usuarioDestino.nombre = userNombre;
+    	$scope.template = 'templates/nuevoMensaje.html';
+    };
+ // callback for ng-click 'guardarMensaje':
+    $scope.guardarMensaje = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioOrigen = cookieUsr.id;
+    	var idUsuarioDestino = $scope.usuarioDestino.id;
+    	var contenidoMensaje = $scope.mensaje.contenido;
+    	
+    	//alert('guardar mensaje:'+contenidoMensaje+' a:'+idUsuarioDestino + '-de:'+idUsuarioOrigen)
+    	
+    	MessageFactory.mensaje.create({id_usuario_origen: idUsuarioOrigen, 
+    			mensaje: contenidoMensaje, 
+    			id_usuario_destino: idUsuarioDestino})
+    			
+		//Recargar area de mensajes
+		$scope.template = '';
+    	setTimeout(recargarChat, 2500);
+    };
+    
+    function recargarChat(){
+    	$("#btnEnvMsq").click();	
+    }
+    $scope.cerrarMensajes = function () {
+    	$scope.template = '';
+    };
+    $scope.ListadoChat = {};
+    $scope.listarChat = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioOrigen = cookieUsr.id;
+    	var idUsuarioDestino = $scope.usuarioDestino.id;
+    	
+    	$scope.mensaje.contenido = '';
+    	
+    	//alert('chat entre  destino:'+idUsuarioDestino + '-origen:'+idUsuarioOrigen)
+    	
+    	MessageFactory.chat.listar({id: idUsuarioOrigen, id2: idUsuarioDestino}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoChat = response.message;
+	  		}
+	  	})
+    	
+    };
+    $scope.ListadoMensajes = {};
+    $scope.listarMensajes = function () {
+    	var cookieUsr = $cookieStore.get('usuario');
+    	var idUsuarioActual = cookieUsr.id;
+    	//alert('chat entre  destino:'+idUsuarioDestino + '-origen:'+idUsuarioOrigen)
+    	
+    	MessageFactory.mensajes.listar({id: idUsuarioActual}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoMensajes = response.message;
+	  		}
+	  	})
+    	
+    };
+    $scope.cantidadMensajesNuevos = '';
+  	$scope.totalMensajesNuevos = function () {
+		var cookieUsr = $cookieStore.get('usuario');
+		var idUsuarioActual = cookieUsr.id;
+		
+		MessageFactory.nuevosmensajes.show({id: idUsuarioActual}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  		}
+	  	})
+    };
+    $scope.mensajeLeido = function (idMensaje) {    	
+    	MessageFactory.mensaje.leido({id: idMensaje}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  		}
+	  	})
+    };
+    
 }]);//Fin Controlador principal
 

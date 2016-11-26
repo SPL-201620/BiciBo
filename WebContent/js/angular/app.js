@@ -18,13 +18,15 @@ angular.module('ngbicibo', ['ngbicibo.filters', 'ngbicibo.services', 'ngbicibo.d
 	})
     
     .config(['$routeProvider', function ($routeProvider) {
-    	$routeProvider.when('/', {templateUrl: 'templates/cover.html'});
-    	$routeProvider.when('/perfil', {templateUrl: 'templates/perfil.html'});
-    	$routeProvider.when('/individual', {templateUrl: 'templates/individuales.html'});
-    	$routeProvider.when('/individual/:id', {templateUrl: 'templates/individuales.html'});
-    	$routeProvider.when('/grupo', {templateUrl: 'templates/grupo.html'});
-    	$routeProvider.when('/grupo/:id', {templateUrl: 'templates/grupo.html'});
-    	$routeProvider.when('/registrar', {templateUrl: 'templates/registrar.html'});
+    	$routeProvider.when('/', {templateUrl: 'templates/cover.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/perfil', {templateUrl: 'templates/perfil.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/individual', {templateUrl: 'templates/individuales.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/individual/:id', {templateUrl: 'templates/individuales.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/grupo', {templateUrl: 'templates/grupo.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/grupo/:id', {templateUrl: 'templates/grupo.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/registrar', {templateUrl: 'templates/registrar.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/amigos', {templateUrl: 'templates/listaAmigos.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/mensajes', {templateUrl: 'templates/mensajes.html', controller: 'AppCtrl'});
     	$routeProvider.otherwise({redirectTo: '/'});
     }]);
 function avatar1(){

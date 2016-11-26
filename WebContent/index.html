@@ -23,6 +23,8 @@
     
     <!-- Base CSS -->
     <link href="css/base.css" rel="stylesheet">
+    <!-- Mensajes CSS -->
+    <link href="css/mensajes.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="lib/bootstrap/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -47,7 +49,6 @@
 	<script src="js/angular/services/services.js"></script>
 	<script src="js/angular/controllers/controllers.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCuHiIIAZb81G7lS-nD1HwxMVNZAjnR3oM&libraries=adsense&language=es"></script>
-	
 	
 	<script type="text/javascript">
 		function agregarRecorridos(){
@@ -130,7 +131,7 @@
         -->
   </head>
 
-  <body ng-controller="AppCtrl" ng-init="verificarSesion();">
+  <body ng-controller="AppCtrl" ng-init="verificarSesion();totalMensajesNuevos();">
 
     <nav class="navbar navbar-inverse navbar-fixed-top formLogin">
       <div class="container-fluid">
@@ -152,6 +153,10 @@
             <li></li>
           </ul>
 		 <form id="formSalir" class="navbar-form navbar-right" style="display:none">
+		 
+		  <a id="btnMensajes" href="#/mensajes" class="btn btn-default">
+		  Mensajes ({{cantidadMensajesNuevos}})
+		  </a>
 		  <a id="btnPerfil" href="#/perfil" class="btn btn-info" style="display:none;">Perfil</a>
 		  <button type="submit" class="btn btn-danger" ng-click="salir()">Salir</button>
 		  </form>

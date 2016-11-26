@@ -158,7 +158,7 @@ public class MensajeService
         	Usuario usuario2 = entityManager.find(Usuario.class, Integer.parseInt(id2));
             Query query = entityManager.createQuery("SELECT m FROM Mensaje m WHERE "
             		+ "(m.usuarioOrigen = ?1 AND m.usuarioDestino = ?2) OR "
-            		+ "(m.usuarioOrigen = ?2 AND m.usuarioDestino = ?1)");
+            		+ "(m.usuarioOrigen = ?2 AND m.usuarioDestino = ?1) ORDER BY 1 DESC");
             query.setParameter(1, usuario); 
             query.setParameter(2, usuario2); 
             
