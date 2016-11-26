@@ -339,31 +339,9 @@ public class UserRestService
                 .apiSecret(config.getConsumerSecret());
     }
 
-    @GET
-    @Path("/continueFace")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response redirect(@Context UriInfo uriInfo)
+    private String getResponse(String url)
     {
-        System.out.println("llego a continue con face");
-        MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-        Map<String,String> parameters = new HashMap<String,String>();
-        Iterator<String> it = queryParams.keySet().iterator();
-
-        while(it.hasNext()){
-            String theKey = (String)it.next();
-            parameters.put(theKey,queryParams.getFirst(theKey));
-        }
-
-        String value = null;
-        for (Map.Entry<String,String> entry : parameters.entrySet()) {
-            String key = entry.getKey();
-            value = entry.getValue();
-            System.out.println(key + " "+ value);
-        }
-
         String USER_AGENT = "Mozilla/5.0";
-        String url = "https://graph.facebook.com/v2.8/oauth/access_token?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&client_secret=bcf749ca3c4955bbe63c9e7f856b47ac&code="+value;
-
         try
         {
             URL obj = new URL(url);
@@ -391,12 +369,47 @@ public class UserRestService
 
             //print result
             System.out.println(response.toString());
-
+            return response.toString();
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            return null;
         }
+    }
+
+    @GET
+    @Path("/continueFace")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response redirect(@Context UriInfo uriInfo)
+    {
+        System.out.println("llego a continue con face");
+        MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+        Map<String,String> parameters = new HashMap<String,String>();
+        Iterator<String> it = queryParams.keySet().iterator();
+
+        while(it.hasNext()){
+            String theKey = (String)it.next();
+            parameters.put(theKey,queryParams.getFirst(theKey));
+        }
+
+        String value = null;
+        for (Map.Entry<String,String> entry : parameters.entrySet()) {
+            String key = entry.getKey();
+            value = entry.getValue();
+            System.out.println(key + " "+ value);
+        }
+
+
+        String url = "https://graph.facebook.com/v2.8/oauth/access_token?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&client_secret=bcf749ca3c4955bbe63c9e7f856b47ac&code="+value;
+
+        String response = getResponse(url);
+        String[] values = response.toString().split(":");
+        String[] values1 = values[1].split(",");
+        String token = values1[0].replace("\"", "");
+        String urlInfo = "https://graph.facebook.com/me?fields=name,email,picture&access_token="+token;
+        String res = getResponse(urlInfo);
+
         return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
     }
 }
