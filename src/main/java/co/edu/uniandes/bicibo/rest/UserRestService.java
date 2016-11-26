@@ -7,25 +7,22 @@ import co.edu.uniandes.bicibo.service.RecorridoService;
 import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.Date;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Token;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.model.Verifier;
-import com.github.scribejava.core.oauth.OAuthService;
-import org.eclipse.jetty.server.Authentication;
+
 import org.json.simple.JSONObject;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -60,6 +57,7 @@ public class UserRestService
     public JSONObject login(@QueryParam("username") String username,
     		@QueryParam("password") String password) 
 	{
+        System.out.println("LLEGO A LOGIN ---------->"+ username +" "+ password);
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.login(username, password);
     }
@@ -78,6 +76,7 @@ public class UserRestService
 	@Path("/user/{id}")
     public Usuario infoUsuario(@PathParam("id") String id) 
 	{
+
 		UsuarioService usuarioService = new UsuarioService();
         return usuarioService.infoUsuario(Integer.parseInt(id));
     }
@@ -301,6 +300,7 @@ public class UserRestService
     public Response redirectToApp(@QueryParam("oauth_token") String oauthToken,
                                   @QueryParam("oauth_verifier") String oauthVerifier)
     {
+        UsuarioService usuarioService = new UsuarioService();
         Twitter twitter = TwitterFactory.getSingleton();
         JSONObject jsonObject = new JSONObject();
         AccessToken accessToken = null;
@@ -311,7 +311,6 @@ public class UserRestService
             user = twitter.showUser(accessToken.getScreenName());
             if(user != null)
             {
-                UsuarioService usuarioService = new UsuarioService();
                 usuarioService.registrar(user.getName(), user.getScreenName(), user.getScreenName(), accessToken.getTokenSecret(), user.getOriginalProfileImageURL());
             }
         }
@@ -322,20 +321,13 @@ public class UserRestService
 
         if(user != null)
         {
-            jsonObject.put("username", user.getScreenName());
-            jsonObject.put("password", accessToken.getTokenSecret());
-            String url = "http://localhost:8080/bicibo/rest/login?"+"username="+user.getScreenName()+"&password="+accessToken.getTokenSecret();
-            return Response.seeOther(URI.create(url))
-                    .build();
+            usuarioService.login(user.getScreenName(), accessToken.getTokenSecret());
+            return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
         }
         else
         {
-            jsonObject.put("status", "ERROR");
-            jsonObject.put("message", "El usuario no se podido crear");
-            return Response.serverError().entity(jsonObject).build();
+            return Response.serverError().build();
         }
-
-
     }
 
     private ServiceBuilder createService()
@@ -347,4 +339,64 @@ public class UserRestService
                 .apiSecret(config.getConsumerSecret());
     }
 
+    @GET
+    @Path("/continueFace")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response redirect(@Context UriInfo uriInfo)
+    {
+        System.out.println("llego a continue con face");
+        MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+        Map<String,String> parameters = new HashMap<String,String>();
+        Iterator<String> it = queryParams.keySet().iterator();
+
+        while(it.hasNext()){
+            String theKey = (String)it.next();
+            parameters.put(theKey,queryParams.getFirst(theKey));
+        }
+
+        String value = null;
+        for (Map.Entry<String,String> entry : parameters.entrySet()) {
+            String key = entry.getKey();
+            value = entry.getValue();
+            System.out.println(key + " "+ value);
+        }
+
+        String USER_AGENT = "Mozilla/5.0";
+        String url = "https://graph.facebook.com/v2.8/oauth/access_token?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&client_secret=bcf749ca3c4955bbe63c9e7f856b47ac&code="+value;
+
+        try
+        {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+            //add request header
+            con.setRequestProperty("User-Agent", USER_AGENT);
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            //print result
+            System.out.println(response.toString());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
+    }
 }

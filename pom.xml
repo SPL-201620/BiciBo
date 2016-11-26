@@ -64,6 +64,13 @@
 				<version>[4.0,)</version>
 			</dependency>
 
+        <dependency>
+            <groupId>org.facebook4j</groupId>
+            <artifactId>facebook4j-core</artifactId>
+            <version>[2.4,)</version>
+        </dependency>
+
+
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -132,8 +139,7 @@
 			<version>0.8.1</version>
 		</dependency>
 
-
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
