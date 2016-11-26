@@ -184,7 +184,9 @@ services.factory('MessageFactory', function ($resource) {
 		mensaje: $resource(url_servicio_rest + '/mensaje', {}, 
 		{				
 			create:{ method: 'POST', params: {id_usuario_origen: '@id_usuario_origen', mensaje: '@mensaje', 
-				id_usuario_destino: '@id_usuario_destino'} },       
+				id_usuario_destino: '@id_usuario_destino'} },
+			leido:{ method: 'PUT', params: {id: '@id'} }, 
+				
 		}),
 		chat: $resource(url_servicio_rest + '/chat', {}, 
 		{				
