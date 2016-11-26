@@ -661,7 +661,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	
     	$("#focusChat").focus();
     	$scope.usuarioDestino.id = userId;
-    	$scope.usuarioDestino.nombre= userNombre;
+    	$scope.usuarioDestino.nombre = userNombre;
     	$scope.template = 'templates/nuevoMensaje.html';
     };
  // callback for ng-click 'guardarMensaje':
@@ -731,11 +731,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	
     };
     $scope.cantidadMensajesNuevos = '';
-    $scope.totalMensajesNuevos = function () {
-    	var cookieUsr = $cookieStore.get('usuario');
-    	var idUsuarioActual = cookieUsr.id;
-    	
-    	MessageFactory.nuevosmensajes.show({id: idUsuarioActual}, function (response)
+  	$scope.totalMensajesNuevos = function () {
+		var cookieUsr = $cookieStore.get('usuario');
+		var idUsuarioActual = cookieUsr.id;
+		
+		MessageFactory.nuevosmensajes.show({id: idUsuarioActual}, function (response)
 		{
 	  		if(response.status != "OK")
 	  		{
@@ -747,7 +747,19 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		}
 	  	})
     };
-    
+    $scope.mensajeLeido = function (idMensaje) {    	
+    	MessageFactory.mensaje.leido({id: idMensaje}, function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  		}
+	  	})
+    };
     
 }]);//Fin Controlador principal
 

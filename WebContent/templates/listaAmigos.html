@@ -17,12 +17,12 @@
 				<td width="10%">
 					<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 50px; width: 50px"/> </td>
 				<td width="70%" style="vertical-align: middle">
-					<strong>{{ record.nombre }}</strong>
+					<strong>{{ record.username }}</strong>
 					<br />
 					{{ record.email }}
 				</td>
-				<td width="20%"><a  href="javascript:;" ng-click="enviarMensaje(record.id)">enviar mensaje</a>
-					<button  id="btnEnvMsq" name="btnEnvMsq" type="button" class="btn btn-info hide" ng-click="enviarMensaje(record.id)">NO BORRAR</button>
+				<td width="20%"><a href="javascript:;" ng-click="enviarMensaje(record.id, record.username)">enviar mensaje</a>
+					<button  id="btnEnvMsq" name="btnEnvMsq" type="button" class="btn btn-info hide" ng-click="enviarMensaje(record.id, record.username))">NO BORRAR</button>
 				</td>
 					
 			</tr>
