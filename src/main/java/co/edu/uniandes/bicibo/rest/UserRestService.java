@@ -9,6 +9,7 @@ import co.edu.uniandes.bicibo.service.UsuarioService;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -23,7 +24,9 @@ import javax.ws.rs.core.*;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -128,7 +131,7 @@ public class UserRestService
         return recorridoService.listarRecorridos(id);
     }
 	
-	@Path("/recorrido")
+	@Path("/recorrido/{id}")
 	@GET
     public JSONObject darRecorrido(@PathParam("id") String id) 
 	{
@@ -378,6 +381,23 @@ public class UserRestService
         }
     }
 
+    private void printJsonObject(JSONObject jsonObject, ArrayList<String> arrayList)
+    {
+        for (Object key : jsonObject.keySet())
+        {
+            String keyStr = (String)key;
+            Object keyvalue = jsonObject.get(keyStr);
+
+            //Print key and value
+            System.out.println("key: "+ keyStr + " value: " + keyvalue);
+            arrayList.add(keyStr + ":" + keyvalue);
+
+            //for nested objects iteration if required
+            if (keyvalue instanceof JSONObject)
+                printJsonObject((JSONObject)keyvalue, arrayList );
+        }
+    }
+
     @GET
     @Path("/continueFace")
     @Produces(MediaType.APPLICATION_JSON)
@@ -410,6 +430,38 @@ public class UserRestService
         String urlInfo = "https://graph.facebook.com/me?fields=name,email,picture&access_token="+token;
         String res = getResponse(urlInfo);
 
+        try
+        {
+            JSONParser parser_obj = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser_obj.parse(res);
+            ArrayList<String> listaRes = new ArrayList<String>();
+            printJsonObject(jsonObject, listaRes);
+            String name = "";
+            String email = "";
+            String urlFoto = "";
+            for (String info: listaRes)
+            {
+                if(info.startsWith("name"))
+                {
+                    name = info.split(":")[1];
+                }
+                else if(info.startsWith("email"))
+                {
+                    email = info.split(":")[1];
+                }
+                else if(info.startsWith("url"))
+                {
+                    urlInfo = info.split(":")[1];
+                }
+            }
+            UsuarioService usuarioService = new UsuarioService();
+            usuarioService.registrar(name, email,name.toLowerCase().replaceAll("\\s+",""), token, urlFoto);
+            usuarioService.login(name.toLowerCase().replaceAll("\\s+",""), token);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
     }
 }

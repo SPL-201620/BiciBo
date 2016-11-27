@@ -697,7 +697,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 
 	$scope.registrarUsuarioFacebook = function()
 	{
-        var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code";
+        var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
 		$(document).ready(function ()
         {
             var html = "<p> Sigue este <a href='¿'> link </a> para continuar con el registro.</p>";
