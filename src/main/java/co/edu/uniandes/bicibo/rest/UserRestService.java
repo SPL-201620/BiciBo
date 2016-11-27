@@ -456,7 +456,9 @@ public class UserRestService
             }
             UsuarioService usuarioService = new UsuarioService();
             usuarioService.registrar(name, email,name.toLowerCase().replaceAll("\\s+",""), token, urlFoto);
+            usuarioService.face = true;
             usuarioService.login(name.toLowerCase().replaceAll("\\s+",""), token);
+            usuarioService.face = false;
         }
         catch (Exception e)
         {

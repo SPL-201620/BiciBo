@@ -13,7 +13,9 @@ import co.edu.uniandes.bicibo.domain.Recorrido;
 import java.util.*;
 
 public class UsuarioService 
-{	
+{
+    public boolean face = false;
+
     public JSONObject registrar(String nombre, String email, String username, String password, String rutaFoto) 
     {       
         JSONObject obj = new JSONObject();
@@ -59,27 +61,54 @@ public class UsuarioService
             //EntityManager entitymanager = emfactory.createEntityManager();
             Usuario usuario = new Usuario();
             // Creamos un query con JPQL y lo ejecutamos directamente.
-            Query query = entityManager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
-            query.setParameter(1, username); 
-            query.setParameter(2, clave); 
-            
-            // Espera en el resultado un objeto unico.
-            System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
-            
-            Object result = query.getSingleResult();
-            usuario = (Usuario) result;
-            if(result == null)
+            if(face == true)
             {
-            	obj.put("status", "ERROR");
-                obj.put("message", "Usuario o Clave incorrecta.");
+                Query query = entityManager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1");
+                query.setParameter(1, username);
+                // Espera en el resultado un objeto unico.
+                System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
+
+                Object result = query.getSingleResult();
+                usuario = (Usuario) result;
+                if(result == null)
+                {
+                    obj.put("status", "ERROR");
+                    obj.put("message", "Usuario o Clave incorrecta.");
+                }
+                else
+                {
+                    usuario.setPassword(clave);
+                    obj.put("id", usuario.getId().toString());
+                    obj.put("username", usuario.getUsername().toString());
+                    obj.put("status", "OK");
+                    obj.put("message", "El usuario ha iniciado sesión");
+                }
             }
             else
             {
-	            obj.put("id", usuario.getId().toString());
-	            obj.put("username", usuario.getUsername().toString());
-	            obj.put("status", "OK");
-	            obj.put("message", "El usuario ha iniciado sesión");
+                Query query = entityManager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1 AND a.password = ?2");
+                query.setParameter(1, username);
+                query.setParameter(2, clave);
+
+                // Espera en el resultado un objeto unico.
+                System.out.println("---->>>Resultado login: "+query.getSingleResult().toString());
+
+                Object result = query.getSingleResult();
+                usuario = (Usuario) result;
+                if(result == null)
+                {
+                    obj.put("status", "ERROR");
+                    obj.put("message", "Usuario o Clave incorrecta.");
+                }
+                else
+                {
+                    obj.put("id", usuario.getId().toString());
+                    obj.put("username", usuario.getUsername().toString());
+                    obj.put("status", "OK");
+                    obj.put("message", "El usuario ha iniciado sesión");
+                }
             }
+
         }
         catch (Exception e)
         {
@@ -96,7 +125,7 @@ public class UsuarioService
         {
         	obj.put("status", "OK");
 	        obj.put("message", "El usuario se ha desautenticado");
-            
+
         }
         catch (Exception e)
         {

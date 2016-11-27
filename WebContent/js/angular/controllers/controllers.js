@@ -707,5 +707,23 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         });
 	}
 
+	$scope.iniciarSesionTwitter = function ()
+	{
+		UserSesion.registrarTwitter.twitter(
+
+			function (response)
+			{
+				var res = JSON.stringify(response);
+				var values = res.split('"');
+				window.open(values[3],'_blank');
+		});
+	}
+
+	$scope.iniciarSesionFacebook = function()
+	{
+		var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
+		window.open(link, '_blank');
+	}
+
 }]);//Fin Controlador principal
 
