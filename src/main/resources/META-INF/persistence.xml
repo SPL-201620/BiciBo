@@ -14,6 +14,7 @@
       <class>co.edu.uniandes.bicibo.domain.Mensaje</class>
       <class>co.edu.uniandes.bicibo.domain.SitioAlquiler</class>
       <class>co.edu.uniandes.bicibo.domain.PuntoUbicacion</class>
+      <class>co.edu.uniandes.bicibo.domain.Log</class>
 	  
 	  <!-- Indica que las clases que no estan listadas no participan en el contexto de la unidad de persistencia. 
 	  Es recomendable utilizar este parámetro ya que algunas librerias de terceros suelen tener entidades y de no ser excluidas pueden llegar a confundir a la unidad de persistencia. -->
