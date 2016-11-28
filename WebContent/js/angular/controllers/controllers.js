@@ -6,7 +6,6 @@
 //var app = angular.module('ngbicibo.controllers', ['google-maps']);
 var app = angular.module('ngbicibo.controllers', []);
 
-
 // Clear browser cache (in development mode)
 //
 // http://stackoverflow.com/questions/14718826/angularjs-disable-partial-caching-on-dev-machine
@@ -95,7 +94,6 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
                            function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido) {
     //AUTENTICACION
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
-    
 	//VERIFICA SESSION
 	$scope.verificarSesion = function()
 	{
@@ -106,7 +104,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	{
     		//alert('1'+$("#accesoRedesSociales"))
     		$("#formSalir").hide();
-    		$("#formLogin").show();
+    		$("#contenedor").show();
     		$("#btnPerfil").hide();
     		
     	}
@@ -114,7 +112,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     	{
     		//alert('2'+$("#accesoRedesSociales"))
     		$("#formSalir").show();
-    		$("#formLogin").hide();
+    		$("#contenedor").hide();
     		$("#btnPerfil").show();
     	}   	
     };
@@ -154,10 +152,13 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     		password: '',
     		rutaFoto: ''
     };
-    
+
+
     //Para cuando se de clic en enviar y se hace el llamado al servicio REST
     $scope.iniciarSesion = function() 
     {
+		//alert($scope.usuario.username);
+		//alert($scope.usuario.password);
     	var username_usu = $scope.usuario.username;
     	var password_usu = $scope.usuario.password;
     	if(!username_usu || !password_usu)
@@ -170,12 +171,20 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         	UserSesion.iniciar.sesion({username: username_usu, password: password_usu}, 
         	function (response) 
         	{
-        		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
         		if(response.status == "OK")
         		{
             		inicioSesion.resolve(response);
-    				window.location.assign('#/perfil');
-    				window.location.reload(true);
+					//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
+					//alert("antes " + getStoredValue("reload"))
+					if(getStoredValue("reload") <=1)
+					{
+						window.location.assign('#/perfil');
+						window.location.reload(true);
+						var x = getStoredValue("reload");
+						x++;
+						storeValue("reload", x);
+						//alert(getStoredValue("reload"))
+					}
         		}
         		else
         		{
@@ -200,7 +209,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
      	var username_usu = $scope.usuario.username;
      	var password_usu = $scope.usuario.password;
      	var rutaFoto_usu = $scope.usuario.rutaFoto;
-     	alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
+     	//alert(nombre_usu+'-'+email_usu+'-'+username_usu+'-'+password_usu+'-'+rutaFoto_usu)
      	if(!username_usu || !password_usu)
      	{
      		alert("Usuario y Clave son requeridos.");
@@ -227,11 +236,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.salir = function()
     {
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('saliendo..:'+cookieUsr.id)
+    	//alert('saliendo..:'+cookieUsr.id)
     	UserSesion.logout.normal({id: cookieUsr.id}, 
     	function (response) 
     	{
-    		alert('respuesta servcion /logout: '+response.status)
+    		//alert('respuesta servcion /logout: '+response.status)
     		if(response.status != "OK")
     		{
     			$log.info(response.message);
@@ -254,7 +263,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
               password: '',
               username: '',
               edad: '',
-              rutaFoto: ''              
+              rutaFoto: ''
       };
     
     //INFO USUARIO ESPECIFICO
@@ -466,7 +475,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     
     $scope.mostrarEditarRecorrido = function (idRecorrido)
     {
-    	alert('recorrido a actualizar: '+ idRecorrido)
+    	//alert('recorrido a actualizar: '+ idRecorrido)
     	$('#areaMapa').empty();
 		$('#tablaInfoRecorridos').hide();
 		$('#formAgregarRecorrido').hide();
@@ -495,7 +504,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         lengthURL = sURLVariables.length,
         idRecorrido = sURLVariables[0];*/
 		
-    	alert('Llego a editar recorrido2 = ' + sPageURL )
+    	//alert('Llego a editar recorrido2 = ' + sPageURL )
     	var cookieUsr = $cookieStore.get('usuario');
     	//alert('Ingresando info recorrido usuario: '+ $scope.infoRecorrido.origen)
     	RouteFactory.ruta3.update({id_recorrido: 1,
@@ -512,7 +521,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 			realizado:$scope.infoRecorrido.realizado}, 
 			function (response) 
 			{    	
-	    		alert('recorrido actualizado: '+response.status)
+	    		//alert('recorrido actualizado: '+response.status)
 	    		if(response.status != "OK")
 	    		{
 	    			$scope.msgError = response.message; 
@@ -657,11 +666,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.enviarCorreo = function(mensajeEnviado, id_usuario_destino)
     {
     	var cookieUsr = $cookieStore.get('usuario');
-    	alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);    	
+    	//alert('uniendose a recorrido en grupo: 2' + mensajeEnviado + '   ' + id_usuario_destino + ' o ' +cookieUsr.id);
     	MessageFactory.mensaje.create({id_usuario_origen : cookieUsr.id, mensaje : mensajeEnviado, id_usuario_destino : id_usuario_destino}, 
     	function (response) 
     	{
-    		alert('uniendose a recorrido en grupo: ');
+    		//alert('uniendose a recorrido en grupo: ');
     		if(response.status != "OK")
     		{
     			$scope.msgError = response.message; 
@@ -676,6 +685,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 
     $scope.registrarUsuarioTwitter = function()
 	{
+		storeValue("reload",0);
 		UserSesion.registrarTwitter.twitter(
 			function (response)
 			{
@@ -697,6 +707,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 
 	$scope.registrarUsuarioFacebook = function()
 	{
+		storeValue("reload",0);
         var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
 		$(document).ready(function ()
         {
@@ -709,21 +720,62 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 
 	$scope.iniciarSesionTwitter = function ()
 	{
+		storeValue("reload",0);
 		UserSesion.registrarTwitter.twitter(
 
 			function (response)
 			{
 				var res = JSON.stringify(response);
 				var values = res.split('"');
-				window.open(values[3],'_blank');
+				window.open(values[3],'_self');
 		});
 	}
 
 	$scope.iniciarSesionFacebook = function()
 	{
+		storeValue("reload",0);
 		var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
-		window.open(link, '_blank');
+		window.open(link, '_self');
+		//se mira si ya se redirigio a la pagina de perfil
+		//se pide el usuario y la contraseña del usuario loggeado con facebook
+		//se actualiza el scope.usuario
+		//se llama a la funcion que inicia sesion, a nivel de servidor ya no se hace el login directamente
 	}
+
+	$scope.infoLoginn = function () {
+		UserSesion.infoLogin.darInfo(
+			function(response)
+			{
+				var res = JSON.stringify(response);
+				console.log(res);
+				var arr = res.split('"');
+				//for (var prop in arr)
+				//{
+				//	alert(arr[prop]);
+				//}
+				console.log(arr[7]);
+				console.log(arr[3]);
+				$scope.usuario.username = arr[7];
+				$scope.usuario.password = arr[3];
+				$scope.iniciarSesion();
+			});
+	}
+
+							   function storeValue(key, value) {
+								   if (localStorage) {
+									   localStorage.setItem(key, value);
+								   } else {
+									   $.cookies.set(key, value);
+								   }
+							   }
+
+							   function getStoredValue(key) {
+								   if (localStorage) {
+									   return localStorage.getItem(key);
+								   } else {
+									   return $.cookies.get(key);
+								   }
+							   }
 
 }]);//Fin Controlador principal
 

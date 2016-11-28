@@ -37,7 +37,11 @@ services.factory('UserSesion', function ($resource)
 		logout: $resource(url_servicio_rest + '/logout', {}, 
 		{
 			normal:{method:'POST', params:{id: '@id'}}
-		})
+		}),
+		infoLogin: $resource(url_servicio_rest + '/infoLogin', {},
+			{
+				darInfo:{method:'GET'}
+			})
     };
     return metodo;
 });

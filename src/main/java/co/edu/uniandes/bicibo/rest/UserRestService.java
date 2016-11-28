@@ -8,6 +8,7 @@ import co.edu.uniandes.bicibo.service.SitioAlquilerService;
 import co.edu.uniandes.bicibo.service.UsuarioService;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -274,6 +276,7 @@ public class UserRestService
         }
         catch(Exception exc)
         {
+            exc.printStackTrace();
             try
             {
                 Twitter twitter = TwitterFactory.getSingleton();
@@ -282,7 +285,7 @@ public class UserRestService
             }
             catch(Exception exc1)
             {
-
+                exc1.printStackTrace();
             }
         }
         System.out.println(urlTwitter);
@@ -299,10 +302,9 @@ public class UserRestService
      */
     @GET
     @Path("/continue")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response redirectToApp(@QueryParam("oauth_token") String oauthToken,
-                                  @QueryParam("oauth_verifier") String oauthVerifier)
-    {
+    public void redirectToApp(@QueryParam("oauth_token") String oauthToken,
+                                  @QueryParam("oauth_verifier") String oauthVerifier, @Context HttpServletRequest request, @Context HttpServletResponse httpServletResponse) throws IOException {
+        System.out.println("llego a continue twitter");
         UsuarioService usuarioService = new UsuarioService();
         Twitter twitter = TwitterFactory.getSingleton();
         JSONObject jsonObject = new JSONObject();
@@ -315,6 +317,19 @@ public class UserRestService
             if(user != null)
             {
                 usuarioService.registrar(user.getName(), user.getScreenName(), user.getScreenName(), accessToken.getTokenSecret(), user.getOriginalProfileImageURL());
+                javax.servlet.http.Cookie[] cookies = request.getCookies();
+                for(javax.servlet.http.Cookie cookie : cookies)
+                {
+                    if(cookie.getName().equals("username"))
+                    {
+                        cookie.setMaxAge(0);
+                    }
+                }
+                javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("username", user.getScreenName());
+                cookie.setMaxAge(30*60);
+                cookie.setPath("/");
+                System.out.println("value en cookie "+ cookie.getValue());
+                httpServletResponse.addCookie(cookie);
             }
         }
         catch (Exception e)
@@ -324,13 +339,10 @@ public class UserRestService
 
         if(user != null)
         {
-            usuarioService.login(user.getScreenName(), accessToken.getTokenSecret());
-            return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
+            //usuarioService.login(user.getScreenName(), accessToken.getTokenSecret());
+            httpServletResponse.sendRedirect("http://localhost:8080/#/perfil");
         }
-        else
-        {
-            return Response.serverError().build();
-        }
+
     }
 
     private ServiceBuilder createService()
@@ -400,9 +412,7 @@ public class UserRestService
 
     @GET
     @Path("/continueFace")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response redirect(@Context UriInfo uriInfo)
-    {
+    public void redirect(@Context UriInfo uriInfo, @Context HttpServletRequest httpServletRequest, @Context HttpServletResponse httpServletResponse) throws IOException {
         System.out.println("llego a continue con face");
         MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
         Map<String,String> parameters = new HashMap<String,String>();
@@ -456,14 +466,53 @@ public class UserRestService
             }
             UsuarioService usuarioService = new UsuarioService();
             usuarioService.registrar(name, email,name.toLowerCase().replaceAll("\\s+",""), token, urlFoto);
-            usuarioService.face = true;
-            usuarioService.login(name.toLowerCase().replaceAll("\\s+",""), token);
-            usuarioService.face = false;
+            javax.servlet.http.Cookie[] cookies = httpServletRequest.getCookies();
+            for(javax.servlet.http.Cookie cookie : cookies)
+            {
+                if(cookie.getName().equals("username"))
+                {
+                    cookie.setMaxAge(0);
+                }
+            }
+            javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("username", name.toLowerCase().replaceAll("\\s+",""));
+            cookie.setMaxAge(30*60);
+            cookie.setPath("/");
+            System.out.println("value en cookie "+ cookie.getValue());
+            httpServletResponse.addCookie(cookie);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return Response.temporaryRedirect(URI.create("http://localhost:8080/#/perfil")).build();
+        httpServletResponse.sendRedirect("http://localhost:8080/#/perfil");
     }
+
+    @GET
+    @Path("/infoLogin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response darInfoUserLogin(@Context HttpServletRequest request)
+    {
+        System.out.println("llego a infoLogin");
+        UsuarioService usuarioService = new UsuarioService();
+        javax.servlet.http.Cookie[] cookies = request.getCookies();
+        String userName ="";
+        for(javax.servlet.http.Cookie cookie : cookies)
+        {
+            System.out.println("cookie con name "+ cookie.getName()+ " value "+userName +" domain "+cookie.getDomain());
+            if(cookie.getName().equals("username"))
+            {
+                userName = cookie.getValue();
+                break;
+            }
+        }
+        System.out.println("value encontrado en la cookie "+ userName);
+        Usuario user = usuarioService.darInfoUsuarioUsername(userName);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username", user.getUsername());
+        jsonObject.put("password", user.getPassword());
+        System.out.println("llego a infoLogin con user "+ user.getUsername()+ " pass "+ user.getPassword());
+        return Response.ok(jsonObject).build();
+    }
+
+
 }

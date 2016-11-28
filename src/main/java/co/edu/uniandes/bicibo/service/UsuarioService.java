@@ -323,5 +323,16 @@ public class UsuarioService
     		obj.put("message", "Se produjo un error al intentar agregar el amigo del usuario. <br>"+e.getMessage());
     	}    	
     	return obj;
-    } 
+    }
+
+    public Usuario darInfoUsuarioUsername(String username)
+    {
+        Usuario user  = null;
+        EntityManager entityManager = PersistenceManager.INSTANCE.getEntityManager();
+        Query query = entityManager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1");
+        query.setParameter(1, username);
+        Object result = query.getSingleResult();
+        user = (Usuario) result;
+        return user;
+    }
 }
