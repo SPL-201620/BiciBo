@@ -23,7 +23,7 @@ public aspect Security
 	
 	before():security()
 	{		
-		String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
+		/*String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
 		String strParametros = thisJoinPoint.getArgs().toString();
 		String strTarget = thisJoinPoint.getTarget().toString();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -58,10 +58,10 @@ public aspect Security
         catch (Exception e)
         {
         	System.out.println(e.getMessage());
-        }    	
+        }    	*/
 	}
 	
-	after()	returning(Object r):	security()
+	/*after()	returning(Object r):	security()
 	{
 		String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
 		String strParametros = thisJoinPoint.getArgs().toString();
@@ -85,7 +85,7 @@ public aspect Security
              
             query.setFirstResult(0);
             query.setMaxResults(1);
-            Log log = (Log) query.getSingleResult();
+            Log log = (Log) query.getSingleResult().get(0);
         	
         	log.setRetorno(r.toString());
         	
@@ -125,7 +125,7 @@ public aspect Security
              
             query.setFirstResult(0);
             query.setMaxResults(1);
-            Log log = (Log) query.getSingleResult();
+            Log log = (Log) query.getSingleResult().get(0);
         	
         	log.setExcepcion(e.toString());
         	
@@ -139,5 +139,5 @@ public aspect Security
         {
         	System.out.println(r.getMessage());
         }  
-	}
+	}*/
 }
