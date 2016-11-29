@@ -8,24 +8,24 @@
 		  <input type="text" id="username" ng-model="usuario.username" class="form-control" placeholder="Usuario" required="" autofocus="">
 		  <label for="pwd" class="sr-only">Clave</label>
 		  <input type="password"  id="pwd" ng-model="usuario.password" class="form-control" placeholder="Clave">
-		  <input type="text" id="rutaFoto" style="display:none" ng-model="usuario.rutaFoto">
 		  <label for="email" class="sr-only">Email</label>
 		  <input type="email" id="email" ng-model="usuario.email" class="form-control" placeholder="Email address" required="" autofocus="">
 		  
+		  <input type="text" id="rutaFoto" ng-model="usuario.rutaFoto" class="form-control hide">
 		  <br />
 		  <label class="form-control" >Seleccione un avatar.</label>
 		  <div class="row">
 			  <div id="avatar1" class="col-xs-6 col-md-6">
-			    <a href="javascript:;" class="thumbnail" onclick="avatar1();">
+			    <a href="javascript:;" class="thumbnail" ng-click="avatar1();">
 			      <img src="img/avatars/avatar1.jpg" style="margin:auto; height: 50px; width: 50px">
 			    </a>
 			  </div>
 			  <div id="avatar2" class="col-xs-6 col-md-6">
-			    <a href="javascript:;" class="thumbnail" onclick="avatar2();">
+			    <a href="javascript:;" class="thumbnail" ng-click="avatar2();">
 			      <img src="img/avatars/avatar2.jpg" style="margin:auto; height: 50px; width: 50px">
 			    </a>
 			  </div>
-			    <a id="btnCambiarAvatar" href="javascript:;" class="btn btn-small" style="display:none" onclick="btnCambiarAvatar();">
+			    <a id="btnCambiarAvatar" href="javascript:;" class="btn btn-small" style="display:none" ng-click="btnCambiarAvatar();">
 			      Cambiar
 			      </a>
 			</div>

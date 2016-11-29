@@ -207,7 +207,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
          	{
          		if(response.status=="OK")
          		{
-         			mostraPanelExito();
+         			$scope.mostraPanelExito();
          		}
          		else
          		{
@@ -292,9 +292,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.actualizarUsuario = function()
     {
     	var cookieUsr = $cookieStore.get('usuario');
+    	//alert($scope.infoUsuario.rutaFoto)
+    	
     	UserFactory.user.update({id: $scope.infoUsuario.id, username : "", email: $scope.infoUsuario.email, 
     		password : "", edad: $scope.infoUsuario.edad, nombre: $scope.infoUsuario.nombre,
-    		fotoPerfil: $scope.infoUsuario.fotoPerfil}, 
+    		rutaFoto: $scope.infoUsuario.rutaFoto}, 
     		function (response) 
     		{
 	    		if(response.status != "OK")
@@ -785,6 +787,31 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	})
     	
     }; 
- 
+ //MANEJO DE AVATARS
+    $scope.avatar1 = function (opcion){
+    	$("#avatar2").hide();
+    	if(opcion == 'editar') $scope.infoUsuario.rutaFoto = 'img/avatars/avatar1.jpg';
+    	else $scope.usuario.rutaFoto = 'img/avatars/avatar1.jpg';
+    	$("#btnCambiarAvatar").show();
+    };
+    
+    $scope.avatar2 = function (opcion){
+    	$("#avatar1").hide();    	
+    	if(opcion == 'editar') $scope.infoUsuario.rutaFoto = 'img/avatars/avatar2.jpg';
+    	else $scope.usuario.rutaFoto = 'img/avatars/avatar2.jpg';
+    	$("#btnCambiarAvatar").show();
+    };
+    
+    $scope.btnCambiarAvatar = function (){
+    	$("#btnCambiarAvatar").hide();
+    	$("#avatar1").show();
+    	$("#avatar2").show();
+    };
+    
+    $scope.mostraPanelExito = function(){
+    	$("#formRegistro").hide();
+    	$("#panelExito").show();
+    	
+    };
 }]);//Fin Controlador principal
 
