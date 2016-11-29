@@ -1,0 +1,55 @@
+<!-- PAra hacer filtros de los buscadores: http://cursoangularjs.es/doku.php?id=unidades:05_filtros:04_filter -->
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();listarSitios();" >
+	<div class="col-sm-3 col-md-2 sidebar">
+	      <ul class="nav nav-sidebar">
+	        <li><a href="#/perfil">Perfil</a></li>
+	        <li><a href="#/individual">Desplazamientos individuales<span class="sr-only">(current)</span></a></li>
+	        <li><a href="#/grupo">Desplazamientos grupales</a></li>
+	        <li class="active"><a href="#/sitios">Sitios Alquiler</a></li>
+	      </ul>
+	</div>
+	    
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	      <h1 class="page-header">Sitios de alquiler</h1>
+	      
+		  <div class="text-danger" style="padding-bottom:5px;">{{ msgError }}</div>
+		  <br />
+		  <div id="tablaInfoRecorridos" class="table-responsive">
+	      
+		  <div class="input-group">
+	      		<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+	      		<input id="buscador" type="text" value=" " class="form-control" placeholder="Buscar sitios" ng-model="buscar3">	        		
+	  		</div>
+	  		<br />
+	       	<table class="table table-bordered" ng-repeat="record in ListadoSitios | filter:buscar3">
+					
+					<tr>
+						<td width="10%">{{ record.id }}</td>
+						<td width="90%" style="vertical-align: middle">
+							<div class="row">
+							  <div class="col-xs-6"><strong>Nombre:</strong> {{ record.nombre }}</div>
+							</div>
+							<div class="row">
+							  <div class="col-xs-6"><strong>Direcci&#243;n:</strong> {{ record.direccionPrincipal }} </div>
+							</div>								
+							<div class="row">
+							  <div class="col-xs-6" ><strong>Ubicaci&#243;n:</strong> <a href="javascript:;" ng-click="mostrarRuta(record.ubicacion.ubicacionX, record.ubicacion.ubicacionY);">{{ record.ubicacion.nombre }}</a></div>
+							</div>									
+							<div class="row">
+							  <div class="col-xs-6"><strong>Estaciones:</strong>
+							  <br>
+							  		 <ul style="float:left" ng-repeat="record2 in record.estacionesEntrega">
+								        <li><a href="javascript:;" class="pull-right" ng-click="mostrarRuta(record2.ubicacionX, record2.ubicacionY);">{{ record2.nombre }}</a></li>
+								      </ul>
+							  </div>
+							</div>	
+						</td>
+						</tr>
+				
+			</table>
+		  </div>
+		
+	</div>
+	
+	<div id="areaMapa"></div>
+</div>

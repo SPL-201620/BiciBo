@@ -23,6 +23,8 @@
     
     <!-- Base CSS -->
     <link href="css/base.css" rel="stylesheet">
+    <!-- Mensajes CSS -->
+    <link href="css/mensajes.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="lib/bootstrap/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -48,7 +50,6 @@
 	<script src="js/angular/controllers/controllers.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCuHiIIAZb81G7lS-nD1HwxMVNZAjnR3oM&libraries=adsense&language=es"></script>
 	
-	
 	<script type="text/javascript">
 		function agregarRecorridos(){
 			borrarMapa();
@@ -65,6 +66,30 @@
 	          return;
 	        }
 			else{
+				/*var wsGMapDistancia = $.get("http://maps.googleapis.com/maps/api/distancematrix/json", { origins: origen, destinations:  destino} );
+				wsGMapDistancia.done(function( data ) {
+					var distancia = data.rows[0].elements[0].distance.text;
+					var tiempoEstimado = data.rows[0].elements[0].duration.text;
+					$("#distancia").val(distancia);
+					$("#tiempoEstimado").val(tiempoEstimado);
+			  	});*/
+			  	
+			  	
+			  	$.ajax({
+			  	   url: "http://maps.googleapis.com/maps/api/distancematrix/json?origins="+origen+"&destinations="+destino,
+			  	   crossDomain : true,
+			  	   xhrFields: {
+			  	      withCredentials: true
+			  	   }
+			  	}).done(function( data ) {
+			  		alert('dd:'+data)
+				  		var distancia = data.rows[0].elements[0].distance.text;
+						var tiempoEstimado = data.rows[0].elements[0].duration.text;
+						$("#distancia").val(distancia);
+						$("#tiempoEstimado").val(tiempoEstimado);
+			  	   });
+			  	
+				
 				var posting = $.post( "templates/mostrarMapa.html", { ori: origen, des:  destino} );
 			  	posting.done(function( data ) {
 			    	$( "#areaMapa" ).empty().append( data );
@@ -106,7 +131,7 @@
         -->
   </head>
 
-  <body ng-controller="AppCtrl" ng-init="verificarSesion();">
+  <body ng-controller="AppCtrl" ng-init="verificarSesion();totalMensajesNuevos();">
 
     <nav class="navbar navbar-inverse navbar-fixed-top formLogin">
       <div class="container-fluid">
@@ -128,24 +153,29 @@
             <li></li>
           </ul>
 		 <form id="formSalir" class="navbar-form navbar-right" style="display:none">
+		 
+		  <a id="btnMensajes" href="#/mensajes" class="btn btn-default">
+		  Mensajes ({{cantidadMensajesNuevos}})
+		  </a>
 		  <a id="btnPerfil" href="#/perfil" class="btn btn-info" style="display:none;">Perfil</a>
 		  <button type="submit" class="btn btn-danger" ng-click="salir()">Salir</button>
 		  </form>
           <form id="formLogin" class="navbar-form navbar-right" style="display:none">
 		  <div class="form-group">
 		    <label for="email">Usuario:</label>
-		    <input type="email" class="form-control" id="email" ng-model="usuario.email">
+		    <input type="text" class="form-control" id="username" ng-model="usuario.username">
 		  </div>
 		  <div class="form-group">
 		    <label for="pwd">Clave:</label>
-		    <input type="password" class="form-control" id="pwd" ng-model="usuario.clave">
+		    <input type="password" class="form-control" id="pwd" ng-model="usuario.password">
 		  </div>
 		  <div class="checkbox hide">
 		    <label><input type="checkbox"> Remember me</label>
 		  </div>
 		  <button type="submit" class="btn btn-info" ng-click="iniciarSesion()">Ingresar</button>
 		  
-		  <button type="submit" class="btn btn-success" ng-click="registrarUsuario()">Registrar</button>
+		  <button type="submit" class="btn btn-success hide" ng-click="registrarUsuario()">Registrar</button>
+		  <a href="#/registrar" class="btn btn-success" onclick="$('#formLogin').hide()">Registrar</a>
 		</form>
         </div>
       </div>

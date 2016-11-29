@@ -1,4 +1,4 @@
-<div style="background-color: #FFF !important;"  ng-init="verificarSesion();getInfoUsuario();listarAmigos();listarRegistrados();listarRecorridos();" >
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();getInfoUsuario();listarRegistrados();listarRecorridos();" >
 <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class="active"><a href="#/perfil">Perfil<span class="sr-only">(current)</span></a></li>
@@ -18,7 +18,7 @@
 		<tbody>
 		<tr>
 		<td width="25%" rowspan="3">
-		<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 200px; width: 200px"/> </td>
+		<img src="{{ infoUsuario.rutaFoto }}" style="margin:auto; height: 50px; width: 50px"/> </td>
 		<td width="75%"><strong>{{ infoUsuario.nombre }}</strong></td>
 		</tr>
 		<tr>
@@ -31,7 +31,7 @@
 			<td colspan="2">
 				<div class="text-center">
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalNuevoAmigo">Agregar amigos</button>
-					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModalAmigos">Lista amigos</button>
+					<a  href="#/amigos" type="button" class="btn btn-warning">Lista amigos</a>
 					<a href="#/individual" class="btn btn-info">Rutas realizadas</a>
 					<button type="button" class="btn btn-info hide" data-toggle="modal" data-target="#myModalRecorridos">Rutas realizadas</button>
 				
@@ -116,7 +116,9 @@
 								<br />
 								{{ record.email }}
 								</td>
-								<td width="20%"><a href="javascript:;" onclick="enviarCorreo();">enviar mensaje</a></td>
+
+								<td width="20%"><a href="javascript:;" ng-click="enviarCorreo(record.nombre, record.id);">Enviar mensaje</a></td>
+
 								</tr>
 						
 					</table>

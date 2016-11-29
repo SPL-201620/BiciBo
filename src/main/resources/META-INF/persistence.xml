@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+   http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+   
+   <persistence-unit name="Eclipselink_JPA_Bicibo" transaction-type="RESOURCE_LOCAL">
+   	  <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <!-- Listado de entidades que manejará la unidad de persistencia. -->
+      <class>co.edu.uniandes.bicibo.domain.Usuario</class>
+      <class>co.edu.uniandes.bicibo.domain.Recorrido</class>
+      <class>co.edu.uniandes.bicibo.domain.RecorridoGrupal</class>
+      <class>co.edu.uniandes.bicibo.domain.Mensaje</class>
+      <class>co.edu.uniandes.bicibo.domain.SitioAlquiler</class>
+      <class>co.edu.uniandes.bicibo.domain.PuntoUbicacion</class>
+      <class>co.edu.uniandes.bicibo.domain.Log</class>
+	  
+	  <!-- Indica que las clases que no estan listadas no participan en el contexto de la unidad de persistencia. 
+	  Es recomendable utilizar este parámetro ya que algunas librerias de terceros suelen tener entidades y de no ser excluidas pueden llegar a confundir a la unidad de persistencia. -->
+      <exclude-unlisted-classes>true</exclude-unlisted-classes>
+         
+      <!-- Propiedades de conexión a base de datos. -->  
+      <properties>
+         <!-- Cadena de conexión. -->
+         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bicibo?useJDBCCompliantTimezoneShift:true;useLegacyDatetimeCode=false;serverTimezone=UTC;useSSL=false" />
+         <!-- Usuario de conexión a base de datos. -->
+         <property name="javax.persistence.jdbc.user" value="root"/>
+         <!-- Clave de conexión a base de datos. -->
+         <property name="javax.persistence.jdbc.password" value="root1234"/>
+         <!-- Driver de conexión a base de datos. -->
+         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+         <property name="eclipselink.logging.level" value="FINE"/>
+         <!-- Indica la estrategia de generación de tablas a utilizar, los diferentes tipos son: 
+         - create: Crea la base de datos a partir de las entidades. 
+         - drop: Borra la base de datos señalada en las entidades. 
+         - drop-and-create: Borra y crea nuevamente la base de datos a partir de las entidades. 
+         - none: No realiza ninguna acción sobre la base de datos. 
+         Para el ejemplo utilizaremos create.
+         <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+          
+          <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+      </properties>
+      
+   </persistence-unit>
+</persistence>
