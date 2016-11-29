@@ -37,9 +37,9 @@
          - drop-and-create: Borra y crea nuevamente la base de datos a partir de las entidades. 
          - none: No realiza ninguna acción sobre la base de datos. 
          Para el ejemplo utilizaremos create.
-         <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-          -->
-         <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+         <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+          
+          <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
       </properties>
       
    </persistence-unit>

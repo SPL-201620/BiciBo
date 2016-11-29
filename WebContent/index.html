@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="ngbicibo">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -154,9 +155,7 @@
           </ul>
 		 <form id="formSalir" class="navbar-form navbar-right" style="display:none">
 		 
-		  <a id="btnMensajes" href="#/mensajes" class="btn btn-default">
-		  Mensajes ({{cantidadMensajesNuevos}})
-		  </a>
+		  <ng-include src="temp_total_mensajes"></ng-include>
 		  <a id="btnPerfil" href="#/perfil" class="btn btn-info" style="display:none;">Perfil</a>
 		  <button type="submit" class="btn btn-danger" ng-click="salir()">Salir</button>
 		  </form>

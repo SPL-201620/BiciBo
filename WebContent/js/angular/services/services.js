@@ -185,7 +185,7 @@ services.factory('MessageFactory', function ($resource) {
 		{				
 			create:{ method: 'POST', params: {id_usuario_origen: '@id_usuario_origen', mensaje: '@mensaje', 
 				id_usuario_destino: '@id_usuario_destino'} },
-			leido:{ method: 'PUT', params: {id: '@id'} }, 
+			leido:{ method: 'PUT', params: {id_mensaje: '@id_mensaje'} }, 
 				
 		}),
 		chat: $resource(url_servicio_rest + '/chat', {}, 
@@ -201,6 +201,17 @@ services.factory('MessageFactory', function ($resource) {
 			show:{ method: 'GET', params: {id: '@id'} },      
 		}),
 		
+    };
+    return metodo;
+});
+
+//Servicio SITIOS ALQUILER
+services.factory('AlquilerFactory', function ($resource) {
+    var metodo = {
+		sitios: $resource(url_servicio_rest + '/sitiosAlquiler', {}, 
+		{				
+			listar:{ method: 'GET'},      
+		})
     };
     return metodo;
 });
