@@ -91,8 +91,8 @@ app.factory('factoryUsuarios', function() {
 //Controlador principal o padre.
 //Para la version final quitar los siguientes servicios: factoryUsuarios, factoryRecorridos , puesto que se usaron para simular la info de la BD.
 
-app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 
-                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory) {
+app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 'AlquilerFactory', 
+                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory, AlquilerFactory) {
     //AUTENTICACION
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
     
@@ -648,7 +648,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	});
 	}
     
-    //Mensajes
+    //MENSAJES
     $scope.mensaje = {contenido:''};
     $scope.template = {};
     $scope.usuarioDestino = {
@@ -744,11 +744,17 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		else
 	  		{
 	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  			
+	  			
 	  		}
 	  	})
+
+	    $scope.temp_total_mensajes = 'templates/totalMensajes.html';
+	  	
     };
-    $scope.mensajeLeido = function (idMensaje) {    	
-    	MessageFactory.mensaje.leido({id: idMensaje}, function (response)
+    //Marcar el mensaje como leido
+    $scope.mensajeLeido = function (idMensaje) { 
+    	MessageFactory.mensaje.leido({id_mensaje: idMensaje}, function (response)
 		{
 	  		if(response.status != "OK")
 	  		{
@@ -756,10 +762,29 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		}
 	  		else
 	  		{
-	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  			console.log(response.message);
+	  			//Se recarga el indicador de mensajes nuevos en index.html
+	  			$scope.totalMensajesNuevos();
 	  		}
 	  	})
     };
-    
+  //SITIOS ALQUILER
+    $scope.ListadoSitios = {};
+    $scope.listarSitios = function () {
+    	
+    	AlquilerFactory.sitios.listar(function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoSitios = response.message;
+	  		}
+	  	})
+    	
+    }; 
+ 
 }]);//Fin Controlador principal
 
