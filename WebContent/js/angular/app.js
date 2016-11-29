@@ -28,6 +28,7 @@ angular.module('ngbicibo', ['ngbicibo.filters', 'ngbicibo.services', 'ngbicibo.d
     	$routeProvider.when('/amigos', {templateUrl: 'templates/listaAmigos.html', controller: 'AppCtrl'});
     	$routeProvider.when('/mensajes', {templateUrl: 'templates/mensajes.html', controller: 'AppCtrl'});
     	$routeProvider.when('/sitios', {templateUrl: 'templates/alquileres.html', controller: 'AppCtrl'});
+        $routeProvider.when('/privacy', {templateUrl: 'templates/privacyPolicy.html', controller: 'AppCtrl'})
     	$routeProvider.otherwise({redirectTo: '/'});
     }]);
 function avatar1(){

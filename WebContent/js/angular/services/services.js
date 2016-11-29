@@ -30,10 +30,18 @@ services.factory('UserSesion', function ($resource)
 		{
 			normal:{method:'POST', params:{nombre: '@nombre', email: '@email', username: '@username', password: '@password', rutaFoto: '@rutaFoto'}}
 		}),
+        registrarTwitter: $resource(url_servicio_rest + '/twitter',{},
+            {
+                twitter:{method:'POST'}
+            }),
 		logout: $resource(url_servicio_rest + '/logout', {}, 
 		{
 			normal:{method:'POST', params:{id: '@id'}}
-		})
+		}),
+        infoLogin: $resource(url_servicio_rest + '/infoLogin', {},
+            {
+                darInfo:{method:'GET'}
+            })
     };
     return metodo;
 });

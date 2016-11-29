@@ -319,4 +319,18 @@ public class UsuarioService
         }    	
     	return obj;
     }
+
+    public Usuario darInfoUsuarioUsername(String username)
+    {
+        Usuario user  = null;
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Eclipselink_JPA_Bicibo" );
+        EntityManager entitymanager = emfactory.createEntityManager();
+        Query query = entitymanager.createQuery("SELECT a FROM Usuario a WHERE a.username = ?1");
+        query.setParameter(1, username);
+        Object result = query.getSingleResult();
+        user = (Usuario) result;
+        entitymanager.close();
+        emfactory.close();
+        return user;
+    }
 }

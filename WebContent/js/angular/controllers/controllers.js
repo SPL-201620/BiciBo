@@ -100,18 +100,19 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	$scope.verificarSesion = function()
 	{
     	var cookieUsr = $cookieStore.get('usuario');
-    	if(typeof cookieUsr == "undefined")
-    	{
-    		$("#formSalir").hide();
-    		$("#formLogin").show();
-    		$("#btnPerfil").hide();
-    	}
-    	else
-    	{
-    		$("#formSalir").show();
-    		$("#formLogin").hide();
-    		$("#btnPerfil").show();
-    	}   	
+        if(typeof cookieUsr == "undefined")
+        {
+            $("#formSalir").hide();
+            $("#contenedor").show();
+            $("#btnPerfil").hide();
+
+        }
+        else
+        {
+            $("#formSalir").show();
+            $("#contenedor").hide();
+            $("#btnPerfil").show();
+        }
     };
     
     var inicioSesion = $q.defer();//Se usa el servicio q, que me permite diferir la variable.
@@ -167,9 +168,15 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
         		//alert('llamado a servicio REST Login: '+response.status+'-'+response.message)
         		if(response.status == "OK")
         		{
-            		inicioSesion.resolve(response);
-    				window.location.assign('#/perfil');
-    				window.location.reload(true);
+                    if(getStoredValue("reload") <=1)
+                    {
+                        window.location.assign('#/perfil');
+                        window.location.reload(true);
+                        var x = getStoredValue("reload");
+                        x++;
+                        storeValue("reload", x);
+                        //alert(getStoredValue("reload"))
+                    }
         		}
         		else
         		{
@@ -784,7 +791,99 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		}
 	  	})
     	
-    }; 
+    };
+
+    $scope.registrarUsuarioTwitter = function()
+    {
+        storeValue("reload",0);
+        UserSesion.registrarTwitter.twitter(
+            function (response)
+            {
+                $("#myModal2 .modal-body").html(" ");
+                var res = JSON.stringify(response);
+                var values = res.split('"');
+                //alert(values[3]);
+                $(document).ready(function()
+                {
+                    var html = "<p> Sigue este <a href='¿'> link </a> para continuar con el registro.</p>";
+                    var x = html.replace(/¿/g, values[3]);
+                    console.log(x);
+                    $("#myModal2 .modal-body").html(x);
+                });
+            }
+        );
+    }
+    $scope.registrarUsuarioFacebook = function() {
+        storeValue("reload",0);
+        var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
+        $(document).ready(function ()
+        {
+            var html = "<p> Sigue este <a href='¿'> link </a> para continuar con el registro.</p>";
+            var x = html.replace(/¿/g, link);
+            console.log(x);
+            $("#myModal .modal-body").html(x);
+        });
+    }
+    $scope.iniciarSesionTwitter = function ()
+    {
+        storeValue("reload",0);
+        UserSesion.registrarTwitter.twitter(
+            function (response)
+            {
+                var res = JSON.stringify(response);
+                var values = res.split('"');
+                window.open(values[3],'_self');
+            });
+    }
+    $scope.iniciarSesionFacebook = function()
+    {
+        storeValue("reload",0);
+        var link = "https://www.facebook.com/v2.8/dialog/oauth?client_id=197784370679496&redirect_uri=http://localhost:8080/bicibo/rest/continueFace&response_type=code&scope=email";
+        window.open(link, '_self');
+        //se mira si ya se redirigio a la pagina de perfil
+        //se pide el usuario y la contraseña del usuario loggeado con facebook
+        //se actualiza el scope.usuario
+        //se llama a la funcion que inicia sesion, a nivel de servidor ya no se hace el login directamente
+    }
+    $scope.infoLoginn = function () {
+        UserSesion.infoLogin.darInfo(
+            function(response)
+            {
+                var res = JSON.stringify(response);
+                console.log(res);
+                var arr = res.split('"');
+                //for (var prop in arr)
+                //{
+                //	alert(arr[prop]);
+                //}
+                console.log(arr[7]);
+                console.log(arr[3]);
+                $scope.usuario.username = arr[7];
+                $scope.usuario.password = arr[3];
+                $scope.iniciarSesion();
+            });
+    }
+    function storeValue(key, value)
+    {
+        if (localStorage) {
+            localStorage.setItem(key, value);
+        }
+        else
+        {
+            $.cookies.set(key, value);
+        }
+    }
+    function getStoredValue(key)
+    {
+        if (localStorage)
+        {
+            return localStorage.getItem(key);
+        }
+        else
+        {
+            return $.cookies.get(key);
+        }
+    }
  
 }]);//Fin Controlador principal
 

@@ -42,7 +42,16 @@
 							  <div class="col-xs-6"><strong>Realizado:</strong> {{ record.realizado }}</div>
 							</div>							
 							<div class="row">
-							  <div class="col-xs-12"><a href="javascript:;" class="pull-right" ng-click="mostrarRuta(record.origen, record.destino);">Ver ruta</a></div>
+							  <div class="col-xs-12">
+                                  <a href="javascript:;" class="pull-right" ng-click="mostrarRuta(record.origen, record.destino);">Ver ruta</a></div>
+                                <br>
+                                <br>
+                                <a class="btn btn-social-icon btn-sm btn-twitter" href="https://twitter.com/intent/tweet?text=Mi%20recorrido%20del%20dia%20{{ record.fecha_recorrido }}%20usando%20Bicibo!,%20origen:%20{{ record.origen.replace('#','') }},%20destino:{{ record.destino.replace('#','') }}" target="_blank">
+                                    <span class="fa fa-twitter"></span>
+                                </a>
+                                <a class="btn btn-social-icon btn-sm btn-facebook">
+                                    <span class="fa fa-facebook"></span>
+                                </a>
 							</div>
 						</td>
 						</tr>

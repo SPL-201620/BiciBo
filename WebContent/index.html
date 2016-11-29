@@ -14,6 +14,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="lib/bootstrap/css/bootstrap-social.css" rel="stylesheet">
+      <link href="lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="lib/bootstrap/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -159,23 +161,43 @@
 		  <a id="btnPerfil" href="#/perfil" class="btn btn-info" style="display:none;">Perfil</a>
 		  <button type="submit" class="btn btn-danger" ng-click="salir()">Salir</button>
 		  </form>
-          <form id="formLogin" class="navbar-form navbar-right" style="display:none">
-		  <div class="form-group">
-		    <label for="email">Usuario:</label>
-		    <input type="text" class="form-control" id="username" ng-model="usuario.username">
-		  </div>
-		  <div class="form-group">
-		    <label for="pwd">Clave:</label>
-		    <input type="password" class="form-control" id="pwd" ng-model="usuario.password">
-		  </div>
-		  <div class="checkbox hide">
-		    <label><input type="checkbox"> Remember me</label>
-		  </div>
-		  <button type="submit" class="btn btn-info" ng-click="iniciarSesion()">Ingresar</button>
-		  
-		  <button type="submit" class="btn btn-success hide" ng-click="registrarUsuario()">Registrar</button>
-		  <a href="#/registrar" class="btn btn-success" onclick="$('#formLogin').hide()">Registrar</a>
-		</form>
+
+            <div class="container" id="contenedor">
+                <div class="container-fluid full-width" style="width: 50%">
+                    <div class="row-fluid">
+                        <div class="dropdown-toggle nav pull-left" style="padding-top: 8px; display: inline-block">
+                            <button class="btn btn-danger dropdown-menu-right" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ingresar
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="padding-right: 10px">
+                                <form id="formLogin" class="navbar-form navbar-right" style="display:inherit">
+                                    <div class="form-group">
+                                        <label for="email" >Usuario:</label>
+                                        <input type="text" class="form-control" id="username" ng-model="usuario.username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pwd">Clave:</label>
+                                        <input type="password" class="form-control" id="pwd" ng-model="usuario.password">
+                                    </div>
+                                    <div class="checkbox hide">
+                                        <label><input type="checkbox"> Remember me</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-info" ng-click="iniciarSesion()">Ingresar</button>
+                                    <button type="submit" class="btn btn-success hide" ng-click="registrarUsuario()">Registrar</button>
+                                    <a href="#/registrar" class="btn btn-success" onclick="$('#contenedor').hide()">Registrar</a>
+                                </form>
+                            </ul>
+                        </div>
+                        <a class="btn btn-block btn-social btn-twitter" style="width: 185px;display: inline-block" ng-click="iniciarSesionTwitter()">
+                            <span class="fa fa-twitter fa-"></span> Ingresar con Twitter
+                        </a>
+                        <a class="btn btn-block btn-social btn-facebook pull-right" style="width: 205px;display: inline-block" ng-click="iniciarSesionFacebook()">
+                            <span class="fa fa-facebook"></span> Ingresar con Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </nav>
@@ -195,7 +217,6 @@
 	          <h4 class="modal-title">Iniciar en Facebook</h4>
 	        </div>
 	        <div class="modal-body">
-	          Aqui se usará la API de Facebook.
 	        </div>
 	        <div class="modal-footer">
 	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -215,7 +236,6 @@
 	          <h4 class="modal-title">Iniciar en Twitter</h4>
 	        </div>
 	        <div class="modal-body">
-	          Aqui se usará la API de Twitter.
 	        </div>
 	        <div class="modal-footer">
 	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
