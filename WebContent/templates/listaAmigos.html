@@ -1,0 +1,49 @@
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();listarAmigos();">
+<div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class="active"><a href="#/perfil">Perfil<span class="sr-only">(current)</span></a></li>
+        <li><a href="#/individual">Desplazamientos individuales</a></li>
+        <li><a href="#/grupo">Desplazamientos grupales</a></li>
+      </ul>
+</div>
+    
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h1 class="page-header">Amigos</h1>
+      
+	  <div class="text-danger" style="padding-bottom:5px;">{{ msgError }}</div>
+	  <br />
+	  <table class="table table-bordered" ng-repeat="record in listaAmigos">
+			<tr>
+				<td width="10%">
+					<img src="http://i345.photobucket.com/albums/p390/SANTIDILS7/facebook-profile_zpsi4assfci.jpg" style="margin:auto; height: 50px; width: 50px"/> </td>
+				<td width="70%" style="vertical-align: middle">
+					<strong>{{ record.username }}</strong>
+					<br />
+					{{ record.email }}
+				</td>
+				<td width="20%"><a href="javascript:;" ng-click="enviarMensaje(record.id, record.username)">enviar mensaje</a>
+					<button  id="btnEnvMsq" name="btnEnvMsq" type="button" class="btn btn-info hide" ng-click="enviarMensaje(record.id, record.username))">NO BORRAR</button>
+				</td>
+					
+			</tr>
+		</table>
+   
+</div>
+
+</div>
+
+<div id="areaChat" name="areaChat" style="float:right;margin-top: 5%;">
+	<ng-include src="template"></ng-include>
+	<input id="focusChat" size="1" style="border:0 #FFF solid;background-color:#FFF;" type="text" />
+</div>
+
+
+
+
+
+
+
+
+
+
+          

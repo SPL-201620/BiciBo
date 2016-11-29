@@ -1,0 +1,31 @@
+<div style="background-color: #FFF !important;"  ng-init="verificarSesion();listarMensajes();" >
+<div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li><a href="#/perfil">Perfil</a></li>
+        <li><a href="#/individual">Desplazamientos individuales</a></li>
+        <li><a href="#/grupo">Desplazamientos grupales</a></li>
+	    <li><a href="#/sitios">Sitios Alquiler</a></li>
+      </ul>
+</div>
+    
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main paddingtemplates" >
+	<h2 class="page-header">Mensajes</h2>
+      
+	<div class="text-danger" style="padding-bottom:5px;">{{ msgError }}</div>
+	<br />
+	<div class="list-group" ng-repeat="record in ListadoMensajes">
+		
+			<a href="javascript:;" class="list-group-item" ng-click="mensajeLeido(record.id);enviarMensaje( record.usuarioOrigen.id, record.usuarioOrigen.username)">
+				<h4 class="list-group-item-heading">De: {{ record.usuarioOrigen.username }}</h4>
+			    <p class="list-group-item-text">{{ record.mensaje }}</p>
+			</a>
+		
+	</div>
+</div>
+
+<div id="areaChat" name="areaChat" style="float:right;margin-top: 5%;">
+	<ng-include src="template"></ng-include>
+	<input id="focusChat" size="1" style="border:0 #FFF solid;background-color:#FFF;" type="text" />
+</div>
+
+</div>
