@@ -318,11 +318,14 @@ public class UserRestService
             {
                 usuarioService.registrar(user.getName(), user.getScreenName(), user.getScreenName(), accessToken.getTokenSecret(), user.getOriginalProfileImageURL());
                 javax.servlet.http.Cookie[] cookies = request.getCookies();
-                for(javax.servlet.http.Cookie cookie : cookies)
+                if(cookies != null)
                 {
-                    if(cookie.getName().equals("username"))
+                    for(javax.servlet.http.Cookie cookie : cookies)
                     {
-                        cookie.setMaxAge(0);
+                        if(cookie.getName().equals("username"))
+                        {
+                            cookie.setMaxAge(0);
+                        }
                     }
                 }
                 javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("username", user.getScreenName());
@@ -467,11 +470,14 @@ public class UserRestService
             UsuarioService usuarioService = new UsuarioService();
             usuarioService.registrar(name, email,name.toLowerCase().replaceAll("\\s+",""), token, urlFoto);
             javax.servlet.http.Cookie[] cookies = httpServletRequest.getCookies();
-            for(javax.servlet.http.Cookie cookie : cookies)
+            if(cookies != null)
             {
-                if(cookie.getName().equals("username"))
+                for(javax.servlet.http.Cookie cookie : cookies)
                 {
-                    cookie.setMaxAge(0);
+                    if(cookie.getName().equals("username"))
+                    {
+                        cookie.setMaxAge(0);
+                    }
                 }
             }
             javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("username", name.toLowerCase().replaceAll("\\s+",""));
@@ -496,23 +502,28 @@ public class UserRestService
         UsuarioService usuarioService = new UsuarioService();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
         String userName ="";
-        for(javax.servlet.http.Cookie cookie : cookies)
+        if(cookies != null)
         {
-            System.out.println("cookie con name "+ cookie.getName()+ " value "+userName +" domain "+cookie.getDomain());
-            if(cookie.getName().equals("username"))
+            for(javax.servlet.http.Cookie cookie : cookies)
             {
-                userName = cookie.getValue();
-                break;
+                System.out.println("cookie con name "+ cookie.getName()+ " value "+userName +" domain "+cookie.getDomain());
+                if(cookie.getName().equals("username"))
+                {
+                    userName = cookie.getValue();
+                    break;
+                }
             }
+            System.out.println("value encontrado en la cookie "+ userName);
+            Usuario user = usuarioService.darInfoUsuarioUsername(userName);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username", user.getUsername());
+            jsonObject.put("password", user.getPassword());
+            System.out.println("llego a infoLogin con user "+ user.getUsername()+ " pass "+ user.getPassword());
+            return Response.ok(jsonObject).build();
         }
-        System.out.println("value encontrado en la cookie "+ userName);
-        Usuario user = usuarioService.darInfoUsuarioUsername(userName);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("username", user.getUsername());
-        jsonObject.put("password", user.getPassword());
-        System.out.println("llego a infoLogin con user "+ user.getUsername()+ " pass "+ user.getPassword());
-        return Response.ok(jsonObject).build();
+        else
+        {
+            return  Response.serverError().build();
+        }
     }
-
-
 }
