@@ -125,7 +125,7 @@ public class UsuarioService
     }
     
     public JSONObject updateUsuario(String id, String nombre, String email, String password, String username, 
-    		String edad, String fotoPerfil) 
+    		String edad, String rutaFoto) 
     {        
     	JSONObject obj = new JSONObject();
         try
@@ -158,10 +158,9 @@ public class UsuarioService
                 {
                 	usuario.setEdad(Integer.parseInt(edad));
                 }
-                if(fotoPerfil != null && !fotoPerfil.equals("") && usuario.getRutaFoto() == null || 
-                		fotoPerfil != null && !fotoPerfil.equals("") && !fotoPerfil.equals(usuario.getRutaFoto()))
+                if(!rutaFoto.equals("") && !rutaFoto.equals(usuario.getRutaFoto()))
                 {
-                	usuario.setRutaFoto((fotoPerfil));
+                	usuario.setRutaFoto(rutaFoto);
                 }  
                 entitymanager.persist(usuario);
                 entitymanager.getTransaction( ).commit( );

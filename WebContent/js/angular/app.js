@@ -27,26 +27,6 @@ angular.module('ngbicibo', ['ngbicibo.filters', 'ngbicibo.services', 'ngbicibo.d
     	$routeProvider.when('/registrar', {templateUrl: 'templates/registrar.html', controller: 'AppCtrl'});
     	$routeProvider.when('/amigos', {templateUrl: 'templates/listaAmigos.html', controller: 'AppCtrl'});
     	$routeProvider.when('/mensajes', {templateUrl: 'templates/mensajes.html', controller: 'AppCtrl'});
+    	$routeProvider.when('/sitios', {templateUrl: 'templates/alquileres.html', controller: 'AppCtrl'});
     	$routeProvider.otherwise({redirectTo: '/'});
     }]);
-function avatar1(){
-	$("#avatar2").hide();
-	$("#rutaFoto").val("img/avatars/avatar1.jpg");
-	$("#btnCambiarAvatar").show();
-}
-function avatar2(){
-	$("#avatar1").hide();
-	$("#rutaFoto").val("img/avatars/avatar2.jpg");
-	$("#btnCambiarAvatar").show();
-}
-function btnCambiarAvatar(){
-	$("#rutaFoto").val(" ");
-	$("#btnCambiarAvatar").hide();
-	$("#avatar1").show();
-	$("#avatar2").show();
-}
-function mostraPanelExito(){
-	$("#formRegistro").hide();
-	$("#panelExito").show();
-	
-}

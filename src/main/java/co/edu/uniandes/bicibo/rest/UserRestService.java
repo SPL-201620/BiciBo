@@ -75,10 +75,11 @@ public class UserRestService
     		@QueryParam("password") String password,
     		@QueryParam("username") String username,    		
     		@QueryParam("edad") String edad,
-    		@QueryParam("fotoPerfil") String fotoPerfil) 
+    		@QueryParam("rutaFoto") String rutaFoto) 
 	{
 		UsuarioService usuarioService = new UsuarioService();
-        return usuarioService.updateUsuario(id, nombre, email, password, username, edad, fotoPerfil);
+		 System.out.println("---->>>FOTOOOOOOOOOOOOOOOO: "+rutaFoto);
+        return usuarioService.updateUsuario(id, nombre, email, password, username, edad, rutaFoto);
     }
     
 	@Path("/users/{id}")

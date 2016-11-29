@@ -91,8 +91,8 @@ app.factory('factoryUsuarios', function() {
 //Controlador principal o padre.
 //Para la version final quitar los siguientes servicios: factoryUsuarios, factoryRecorridos , puesto que se usaron para simular la info de la BD.
 
-app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 
-                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory) {
+app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFactory','RouteFactory', '$log', '$cookieStore', '$location', '$routeParams', 'factoryUsuarios', 'factoryRecorridos', 'factoryRecorrido', 'MessageFactory', 'AlquilerFactory', 
+                           function ($scope, $q, UserSesion, UserFactory, FriendFactory, RouteFactory, $log, $cookieStore, $location, $routeParams, factoryUsuarios, factoryRecorridos, factoryRecorrido, MessageFactory, AlquilerFactory) {
     //AUTENTICACION
 	$scope.usrConectado = {nombre: "", estaConectado: '', message: ''};
     
@@ -207,7 +207,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
          	{
          		if(response.status=="OK")
          		{
-         			mostraPanelExito();
+         			$scope.mostraPanelExito();
          		}
          		else
          		{
@@ -292,9 +292,11 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
     $scope.actualizarUsuario = function()
     {
     	var cookieUsr = $cookieStore.get('usuario');
+    	//alert($scope.infoUsuario.rutaFoto)
+    	
     	UserFactory.user.update({id: $scope.infoUsuario.id, username : "", email: $scope.infoUsuario.email, 
     		password : "", edad: $scope.infoUsuario.edad, nombre: $scope.infoUsuario.nombre,
-    		fotoPerfil: $scope.infoUsuario.fotoPerfil}, 
+    		rutaFoto: $scope.infoUsuario.rutaFoto}, 
     		function (response) 
     		{
 	    		if(response.status != "OK")
@@ -648,7 +650,7 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  	});
 	}
     
-    //Mensajes
+    //MENSAJES
     $scope.mensaje = {contenido:''};
     $scope.template = {};
     $scope.usuarioDestino = {
@@ -744,11 +746,17 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		else
 	  		{
 	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  			
+	  			
 	  		}
 	  	})
+
+	    $scope.temp_total_mensajes = 'templates/totalMensajes.html';
+	  	
     };
-    $scope.mensajeLeido = function (idMensaje) {    	
-    	MessageFactory.mensaje.leido({id: idMensaje}, function (response)
+    //Marcar el mensaje como leido
+    $scope.mensajeLeido = function (idMensaje) { 
+    	MessageFactory.mensaje.leido({id_mensaje: idMensaje}, function (response)
 		{
 	  		if(response.status != "OK")
 	  		{
@@ -756,10 +764,54 @@ app.controller('AppCtrl', ['$scope', '$q', 'UserSesion','UserFactory','FriendFac
 	  		}
 	  		else
 	  		{
-	  			$scope.cantidadMensajesNuevos = response.NumMensajesNuevos;
+	  			console.log(response.message);
+	  			//Se recarga el indicador de mensajes nuevos en index.html
+	  			$scope.totalMensajesNuevos();
 	  		}
 	  	})
     };
+  //SITIOS ALQUILER
+    $scope.ListadoSitios = {};
+    $scope.listarSitios = function () {
+    	
+    	AlquilerFactory.sitios.listar(function (response)
+		{
+	  		if(response.status != "OK")
+	  		{
+	  			$scope.msgError = response.message;
+	  		}
+	  		else
+	  		{
+	  			$scope.ListadoSitios = response.message;
+	  		}
+	  	})
+    	
+    }; 
+ //MANEJO DE AVATARS
+    $scope.avatar1 = function (opcion){
+    	$("#avatar2").hide();
+    	if(opcion == 'editar') $scope.infoUsuario.rutaFoto = 'img/avatars/avatar1.jpg';
+    	else $scope.usuario.rutaFoto = 'img/avatars/avatar1.jpg';
+    	$("#btnCambiarAvatar").show();
+    };
     
+    $scope.avatar2 = function (opcion){
+    	$("#avatar1").hide();    	
+    	if(opcion == 'editar') $scope.infoUsuario.rutaFoto = 'img/avatars/avatar2.jpg';
+    	else $scope.usuario.rutaFoto = 'img/avatars/avatar2.jpg';
+    	$("#btnCambiarAvatar").show();
+    };
+    
+    $scope.btnCambiarAvatar = function (){
+    	$("#btnCambiarAvatar").hide();
+    	$("#avatar1").show();
+    	$("#avatar2").show();
+    };
+    
+    $scope.mostraPanelExito = function(){
+    	$("#formRegistro").hide();
+    	$("#panelExito").show();
+    	
+    };
 }]);//Fin Controlador principal
 

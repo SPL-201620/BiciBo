@@ -92,8 +92,7 @@ public class MensajeService
             EntityManager entityManager = emfactory.createEntityManager( );
             
         	Usuario usuario = entityManager.find(Usuario.class, Integer.parseInt(id));
-            Query query = entityManager.createQuery("SELECT m FROM Mensaje m WHERE "
-            		+ "m.nuevo=true AND "
+            Query query = entityManager.createQuery("SELECT m FROM mensaje m WHERE "
             		+ "m.usuarioDestino = ?1");
             query.setParameter(1, usuario); 
             
@@ -135,6 +134,7 @@ public class MensajeService
         	entityManager.getTransaction( ).commit( );
             entityManager.close( );
             emfactory.close( );
+            System.out.println("----->Se ha marcado el mensaje numero: "+id);
             obj.put("status", "OK");
             obj.put("message", "Ha sido marcado como visto el mensaje.");
         }
