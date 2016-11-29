@@ -19,19 +19,19 @@ import co.edu.uniandes.bicibo.domain.Log;
 public aspect Security 
 {
 	pointcut security():
-		call(* * (..));
+		call(Object * (..));
 	
 	before():security()
 	{		
-		/*String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
+		String strNombreMetodo = thisJoinPointStaticPart.getSignature().toString();
 		String strParametros = thisJoinPoint.getArgs().toString();
-		String strTarget = thisJoinPoint.getTarget().toString();
+		//String strTarget = thisJoinPoint.getTarget().toString();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		String strFecha = dateFormat.format(date);
 		System.out.println("Metodo: " + strNombreMetodo + "\n" +
 							"Parametros: " + strParametros + "\n" +
-							"Objetivo: " + strTarget + "\n" +
+							//"Objetivo: " + strTarget + "\n" +
 							"Fecha: " + strFecha + "\n");
 		
 		try
@@ -46,7 +46,7 @@ public aspect Security
         	
         	log.setNombreMetodo(strNombreMetodo);
         	log.setParametros(strParametros);
-        	log.setObjetivo(strTarget);
+        	//log.setObjetivo(strTarget);
         	log.setFecha(strFecha);
         	
 			entityManager.persist( log );
@@ -58,14 +58,13 @@ public aspect Security
         catch (Exception e)
         {
         	System.out.println(e.getMessage());
-        }    	*/
+        }
 	}
 	
-	/*after()	returning(Object r):	security()
+	after()	returning(Object r):security()
 	{
 		String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
 		String strParametros = thisJoinPoint.getArgs().toString();
-		String strTarget = thisJoinPoint.getTarget().toString();
 		
 		System.out.println("Retorno: " + r);
 		
@@ -77,15 +76,14 @@ public aspect Security
         	entityManager = emfactory.createEntityManager( );
         	entityManager.getTransaction( ).begin( );
         	
-        	Query query = entityManager.createQuery("SELECT l FROM Logs l WHERE l.nombreMetodo = ?1 AND l.parametros = 2? AND "
-        			+ "l.objetivo = 3? ORDER BY l.id DESC");
+        	Query query = entityManager.createQuery("SELECT l FROM Logs l WHERE l.nombreMetodo = ?1 AND l.parametros = 2? "
+        			+ "ORDER BY l.id DESC");
         	query.setParameter(1, strNombreMetodo); 
-            query.setParameter(2, strParametros); 
-            query.setParameter(3, strTarget); 
-             
+            query.setParameter(2, strParametros);
+            
             query.setFirstResult(0);
             query.setMaxResults(1);
-            Log log = (Log) query.getSingleResult().get(0);
+            Log log = (Log) query.getResultList().get(0);
         	
         	log.setRetorno(r.toString());
         	
@@ -105,7 +103,6 @@ public aspect Security
 	{
 		String strNombreMetodo = thisJoinPointStaticPart.getSignature().getName();
 		String strParametros = thisJoinPoint.getArgs().toString();
-		String strTarget = thisJoinPoint.getTarget().toString();
 		
 		System.out.println("Excepcion: " + e);
 		
@@ -117,15 +114,14 @@ public aspect Security
         	entityManager = emfactory.createEntityManager( );
         	entityManager.getTransaction( ).begin( );
         	
-        	Query query = entityManager.createQuery("SELECT l FROM Logs l WHERE l.nombreMetodo = ?1 AND l.parametros = 2? AND "
-        			+ "l.objetivo = 3? ORDER BY l.id DESC");
+        	Query query = entityManager.createQuery("SELECT l FROM Logs l WHERE l.nombreMetodo = ?1 AND l.parametros = 2? "
+        			+ "ORDER BY l.id DESC");
         	query.setParameter(1, strNombreMetodo); 
-            query.setParameter(2, strParametros); 
-            query.setParameter(3, strTarget); 
+            query.setParameter(2, strParametros);
              
             query.setFirstResult(0);
             query.setMaxResults(1);
-            Log log = (Log) query.getSingleResult().get(0);
+            Log log = (Log) query.getResultList().get(0);
         	
         	log.setExcepcion(e.toString());
         	
@@ -139,5 +135,5 @@ public aspect Security
         {
         	System.out.println(r.getMessage());
         }  
-	}*/
+	}
 }
